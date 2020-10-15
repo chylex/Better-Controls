@@ -1,0 +1,33 @@
+package chylex.bettercontrols.input;
+import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.util.InputUtil.Type;
+import org.jetbrains.annotations.Nullable;
+
+public class KeyBindingWithModifier extends KeyBinding{
+	public static final String CATEGORY = "key.categories.bettercontrols";
+	
+	@Nullable
+	private ModifierKey modifier = null;
+	
+	public KeyBindingWithModifier(final String translationKey){
+		super(translationKey, Type.KEYSYM, -1, CATEGORY);
+	}
+	
+	public void setModifier(final @Nullable ModifierKey modifier){
+		this.modifier = modifier;
+	}
+	
+	public @Nullable ModifierKey getModifier(){
+		return modifier;
+	}
+	
+	@Override
+	public boolean isPressed(){
+		return super.isPressed() && (modifier == null || modifier.isPressed());
+	}
+	
+	@Override
+	public boolean wasPressed(){
+		return super.wasPressed() && (modifier == null || modifier.isPressed());
+	}
+}

@@ -1,10 +1,16 @@
 package chylex.bettercontrols.input;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.util.InputUtil.Type;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import org.jetbrains.annotations.Nullable;
 
 public class KeyBindingWithModifier extends KeyBinding{
 	public static final String CATEGORY = "key.categories.bettercontrols";
+	
+	public static boolean checkCategoryMatches(final Text text){
+		return text instanceof TranslatableText && CATEGORY.equals(((TranslatableText)text).getKey());
+	}
 	
 	@Nullable
 	private ModifierKey modifier = null;

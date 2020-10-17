@@ -6,10 +6,13 @@
   "mixins": [
     "AccessCameraFields",
     "AccessClientPlayerFields",
+    "AccessControlsListCategory",
+    "AccessControlsListKeyBinding",
     "AccessKeyBindingFields",
     "AccessScreenButtons",
     "HookClientPlayerInputTick",
     "HookClientPlayerTick",
+    "HookControlsListWidget",
     "HookLoadGameOptions",
     "HookOpenScreen",
     "HookStickyKeyBindingState"

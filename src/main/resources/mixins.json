@@ -8,6 +8,7 @@
     "AccessClientPlayerFields",
     "AccessKeyBindingFields",
     "AccessScreenButtons",
+    "HookClientPlayerInputTick",
     "HookClientPlayerTick",
     "HookLoadGameOptions",
     "HookOpenScreen",

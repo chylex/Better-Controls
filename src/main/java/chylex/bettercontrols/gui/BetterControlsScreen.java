@@ -113,6 +113,14 @@ public class BetterControlsScreen extends GameOptionsScreen{
 	private int generateMiscellaneousOptions(int y, final List<Element> elements){
 		final BetterControlsConfig cfg = BetterControlsMod.config;
 		
+		generateKeyBindingWithModifierOption(y, elements, Text.of("Toggle Walk Forwards"), cfg.keyToggleWalkForward);
+		
+		y += ROW_HEIGHT;
+		
+		generateKeyBindingWithModifierOption(y, elements, Text.of("Toggle Jump"), cfg.keyToggleJump);
+		
+		y += ROW_HEIGHT * 4 / 3;
+		
 		generateKeyBindingWithModifierOption(y, elements, Text.of("Open Better Controls Menu"), cfg.keyOpenMenu);
 		
 		y += ROW_HEIGHT;

@@ -21,6 +21,8 @@ public final class BetterControlsConfig{
 	public float flightSpeedMpSpectatorDefault = 1F;
 	public float flightSpeedMpSpectatorSprinting = 2F;
 	
+	public final KeyBindingWithModifier keyToggleWalkForward = new KeyBindingWithModifier("key.bettercontrols.toggle_forward");
+	public final KeyBindingWithModifier keyToggleJump = new KeyBindingWithModifier("key.bettercontrols.toggle_jump");
 	public final KeyBindingWithModifier keyOpenMenu = new KeyBindingWithModifier("key.bettercontrols.open_menu");
 	
 	BetterControlsConfig(){}
@@ -32,6 +34,8 @@ public final class BetterControlsConfig{
 	
 	public KeyBinding[] getAllKeyBindings(){
 		return new KeyBinding[]{
+			keyToggleWalkForward,
+			keyToggleJump,
 			keyOpenMenu
 		};
 	}

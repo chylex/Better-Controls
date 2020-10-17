@@ -41,6 +41,8 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		Json.setFloat(obj, "Flight.SpeedMp.Spectator.Default", cfg.flightSpeedMpSpectatorDefault);
 		Json.setFloat(obj, "Flight.SpeedMp.Spectator.Sprinting", cfg.flightSpeedMpSpectatorSprinting);
 		
+		Json.writeKeyBinding(obj, "Misc.KeyToggleWalkForward", cfg.keyToggleWalkForward);
+		Json.writeKeyBinding(obj, "Misc.KeyToggleJump", cfg.keyToggleJump);
 		Json.writeKeyBinding(obj, "Misc.KeyOpenMenu", cfg.keyOpenMenu);
 		
 		return obj;
@@ -62,6 +64,8 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		cfg.flightSpeedMpSpectatorDefault = Json.getFloat(obj, "Flight.SpeedMp.Spectator.Default", cfg.flightSpeedMpSpectatorDefault);
 		cfg.flightSpeedMpSpectatorSprinting = Json.getFloat(obj, "Flight.SpeedMp.Spectator.Sprinting", cfg.flightSpeedMpSpectatorSprinting);
 		
+		Json.readKeyBinding(obj, "Misc.KeyToggleWalkForward", cfg.keyToggleWalkForward);
+		Json.readKeyBinding(obj, "Misc.KeyToggleJump", cfg.keyToggleJump);
 		Json.readKeyBinding(obj, "Misc.KeyOpenMenu", cfg.keyOpenMenu);
 		
 		return cfg;

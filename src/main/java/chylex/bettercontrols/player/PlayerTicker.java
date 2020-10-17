@@ -2,9 +2,11 @@ package chylex.bettercontrols.player;
 import chylex.bettercontrols.BetterControlsMod;
 import chylex.bettercontrols.config.BetterControlsConfig;
 import chylex.bettercontrols.gui.BetterControlsScreen;
+import chylex.bettercontrols.input.ToggleTracker;
 import chylex.bettercontrols.mixin.AccessCameraFields;
 import chylex.bettercontrols.mixin.AccessClientPlayerFields;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.network.ClientPlayerEntity;
 import java.lang.ref.WeakReference;
 
@@ -35,6 +37,9 @@ public final class PlayerTicker{
 	
 	// Logic
 	
+	private final ToggleTracker toggleWalkForward = new ToggleTracker(cfg().keyToggleWalkForward, mc().options.keyForward);
+	private final ToggleTracker toggleJump = new ToggleTracker(cfg().keyToggleJump, mc().options.keyJump);
+	
 	private boolean wasHittingObstacle = false;
 	private boolean wasSprintingBeforeHittingObstacle = false;
 	
@@ -51,7 +56,17 @@ public final class PlayerTicker{
 		}
 	}
 	
+	public void afterInputAssignsPressingForward(final KeyboardInput input){
+		if (mc().currentScreen == null){
+			input.pressingForward |= toggleWalkForward.tick();
+		}
+	}
+	
 	public void afterInputTick(final ClientPlayerEntity player){
+		if (mc().currentScreen == null && !player.abilities.flying){
+			player.input.jumping |= toggleJump.tick();
+		}
+		
 		final float flightSpeed = FlightHelper.getFlightSpeed(player);
 		
 		if (flightSpeed > 0F){

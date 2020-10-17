@@ -31,6 +31,7 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		final JsonObject obj = new JsonObject();
 		
 		Json.setBool(obj, "Sprint.DoubleTapForward", cfg.doubleTapForwardToSprint);
+		Json.setBool(obj, "Sprint.ResumeAfterHittingObstacle", cfg.resumeSprintingAfterHittingObstacle);
 		
 		Json.setBool(obj, "Sneak.SmoothCamera", cfg.sneakingMovesCameraSmoothly);
 		
@@ -49,6 +50,7 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		final JsonObject obj = json.getAsJsonObject();
 		
 		cfg.doubleTapForwardToSprint = Json.getBool(obj, "Sprint.DoubleTapForward", cfg.doubleTapForwardToSprint);
+		cfg.resumeSprintingAfterHittingObstacle = Json.getBool(obj, "Sprint.ResumeAfterHittingObstacle", cfg.resumeSprintingAfterHittingObstacle);
 		
 		cfg.sneakingMovesCameraSmoothly = Json.getBool(obj, "Sneak.SmoothCamera", cfg.sneakingMovesCameraSmoothly);
 		

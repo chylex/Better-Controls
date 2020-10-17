@@ -10,6 +10,7 @@ public final class BetterControlsConfig{
 	private Path path;
 	
 	public boolean doubleTapForwardToSprint = true;
+	public boolean resumeSprintingAfterHittingObstacle = false;
 	
 	public boolean sneakingMovesCameraSmoothly = true;
 	

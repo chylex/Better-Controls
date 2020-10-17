@@ -34,6 +34,9 @@ public final class PlayerTicker{
 	
 	// Logic
 	
+	private boolean wasHittingObstacle = false;
+	private boolean wasSprintingBeforeHittingObstacle = false;
+	
 	private boolean wasSneakingBeforeTouchingGround = false;
 	private boolean holdingSneakWhileTouchingGround = false;
 	
@@ -52,6 +55,25 @@ public final class PlayerTicker{
 		
 		if (flightSpeed > 0F){
 			player.abilities.setFlySpeed(flightSpeed);
+		}
+		
+		if (cfg().resumeSprintingAfterHittingObstacle){
+			if (wasHittingObstacle != player.horizontalCollision){
+				if (!wasHittingObstacle){
+					wasSprintingBeforeHittingObstacle = player.isSprinting() || mc().options.keySprint.isPressed();
+				}
+				else if (wasSprintingBeforeHittingObstacle){
+					wasSprintingBeforeHittingObstacle = false;
+					player.setSprinting(true);
+				}
+				
+				// collision also stops when the player lets go of movement keys
+				wasHittingObstacle = player.horizontalCollision;
+			}
+		}
+		else{
+			wasHittingObstacle = player.horizontalCollision;
+			wasSprintingBeforeHittingObstacle = false;
 		}
 	}
 	

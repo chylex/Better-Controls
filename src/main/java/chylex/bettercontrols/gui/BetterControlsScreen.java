@@ -43,6 +43,11 @@ public class BetterControlsScreen extends GameOptionsScreen{
 		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.doubleTapForwardToSprint, value -> cfg.doubleTapForwardToSprint = value));
 		
 		y += ROW_HEIGHT;
+		
+		generateLeftSideText(y, elements, Text.of("Resume Sprinting After Hitting Obstacle"));
+		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.resumeSprintingAfterHittingObstacle, value -> cfg.resumeSprintingAfterHittingObstacle = value));
+		
+		y += ROW_HEIGHT;
 		return y;
 	}
 	

@@ -63,6 +63,11 @@ public class BetterControlsScreen extends GameOptionsScreen{
 			new Option<>(Float.valueOf(8.00F), Text.of("8x"))
 		);
 		
+		generateLeftSideText(y, elements, Text.of("Fly On Ground (Creative Mode)"));
+		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.flyOnGroundInCreative, value -> cfg.flyOnGroundInCreative = value));
+		
+		y += ROW_HEIGHT * 4 / 3;
+		
 		generateLeftSideText(y, elements, Text.of("Speed Multiplier (Creative)"));
 		elements.add(new DiscreteValueSliderWidget<>(col2(1), y, COL2_W, flightSpeedOptions, cfg.flightSpeedMpCreativeDefault, value -> cfg.flightSpeedMpCreativeDefault = value));
 		

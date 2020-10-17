@@ -11,6 +11,7 @@ public final class BetterControlsConfig{
 	
 	public boolean doubleTapForwardToSprint = true;
 	
+	public boolean flyOnGroundInCreative = false;
 	public float flightSpeedMpCreativeDefault = 1F;
 	public float flightSpeedMpCreativeSprinting = 2F;
 	public float flightSpeedMpSpectatorDefault = 1F;

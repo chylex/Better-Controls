@@ -27,4 +27,10 @@ public abstract class HookClientPlayerTick extends AbstractClientPlayerEntity{
 		final ClientPlayerEntity player = (ClientPlayerEntity)(Object)this;
 		PlayerTicker.get(player).afterInputTick(player);
 	}
+	
+	@Inject(method = "tickMovement()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;tickMovement()V", ordinal = 0, shift = AFTER))
+	private void afterSuperCall(final CallbackInfo info){
+		final ClientPlayerEntity player = (ClientPlayerEntity)(Object)this;
+		PlayerTicker.get(player).afterSuperCall(player);
+	}
 }

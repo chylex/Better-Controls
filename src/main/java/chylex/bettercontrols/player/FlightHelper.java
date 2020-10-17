@@ -13,6 +13,10 @@ final class FlightHelper{
 		return BetterControlsMod.config;
 	}
 	
+	static boolean shouldFlyOnGround(final ClientPlayerEntity player){
+		return cfg().flyOnGroundInCreative && player.isCreative() && player.abilities.flying;
+	}
+	
 	static float getFlightSpeed(final ClientPlayerEntity player){
 		if (player.isCreative()){
 			if (player.isSprinting()){

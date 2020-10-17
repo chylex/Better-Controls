@@ -33,7 +33,14 @@ public final class PlayerTicker{
 	
 	// Logic
 	
+	private boolean wasSneakingBeforeTouchingGround = false;
+	private boolean holdingSneakWhileTouchingGround = false;
+	
 	public void atHead(final ClientPlayerEntity player){
+		if (FlightHelper.shouldFlyOnGround(player)){
+			player.setOnGround(false);
+		}
+		
 		if (!cfg().doubleTapForwardToSprint){
 			((AccessClientPlayerFields)player).setTicksLeftToDoubleTapSprint(0);
 		}
@@ -44,6 +51,46 @@ public final class PlayerTicker{
 		
 		if (flightSpeed > 0F){
 			player.abilities.setFlySpeed(flightSpeed);
+		}
+	}
+	
+	public void afterSuperCall(final ClientPlayerEntity player){
+		if (FlightHelper.shouldFlyOnGround(player)){
+			final boolean isSneaking = player.isSneaking();
+			final boolean isOnGround = player.isOnGround();
+			
+			if (!isSneaking){
+				wasSneakingBeforeTouchingGround = false;
+			}
+			else if (!isOnGround){
+				wasSneakingBeforeTouchingGround = true;
+			}
+			
+			if (!isOnGround){
+				holdingSneakWhileTouchingGround = false;
+			}
+			else{
+				boolean cancelLanding = true;
+				
+				if (!wasSneakingBeforeTouchingGround){
+					if (isSneaking){
+						holdingSneakWhileTouchingGround = true;
+					}
+					else if (holdingSneakWhileTouchingGround){
+						player.abilities.flying = false;
+						player.sendAbilitiesUpdate();
+						cancelLanding = false;
+					}
+				}
+				
+				if (cancelLanding){
+					player.setOnGround(false);
+				}
+			}
+		}
+		else{
+			wasSneakingBeforeTouchingGround = false;
+			holdingSneakWhileTouchingGround = false;
 		}
 	}
 }

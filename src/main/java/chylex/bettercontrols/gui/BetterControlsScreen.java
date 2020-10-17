@@ -2,7 +2,9 @@ package chylex.bettercontrols.gui;
 import chylex.bettercontrols.BetterControlsMod;
 import chylex.bettercontrols.config.BetterControlsConfig;
 import chylex.bettercontrols.gui.elements.BooleanValueWidget;
+import chylex.bettercontrols.gui.elements.DiscreteValueSliderWidget;
 import chylex.bettercontrols.gui.elements.KeyBindingWidget;
+import chylex.bettercontrols.gui.elements.Option;
 import chylex.bettercontrols.gui.elements.TextWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
@@ -17,6 +19,7 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import static chylex.bettercontrols.gui.OptionListWidget.COL2_W;
 import static chylex.bettercontrols.gui.OptionListWidget.ROW_WIDTH;
@@ -38,6 +41,45 @@ public class BetterControlsScreen extends GameOptionsScreen{
 		
 		generateLeftSideText(y, elements, Text.of("Double Tap 'Walk Forwards' To Sprint"));
 		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.doubleTapForwardToSprint, value -> cfg.doubleTapForwardToSprint = value));
+		
+		y += ROW_HEIGHT;
+		return y;
+	}
+	
+	@SuppressWarnings({ "AutoBoxing", "AutoUnboxing" })
+	private int generateFlightOptions(int y, final List<Element> elements){
+		final BetterControlsConfig cfg = BetterControlsMod.config;
+		
+		final List<Option<Float>> flightSpeedOptions = Arrays.asList(
+			new Option<>(Float.valueOf(0.25F), Text.of("0.25x")),
+			new Option<>(Float.valueOf(0.50F), Text.of("0.5x")),
+			new Option<>(Float.valueOf(0.75F), Text.of("0.75x")),
+			new Option<>(Float.valueOf(1.00F), Text.of("1x")),
+			new Option<>(Float.valueOf(1.50F), Text.of("1.5x")),
+			new Option<>(Float.valueOf(2.00F), Text.of("2x")),
+			new Option<>(Float.valueOf(3.00F), Text.of("3x")),
+			new Option<>(Float.valueOf(4.00F), Text.of("4x")),
+			new Option<>(Float.valueOf(6.00F), Text.of("6x")),
+			new Option<>(Float.valueOf(8.00F), Text.of("8x"))
+		);
+		
+		generateLeftSideText(y, elements, Text.of("Speed Multiplier (Creative)"));
+		elements.add(new DiscreteValueSliderWidget<>(col2(1), y, COL2_W, flightSpeedOptions, cfg.flightSpeedMpCreativeDefault, value -> cfg.flightSpeedMpCreativeDefault = value));
+		
+		y += ROW_HEIGHT;
+		
+		generateLeftSideText(y, elements, Text.of("Speed Multiplier (Creative + Sprinting)"));
+		elements.add(new DiscreteValueSliderWidget<>(col2(1), y, COL2_W, flightSpeedOptions, cfg.flightSpeedMpCreativeSprinting, value -> cfg.flightSpeedMpCreativeSprinting = value));
+		
+		y += ROW_HEIGHT;
+		
+		generateLeftSideText(y, elements, Text.of("Speed Multiplier (Spectator)"));
+		elements.add(new DiscreteValueSliderWidget<>(col2(1), y, COL2_W, flightSpeedOptions, cfg.flightSpeedMpSpectatorDefault, value -> cfg.flightSpeedMpSpectatorDefault = value));
+		
+		y += ROW_HEIGHT;
+		
+		generateLeftSideText(y, elements, Text.of("Speed Multiplier (Spectator + Sprinting)"));
+		elements.add(new DiscreteValueSliderWidget<>(col2(1), y, COL2_W, flightSpeedOptions, cfg.flightSpeedMpSpectatorSprinting, value -> cfg.flightSpeedMpSpectatorSprinting = value));
 		
 		y += ROW_HEIGHT;
 		return y;
@@ -68,6 +110,9 @@ public class BetterControlsScreen extends GameOptionsScreen{
 		
 		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, Text.of("Sprinting"), CENTER));
 		y = generateSprintingOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;
+		
+		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, Text.of("Flying"), CENTER));
+		y = generateFlightOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;
 		
 		addButton(new ButtonWidget(width / 2 - 99, height - 29, 200, 20, ScreenTexts.DONE, btn -> client.openScreen(parent)));
 		addChild(optionsWidget = new OptionListWidget(21, height - 32, width, height, elements, y - TITLE_MARGIN_TOP + BOTTOM_PADDING));

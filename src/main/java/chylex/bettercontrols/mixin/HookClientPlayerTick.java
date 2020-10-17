@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 
 @Mixin(ClientPlayerEntity.class)
 public abstract class HookClientPlayerTick extends AbstractClientPlayerEntity{
@@ -19,5 +20,11 @@ public abstract class HookClientPlayerTick extends AbstractClientPlayerEntity{
 	private void atHead(final CallbackInfo info){
 		final ClientPlayerEntity player = (ClientPlayerEntity)(Object)this;
 		PlayerTicker.get(player).atHead(player);
+	}
+	
+	@Inject(method = "tickMovement()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;tick(Z)V", ordinal = 0, shift = AFTER))
+	private void afterInputTick(final CallbackInfo info){
+		final ClientPlayerEntity player = (ClientPlayerEntity)(Object)this;
+		PlayerTicker.get(player).afterInputTick(player);
 	}
 }

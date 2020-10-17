@@ -38,4 +38,12 @@ public final class PlayerTicker{
 			((AccessClientPlayerFields)player).setTicksLeftToDoubleTapSprint(0);
 		}
 	}
+	
+	public void afterInputTick(final ClientPlayerEntity player){
+		final float flightSpeed = FlightHelper.getFlightSpeed(player);
+		
+		if (flightSpeed > 0F){
+			player.abilities.setFlySpeed(flightSpeed);
+		}
+	}
 }

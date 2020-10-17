@@ -32,6 +32,11 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		
 		Json.setBool(obj, "Sprint.DoubleTapForward", cfg.doubleTapForwardToSprint);
 		
+		Json.setFloat(obj, "Flight.SpeedMp.Creative.Default", cfg.flightSpeedMpCreativeDefault);
+		Json.setFloat(obj, "Flight.SpeedMp.Creative.Sprinting", cfg.flightSpeedMpCreativeSprinting);
+		Json.setFloat(obj, "Flight.SpeedMp.Spectator.Default", cfg.flightSpeedMpSpectatorDefault);
+		Json.setFloat(obj, "Flight.SpeedMp.Spectator.Sprinting", cfg.flightSpeedMpSpectatorSprinting);
+		
 		return obj;
 	}
 	
@@ -41,6 +46,11 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		final JsonObject obj = json.getAsJsonObject();
 		
 		cfg.doubleTapForwardToSprint = Json.getBool(obj, "Sprint.DoubleTapForward", cfg.doubleTapForwardToSprint);
+		
+		cfg.flightSpeedMpCreativeDefault = Json.getFloat(obj, "Flight.SpeedMp.Creative.Default", cfg.flightSpeedMpCreativeDefault);
+		cfg.flightSpeedMpCreativeSprinting = Json.getFloat(obj, "Flight.SpeedMp.Creative.Sprinting", cfg.flightSpeedMpCreativeSprinting);
+		cfg.flightSpeedMpSpectatorDefault = Json.getFloat(obj, "Flight.SpeedMp.Spectator.Default", cfg.flightSpeedMpSpectatorDefault);
+		cfg.flightSpeedMpSpectatorSprinting = Json.getFloat(obj, "Flight.SpeedMp.Spectator.Sprinting", cfg.flightSpeedMpSpectatorSprinting);
 		
 		return cfg;
 	}

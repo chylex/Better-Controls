@@ -11,6 +11,11 @@ public final class BetterControlsConfig{
 	
 	public boolean doubleTapForwardToSprint = true;
 	
+	public float flightSpeedMpCreativeDefault = 1F;
+	public float flightSpeedMpCreativeSprinting = 2F;
+	public float flightSpeedMpSpectatorDefault = 1F;
+	public float flightSpeedMpSpectatorSprinting = 2F;
+	
 	BetterControlsConfig(){}
 	
 	private BetterControlsConfig setPath(final Path path){

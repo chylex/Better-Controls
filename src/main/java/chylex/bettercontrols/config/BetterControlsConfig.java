@@ -1,4 +1,5 @@
 package chylex.bettercontrols.config;
+import chylex.bettercontrols.input.KeyBindingWithModifier;
 import net.minecraft.client.options.KeyBinding;
 import java.nio.file.Path;
 
@@ -20,6 +21,8 @@ public final class BetterControlsConfig{
 	public float flightSpeedMpSpectatorDefault = 1F;
 	public float flightSpeedMpSpectatorSprinting = 2F;
 	
+	public final KeyBindingWithModifier keyOpenMenu = new KeyBindingWithModifier("key.bettercontrols.open_menu");
+	
 	BetterControlsConfig(){}
 	
 	private BetterControlsConfig setPath(final Path path){
@@ -28,7 +31,9 @@ public final class BetterControlsConfig{
 	}
 	
 	public KeyBinding[] getAllKeyBindings(){
-		return new KeyBinding[0];
+		return new KeyBinding[]{
+			keyOpenMenu
+		};
 	}
 	
 	public void save(){

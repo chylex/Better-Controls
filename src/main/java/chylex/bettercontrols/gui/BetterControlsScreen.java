@@ -2,10 +2,13 @@ package chylex.bettercontrols.gui;
 import chylex.bettercontrols.BetterControlsMod;
 import chylex.bettercontrols.config.BetterControlsConfig;
 import chylex.bettercontrols.gui.elements.BooleanValueWidget;
+import chylex.bettercontrols.gui.elements.CycleButtonWidget;
 import chylex.bettercontrols.gui.elements.DiscreteValueSliderWidget;
 import chylex.bettercontrols.gui.elements.KeyBindingWidget;
 import chylex.bettercontrols.gui.elements.Option;
 import chylex.bettercontrols.gui.elements.TextWidget;
+import chylex.bettercontrols.input.KeyBindingWithModifier;
+import chylex.bettercontrols.input.ModifierKey;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
@@ -22,8 +25,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import static chylex.bettercontrols.gui.OptionListWidget.COL2_W;
+import static chylex.bettercontrols.gui.OptionListWidget.COL4_W;
 import static chylex.bettercontrols.gui.OptionListWidget.ROW_WIDTH;
 import static chylex.bettercontrols.gui.OptionListWidget.col2;
+import static chylex.bettercontrols.gui.OptionListWidget.col4;
 import static chylex.bettercontrols.gui.elements.TextWidget.CENTER;
 
 public class BetterControlsScreen extends GameOptionsScreen{
@@ -105,7 +110,34 @@ public class BetterControlsScreen extends GameOptionsScreen{
 		return y;
 	}
 	
+	private int generateMiscellaneousOptions(int y, final List<Element> elements){
+		final BetterControlsConfig cfg = BetterControlsMod.config;
+		
+		generateKeyBindingWithModifierOption(y, elements, Text.of("Open Better Controls Menu"), cfg.keyOpenMenu);
+		
+		y += ROW_HEIGHT;
+		return y;
+	}
+	
 	// Helpers
+	
+	private static final List<Option<ModifierKey>> MODIFIER_OPTIONS = Arrays.asList(
+		new Option<>(null, Text.of("(No Modifier)")),
+		new Option<>(ModifierKey.CONTROL, Text.of("Control")),
+		new Option<>(ModifierKey.SHIFT, Text.of("Shift")),
+		new Option<>(ModifierKey.ALT, Text.of("Alt"))
+	);
+	
+	private void generateKeyBindingWithModifierOption(final int y, final List<Element> elements, final Text text, final KeyBindingWithModifier binding){
+		final CycleButtonWidget<ModifierKey> modifierButton = new CycleButtonWidget<>(col4(2), y, COL4_W, MODIFIER_OPTIONS, binding.getModifier(), binding::setModifier);
+		final KeyBindingWidget bindingButton = new KeyBindingWidget(col4(3), y, COL4_W, binding, this::startEditingKeyBinding);
+		bindingButton.linkButtonToBoundState(modifierButton);
+		
+		generateLeftSideText(y, elements, text);
+		elements.add(modifierButton);
+		elements.add(bindingButton);
+		allKeyBindings.add(bindingButton);
+	}
 	
 	private static void generateLeftSideText(final int y, final List<Element> elements, final Text text){
 		elements.add(new TextWidget(col2(0), y, COL2_W - TEXT_PADDING_RIGHT, text));
@@ -136,6 +168,9 @@ public class BetterControlsScreen extends GameOptionsScreen{
 		
 		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, Text.of("Flying"), CENTER));
 		y = generateFlightOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;
+		
+		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, Text.of("Miscellaneous"), CENTER));
+		y = generateMiscellaneousOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;
 		
 		addButton(new ButtonWidget(width / 2 - 99, height - 29, 200, 20, ScreenTexts.DONE, btn -> client.openScreen(parent)));
 		addChild(optionsWidget = new OptionListWidget(21, height - 32, width, height, elements, y - TITLE_MARGIN_TOP + BOTTOM_PADDING));

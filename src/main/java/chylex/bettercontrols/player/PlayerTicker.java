@@ -1,6 +1,7 @@
 package chylex.bettercontrols.player;
 import chylex.bettercontrols.BetterControlsMod;
 import chylex.bettercontrols.config.BetterControlsConfig;
+import chylex.bettercontrols.gui.BetterControlsScreen;
 import chylex.bettercontrols.mixin.AccessCameraFields;
 import chylex.bettercontrols.mixin.AccessClientPlayerFields;
 import net.minecraft.client.MinecraftClient;
@@ -122,6 +123,10 @@ public final class PlayerTicker{
 			if (camera.getFocusedEntity() == player){
 				camera.setCameraY(player.getStandingEyeHeight());
 			}
+		}
+		
+		if (cfg().keyOpenMenu.isPressed()){
+			mc().openScreen(new BetterControlsScreen(null));
 		}
 	}
 }

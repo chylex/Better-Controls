@@ -32,6 +32,8 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		
 		Json.setBool(obj, "Sprint.DoubleTapForward", cfg.doubleTapForwardToSprint);
 		
+		Json.setBool(obj, "Sneak.SmoothCamera", cfg.sneakingMovesCameraSmoothly);
+		
 		Json.setBool(obj, "Flight.FlyOnGround.Creative", cfg.flyOnGroundInCreative);
 		Json.setFloat(obj, "Flight.SpeedMp.Creative.Default", cfg.flightSpeedMpCreativeDefault);
 		Json.setFloat(obj, "Flight.SpeedMp.Creative.Sprinting", cfg.flightSpeedMpCreativeSprinting);
@@ -47,6 +49,8 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		final JsonObject obj = json.getAsJsonObject();
 		
 		cfg.doubleTapForwardToSprint = Json.getBool(obj, "Sprint.DoubleTapForward", cfg.doubleTapForwardToSprint);
+		
+		cfg.sneakingMovesCameraSmoothly = Json.getBool(obj, "Sneak.SmoothCamera", cfg.sneakingMovesCameraSmoothly);
 		
 		cfg.flyOnGroundInCreative = Json.getBool(obj, "Flight.FlyOnGround.Creative", cfg.flyOnGroundInCreative);
 		cfg.flightSpeedMpCreativeDefault = Json.getFloat(obj, "Flight.SpeedMp.Creative.Default", cfg.flightSpeedMpCreativeDefault);

@@ -1,6 +1,7 @@
 package chylex.bettercontrols.player;
 import chylex.bettercontrols.BetterControlsMod;
 import chylex.bettercontrols.config.BetterControlsConfig;
+import chylex.bettercontrols.mixin.AccessCameraFields;
 import chylex.bettercontrols.mixin.AccessClientPlayerFields;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -91,6 +92,14 @@ public final class PlayerTicker{
 		else{
 			wasSneakingBeforeTouchingGround = false;
 			holdingSneakWhileTouchingGround = false;
+		}
+		
+		if (!cfg().sneakingMovesCameraSmoothly){
+			final AccessCameraFields camera = (AccessCameraFields)mc().gameRenderer.getCamera();
+			
+			if (camera.getFocusedEntity() == player){
+				camera.setCameraY(player.getStandingEyeHeight());
+			}
 		}
 	}
 }

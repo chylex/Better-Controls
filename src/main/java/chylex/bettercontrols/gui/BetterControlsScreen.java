@@ -46,6 +46,16 @@ public class BetterControlsScreen extends GameOptionsScreen{
 		return y;
 	}
 	
+	private int generateSneakingOptions(int y, final List<Element> elements){
+		final BetterControlsConfig cfg = BetterControlsMod.config;
+		
+		generateLeftSideText(y, elements, Text.of("Move Camera Smoothly"));
+		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.sneakingMovesCameraSmoothly, value -> cfg.sneakingMovesCameraSmoothly = value));
+		
+		y += ROW_HEIGHT;
+		return y;
+	}
+	
 	@SuppressWarnings({ "AutoBoxing", "AutoUnboxing" })
 	private int generateFlightOptions(int y, final List<Element> elements){
 		final BetterControlsConfig cfg = BetterControlsMod.config;
@@ -115,6 +125,9 @@ public class BetterControlsScreen extends GameOptionsScreen{
 		
 		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, Text.of("Sprinting"), CENTER));
 		y = generateSprintingOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;
+		
+		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, Text.of("Sneaking"), CENTER));
+		y = generateSneakingOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;
 		
 		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, Text.of("Flying"), CENTER));
 		y = generateFlightOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;

@@ -4,6 +4,7 @@
   "package": "chylex.bettercontrols.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "AccessCameraFields",
     "AccessClientPlayerFields",
     "AccessKeyBindingFields",
     "AccessScreenButtons",

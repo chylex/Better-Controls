@@ -4,8 +4,10 @@
   "package": "chylex.bettercontrols.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "AccessClientPlayerFields",
     "AccessKeyBindingFields",
     "AccessScreenButtons",
+    "HookClientPlayerTick",
     "HookLoadGameOptions",
     "HookOpenScreen",
     "HookStickyKeyBindingState"

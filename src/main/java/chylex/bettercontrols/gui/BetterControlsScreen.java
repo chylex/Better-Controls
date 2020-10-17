@@ -1,6 +1,9 @@
 package chylex.bettercontrols.gui;
 import chylex.bettercontrols.BetterControlsMod;
+import chylex.bettercontrols.config.BetterControlsConfig;
+import chylex.bettercontrols.gui.elements.BooleanValueWidget;
 import chylex.bettercontrols.gui.elements.KeyBindingWidget;
+import chylex.bettercontrols.gui.elements.TextWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
@@ -11,9 +14,14 @@ import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 import java.util.ArrayList;
 import java.util.List;
+import static chylex.bettercontrols.gui.OptionListWidget.COL2_W;
+import static chylex.bettercontrols.gui.OptionListWidget.ROW_WIDTH;
+import static chylex.bettercontrols.gui.OptionListWidget.col2;
+import static chylex.bettercontrols.gui.elements.TextWidget.CENTER;
 
 public class BetterControlsScreen extends GameOptionsScreen{
 	public static final LiteralText TITLE = new LiteralText("Better Controls");
@@ -22,6 +30,26 @@ public class BetterControlsScreen extends GameOptionsScreen{
 	private static final int TEXT_PADDING_RIGHT = 4;
 	private static final int TITLE_MARGIN_TOP = 3;
 	private static final int ROW_HEIGHT = 22;
+	
+	// Options
+	
+	private int generateSprintingOptions(int y, final List<Element> elements){
+		final BetterControlsConfig cfg = BetterControlsMod.config;
+		
+		generateLeftSideText(y, elements, Text.of("Double Tap 'Walk Forwards' To Sprint"));
+		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.doubleTapForwardToSprint, value -> cfg.doubleTapForwardToSprint = value));
+		
+		y += ROW_HEIGHT;
+		return y;
+	}
+	
+	// Helpers
+	
+	private static void generateLeftSideText(final int y, final List<Element> elements, final Text text){
+		elements.add(new TextWidget(col2(0), y, COL2_W - TEXT_PADDING_RIGHT, text));
+	}
+	
+	// Instance
 	
 	private OptionListWidget optionsWidget;
 	private KeyBindingWidget editingKeyBinding;
@@ -37,6 +65,9 @@ public class BetterControlsScreen extends GameOptionsScreen{
 		
 		final List<Element> elements = new ArrayList<>();
 		int y = 0;
+		
+		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, Text.of("Sprinting"), CENTER));
+		y = generateSprintingOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;
 		
 		addButton(new ButtonWidget(width / 2 - 99, height - 29, 200, 20, ScreenTexts.DONE, btn -> client.openScreen(parent)));
 		addChild(optionsWidget = new OptionListWidget(21, height - 32, width, height, elements, y - TITLE_MARGIN_TOP + BOTTOM_PADDING));

@@ -30,6 +30,8 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 	public JsonElement serialize(final BetterControlsConfig cfg, final Type typeOfSrc, final JsonSerializationContext context){
 		final JsonObject obj = new JsonObject();
 		
+		Json.setBool(obj, "Sprint.DoubleTapForward", cfg.doubleTapForwardToSprint);
+		
 		return obj;
 	}
 	
@@ -37,6 +39,8 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 	public BetterControlsConfig deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context) throws JsonParseException{
 		final BetterControlsConfig cfg = new BetterControlsConfig();
 		final JsonObject obj = json.getAsJsonObject();
+		
+		cfg.doubleTapForwardToSprint = Json.getBool(obj, "Sprint.DoubleTapForward", cfg.doubleTapForwardToSprint);
 		
 		return cfg;
 	}

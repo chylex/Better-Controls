@@ -9,6 +9,8 @@ public final class BetterControlsConfig{
 	
 	private Path path;
 	
+	public boolean doubleTapForwardToSprint = true;
+	
 	BetterControlsConfig(){}
 	
 	private BetterControlsConfig setPath(final Path path){

@@ -1,5 +1,8 @@
 {
   "key.categories.bettercontrols": "Better Controls",
+  "key.bettercontrols.toggle_sprint": "Toggle Sprint",
+  "key.bettercontrols.toggle_sneak": "Toggle Sneak",
+  "key.bettercontrols.toggle_flight": "Toggle Flight",
   "key.bettercontrols.toggle_forward": "Toggle Walk Forwards",
   "key.bettercontrols.toggle_jump": "Toggle Jump",
   "key.bettercontrols.open_menu": "Open Menu"

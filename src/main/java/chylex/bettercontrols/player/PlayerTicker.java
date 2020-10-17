@@ -3,11 +3,13 @@ import chylex.bettercontrols.BetterControlsMod;
 import chylex.bettercontrols.config.BetterControlsConfig;
 import chylex.bettercontrols.gui.BetterControlsScreen;
 import chylex.bettercontrols.input.ToggleTracker;
+import chylex.bettercontrols.input.ToggleTrackerForStickyKey;
 import chylex.bettercontrols.mixin.AccessCameraFields;
 import chylex.bettercontrols.mixin.AccessClientPlayerFields;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.options.GameOptions;
 import java.lang.ref.WeakReference;
 
 public final class PlayerTicker{
@@ -37,14 +39,18 @@ public final class PlayerTicker{
 	
 	// Logic
 	
+	private final ToggleTracker toggleSprint = new ToggleTrackerForStickyKey(cfg().keyToggleSprint, mc().options.keySprint, toggled -> mc().options.sprintToggled = toggled);
+	private final ToggleTracker toggleSneak = new ToggleTrackerForStickyKey(cfg().keyToggleSneak, mc().options.keySneak, toggled -> mc().options.sneakToggled = toggled);
 	private final ToggleTracker toggleWalkForward = new ToggleTracker(cfg().keyToggleWalkForward, mc().options.keyForward);
 	private final ToggleTracker toggleJump = new ToggleTracker(cfg().keyToggleJump, mc().options.keyJump);
 	
+	private boolean stopSprintingAfterReleasingSprintKey = false;
 	private boolean wasHittingObstacle = false;
 	private boolean wasSprintingBeforeHittingObstacle = false;
 	
 	private boolean wasSneakingBeforeTouchingGround = false;
 	private boolean holdingSneakWhileTouchingGround = false;
+	private int temporaryFlyOnGroundTimer = 0;
 	
 	public void atHead(final ClientPlayerEntity player){
 		if (FlightHelper.shouldFlyOnGround(player)){
@@ -54,6 +60,24 @@ public final class PlayerTicker{
 		if (!cfg().doubleTapForwardToSprint){
 			((AccessClientPlayerFields)player).setTicksLeftToDoubleTapSprint(0);
 		}
+		
+		final GameOptions opts = mc().options;
+		final boolean wasSprintToggled = opts.sprintToggled;
+		final boolean isSprintToggled = toggleSprint.tick();
+		
+		if (isSprintToggled){
+			stopSprintingAfterReleasingSprintKey = false;
+		}
+		else if (wasSprintToggled){
+			stopSprintingAfterReleasingSprintKey = true;
+		}
+		
+		if (stopSprintingAfterReleasingSprintKey && !opts.keySprint.isPressed()){
+			stopSprintingAfterReleasingSprintKey = false;
+			player.setSprinting(false);
+		}
+		
+		toggleSneak.tick();
 	}
 	
 	public void afterInputAssignsPressingForward(final KeyboardInput input){
@@ -130,6 +154,32 @@ public final class PlayerTicker{
 		else{
 			wasSneakingBeforeTouchingGround = false;
 			holdingSneakWhileTouchingGround = false;
+		}
+		
+		if (player.isCreative()){
+			if (cfg().keyToggleFlight.wasPressed()){
+				final boolean isFlying = !player.abilities.flying;
+				
+				player.abilities.flying = isFlying;
+				player.sendAbilitiesUpdate();
+				
+				if (isFlying){
+					temporaryFlyOnGroundTimer = 10;
+				}
+			}
+			
+			if (temporaryFlyOnGroundTimer > 0){
+				if (player.isSneaking()){
+					temporaryFlyOnGroundTimer = 0;
+				}
+				else{
+					--temporaryFlyOnGroundTimer;
+					player.setOnGround(false);
+				}
+			}
+		}
+		else{
+			temporaryFlyOnGroundTimer = 0;
 		}
 		
 		if (!cfg().sneakingMovesCameraSmoothly){

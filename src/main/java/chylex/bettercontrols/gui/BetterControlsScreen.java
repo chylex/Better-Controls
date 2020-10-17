@@ -44,6 +44,10 @@ public class BetterControlsScreen extends GameOptionsScreen{
 	private int generateSprintingOptions(int y, final List<Element> elements){
 		final BetterControlsConfig cfg = BetterControlsMod.config;
 		
+		generateKeyBindingWithModifierOption(y, elements, Text.of("Toggle Sprint"), cfg.keyToggleSprint);
+		
+		y += ROW_HEIGHT;
+		
 		generateLeftSideText(y, elements, Text.of("Double Tap 'Walk Forwards' To Sprint"));
 		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.doubleTapForwardToSprint, value -> cfg.doubleTapForwardToSprint = value));
 		
@@ -58,6 +62,10 @@ public class BetterControlsScreen extends GameOptionsScreen{
 	
 	private int generateSneakingOptions(int y, final List<Element> elements){
 		final BetterControlsConfig cfg = BetterControlsMod.config;
+		
+		generateKeyBindingWithModifierOption(y, elements, Text.of("Toggle Sneak"), cfg.keyToggleSneak);
+		
+		y += ROW_HEIGHT;
 		
 		generateLeftSideText(y, elements, Text.of("Move Camera Smoothly"));
 		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.sneakingMovesCameraSmoothly, value -> cfg.sneakingMovesCameraSmoothly = value));
@@ -82,6 +90,10 @@ public class BetterControlsScreen extends GameOptionsScreen{
 			new Option<>(Float.valueOf(6.00F), Text.of("6x")),
 			new Option<>(Float.valueOf(8.00F), Text.of("8x"))
 		);
+		
+		generateKeyBindingWithModifierOption(y, elements, Text.of("Toggle Flight (Creative)"), cfg.keyToggleFlight);
+		
+		y += ROW_HEIGHT;
 		
 		generateLeftSideText(y, elements, Text.of("Fly On Ground (Creative Mode)"));
 		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.flyOnGroundInCreative, value -> cfg.flyOnGroundInCreative = value));

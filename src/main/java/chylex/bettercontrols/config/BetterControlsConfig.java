@@ -10,11 +10,14 @@ public final class BetterControlsConfig{
 	
 	private Path path;
 	
+	public final KeyBindingWithModifier keyToggleSprint = new KeyBindingWithModifier("key.bettercontrols.toggle_sprint");
 	public boolean doubleTapForwardToSprint = true;
 	public boolean resumeSprintingAfterHittingObstacle = false;
 	
+	public final KeyBindingWithModifier keyToggleSneak = new KeyBindingWithModifier("key.bettercontrols.toggle_sneak");
 	public boolean sneakingMovesCameraSmoothly = true;
 	
+	public final KeyBindingWithModifier keyToggleFlight = new KeyBindingWithModifier("key.bettercontrols.toggle_flight");
 	public boolean flyOnGroundInCreative = false;
 	public float flightSpeedMpCreativeDefault = 1F;
 	public float flightSpeedMpCreativeSprinting = 2F;
@@ -34,6 +37,9 @@ public final class BetterControlsConfig{
 	
 	public KeyBinding[] getAllKeyBindings(){
 		return new KeyBinding[]{
+			keyToggleSprint,
+			keyToggleSneak,
+			keyToggleFlight,
 			keyToggleWalkForward,
 			keyToggleJump,
 			keyOpenMenu

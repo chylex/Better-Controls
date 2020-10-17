@@ -30,11 +30,14 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 	public JsonElement serialize(final BetterControlsConfig cfg, final Type typeOfSrc, final JsonSerializationContext context){
 		final JsonObject obj = new JsonObject();
 		
+		Json.writeKeyBinding(obj, "Sprint.KeyToggle", cfg.keyToggleSprint);
 		Json.setBool(obj, "Sprint.DoubleTapForward", cfg.doubleTapForwardToSprint);
 		Json.setBool(obj, "Sprint.ResumeAfterHittingObstacle", cfg.resumeSprintingAfterHittingObstacle);
 		
+		Json.writeKeyBinding(obj, "Sneak.KeyToggle", cfg.keyToggleSneak);
 		Json.setBool(obj, "Sneak.SmoothCamera", cfg.sneakingMovesCameraSmoothly);
 		
+		Json.writeKeyBinding(obj, "Flight.KeyToggle.Creative", cfg.keyToggleFlight);
 		Json.setBool(obj, "Flight.FlyOnGround.Creative", cfg.flyOnGroundInCreative);
 		Json.setFloat(obj, "Flight.SpeedMp.Creative.Default", cfg.flightSpeedMpCreativeDefault);
 		Json.setFloat(obj, "Flight.SpeedMp.Creative.Sprinting", cfg.flightSpeedMpCreativeSprinting);
@@ -53,11 +56,14 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		final BetterControlsConfig cfg = new BetterControlsConfig();
 		final JsonObject obj = json.getAsJsonObject();
 		
+		Json.readKeyBinding(obj, "Sprint.KeyToggle", cfg.keyToggleSprint);
 		cfg.doubleTapForwardToSprint = Json.getBool(obj, "Sprint.DoubleTapForward", cfg.doubleTapForwardToSprint);
 		cfg.resumeSprintingAfterHittingObstacle = Json.getBool(obj, "Sprint.ResumeAfterHittingObstacle", cfg.resumeSprintingAfterHittingObstacle);
 		
+		Json.readKeyBinding(obj, "Sneak.KeyToggle", cfg.keyToggleSneak);
 		cfg.sneakingMovesCameraSmoothly = Json.getBool(obj, "Sneak.SmoothCamera", cfg.sneakingMovesCameraSmoothly);
 		
+		Json.readKeyBinding(obj, "Flight.KeyToggle.Creative", cfg.keyToggleFlight);
 		cfg.flyOnGroundInCreative = Json.getBool(obj, "Flight.FlyOnGround.Creative", cfg.flyOnGroundInCreative);
 		cfg.flightSpeedMpCreativeDefault = Json.getFloat(obj, "Flight.SpeedMp.Creative.Default", cfg.flightSpeedMpCreativeDefault);
 		cfg.flightSpeedMpCreativeSprinting = Json.getFloat(obj, "Flight.SpeedMp.Creative.Sprinting", cfg.flightSpeedMpCreativeSprinting);

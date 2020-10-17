@@ -10,4 +10,10 @@ public interface AccessKeyBindingFields{
 	static Map<String, Integer> getCategoryOrderMap(){
 		throw new AssertionError();
 	}
+	
+	@Accessor("pressed")
+	boolean isPressedField();
+	
+	@Accessor("pressed")
+	void setPressedField(boolean value);
 }

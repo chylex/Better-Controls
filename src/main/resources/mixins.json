@@ -7,7 +7,8 @@
     "AccessKeyBindingFields",
     "AccessScreenButtons",
     "HookLoadGameOptions",
-    "HookOpenScreen"
+    "HookOpenScreen",
+    "HookStickyKeyBindingState"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,5 +1,6 @@
 package chylex.bettercontrols.input;
 import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.InputUtil.Type;
 import org.jetbrains.annotations.Nullable;
 
@@ -7,7 +8,7 @@ public class KeyBindingWithModifier extends KeyBinding{
 	public static final String CATEGORY = "key.categories.bettercontrols";
 	
 	public static boolean checkCategoryMatches(final String name){
-		return CATEGORY.equals(name);
+		return I18n.translate(CATEGORY).equals(name);
 	}
 	
 	@Nullable

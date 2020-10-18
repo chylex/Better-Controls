@@ -72,7 +72,7 @@ public final class PlayerTicker{
 		}
 		else if (wasSprintToggled){
 			stopSprintingAfterReleasingSprintKey = true;
-			waitingForSprintKeyRelease = false;
+			waitingForSprintKeyRelease = true;
 		}
 		else if (cfg().tapSprintKeyAgainToStopSprinting){
 			if (opts.keySprint.isPressed()){
@@ -92,6 +92,7 @@ public final class PlayerTicker{
 		
 		if (stopSprintingAfterReleasingSprintKey && !opts.keySprint.isPressed()){
 			stopSprintingAfterReleasingSprintKey = false;
+			waitingForSprintKeyRelease = false;
 			player.setSprinting(false);
 		}
 		

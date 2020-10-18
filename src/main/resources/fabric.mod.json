@@ -21,7 +21,7 @@
   },
   
   "mixins": [{
-    "config": "mixins.json",
+    "config": "bettercontrols.mixins.json",
     "environment": "client"
   }],
   

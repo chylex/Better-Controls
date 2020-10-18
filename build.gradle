@@ -36,4 +36,5 @@ tasks.withType(JavaCompile) {
 
 jar {
 	from "LICENSE"
+	exclude "io/github/prospector/"
 }

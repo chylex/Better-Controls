@@ -4,7 +4,7 @@
   "version": "${version}",
   
   "name": "Better Controls",
-  "description": "Adds many powerful key bindings and options to control your movement.\nThe features complement vanilla mechanics without giving unfair advantages, so server use should be fine.\nTo configure the mod, open Options - Controls - Better Controls. If you want to see the vanilla Controls screen, hold Alt while opening it.",
+  "description": "Adds many powerful key bindings and options to control your movement.\nThe features complement vanilla mechanics without giving unfair advantages, so server use should be fine.",
   "icon": "assets/bettercontrols/icon.png",
   "license": "MPL-2.0",
   
@@ -17,7 +17,8 @@
   
   "environment": "client",
   "entrypoints": {
-    "client": [ "chylex.bettercontrols.BetterControlsMod" ]
+    "client": [ "chylex.bettercontrols.BetterControlsMod" ],
+    "modmenu": [ "chylex.bettercontrols.compatibility.ModMenuSupport" ]
   },
   
   "mixins": [{
@@ -28,9 +29,5 @@
   "depends": {
     "fabricloader": ">=0.7.4",
     "minecraft": "1.16.x"
-  },
-  
-  "custom": {
-    "modmenu:clientsideOnly": true
   }
 }

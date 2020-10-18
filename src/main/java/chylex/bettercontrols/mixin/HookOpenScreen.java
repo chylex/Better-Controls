@@ -1,7 +1,8 @@
 package chylex.bettercontrols.mixin;
-import chylex.bettercontrols.gui.ControlsScreenPatcher;
+import chylex.bettercontrols.gui.ScreenPatcher;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.options.AccessibilityOptionsScreen;
 import net.minecraft.client.gui.screen.options.ControlsOptionsScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -15,8 +16,13 @@ public abstract class HookOpenScreen{
 		final MinecraftClient mc = MinecraftClient.getInstance();
 		final Screen screen = mc.currentScreen;
 		
-		if (screen != null && screen.getClass() == ControlsOptionsScreen.class && !Screen.hasAltDown()){
-			ControlsScreenPatcher.onOpened((ControlsOptionsScreen)screen);
+		if (screen != null && !Screen.hasAltDown()){
+			if (screen.getClass() == ControlsOptionsScreen.class){
+				ScreenPatcher.onControlsScreenOpened((ControlsOptionsScreen)screen);
+			}
+			else if (screen.getClass() == AccessibilityOptionsScreen.class){
+				ScreenPatcher.onAccessibilityScreenOpened((AccessibilityOptionsScreen)screen);
+			}
 		}
 	}
 }

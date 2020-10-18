@@ -10,6 +10,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import net.minecraft.util.math.MathHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.FileNotFoundException;
@@ -67,10 +68,10 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		
 		Json.readKeyBinding(obj, "Flight.KeyToggle.Creative", cfg.keyToggleFlight);
 		cfg.flyOnGroundInCreative = Json.getBool(obj, "Flight.FlyOnGround.Creative", cfg.flyOnGroundInCreative);
-		cfg.flightSpeedMpCreativeDefault = Json.getFloat(obj, "Flight.SpeedMp.Creative.Default", cfg.flightSpeedMpCreativeDefault);
-		cfg.flightSpeedMpCreativeSprinting = Json.getFloat(obj, "Flight.SpeedMp.Creative.Sprinting", cfg.flightSpeedMpCreativeSprinting);
-		cfg.flightSpeedMpSpectatorDefault = Json.getFloat(obj, "Flight.SpeedMp.Spectator.Default", cfg.flightSpeedMpSpectatorDefault);
-		cfg.flightSpeedMpSpectatorSprinting = Json.getFloat(obj, "Flight.SpeedMp.Spectator.Sprinting", cfg.flightSpeedMpSpectatorSprinting);
+		cfg.flightSpeedMpCreativeDefault = MathHelper.clamp(Json.getFloat(obj, "Flight.SpeedMp.Creative.Default", cfg.flightSpeedMpCreativeDefault), 0.25F, 8F);
+		cfg.flightSpeedMpCreativeSprinting = MathHelper.clamp(Json.getFloat(obj, "Flight.SpeedMp.Creative.Sprinting", cfg.flightSpeedMpCreativeSprinting), 0.25F, 8F);
+		cfg.flightSpeedMpSpectatorDefault = MathHelper.clamp(Json.getFloat(obj, "Flight.SpeedMp.Spectator.Default", cfg.flightSpeedMpSpectatorDefault), 0.25F, 8F);
+		cfg.flightSpeedMpSpectatorSprinting = MathHelper.clamp(Json.getFloat(obj, "Flight.SpeedMp.Spectator.Sprinting", cfg.flightSpeedMpSpectatorSprinting), 0.25F, 8F);
 		
 		Json.readKeyBinding(obj, "Misc.KeyToggleWalkForward", cfg.keyToggleWalkForward);
 		Json.readKeyBinding(obj, "Misc.KeyToggleJump", cfg.keyToggleJump);

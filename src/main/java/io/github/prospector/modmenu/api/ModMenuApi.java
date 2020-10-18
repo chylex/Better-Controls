@@ -4,6 +4,8 @@ import java.util.Map;
 
 @SuppressWarnings("unused")
 public interface ModMenuApi{
+	String getModId();
+	
 	default ConfigScreenFactory<?> getModConfigScreenFactory(){
 		return ignore -> null;
 	}

@@ -32,6 +32,7 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		
 		Json.writeKeyBinding(obj, "Sprint.KeyToggle", cfg.keyToggleSprint);
 		Json.setBool(obj, "Sprint.DoubleTapForward", cfg.doubleTapForwardToSprint);
+		Json.setBool(obj, "Sprint.TapToStop", cfg.tapSprintKeyAgainToStopSprinting);
 		Json.setBool(obj, "Sprint.ResumeAfterHittingObstacle", cfg.resumeSprintingAfterHittingObstacle);
 		
 		Json.writeKeyBinding(obj, "Sneak.KeyToggle", cfg.keyToggleSneak);
@@ -58,6 +59,7 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		
 		Json.readKeyBinding(obj, "Sprint.KeyToggle", cfg.keyToggleSprint);
 		cfg.doubleTapForwardToSprint = Json.getBool(obj, "Sprint.DoubleTapForward", cfg.doubleTapForwardToSprint);
+		cfg.tapSprintKeyAgainToStopSprinting = Json.getBool(obj, "Sprint.TapToStop", cfg.tapSprintKeyAgainToStopSprinting);
 		cfg.resumeSprintingAfterHittingObstacle = Json.getBool(obj, "Sprint.ResumeAfterHittingObstacle", cfg.resumeSprintingAfterHittingObstacle);
 		
 		Json.readKeyBinding(obj, "Sneak.KeyToggle", cfg.keyToggleSneak);

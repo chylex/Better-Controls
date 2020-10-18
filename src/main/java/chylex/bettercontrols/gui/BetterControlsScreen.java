@@ -53,6 +53,11 @@ public class BetterControlsScreen extends GameOptionsScreen{
 		
 		y += ROW_HEIGHT;
 		
+		generateLeftSideText(y, elements, Text.of("Tap 'Sprint' While Sprinting To Stop"));
+		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.tapSprintKeyAgainToStopSprinting, value -> cfg.tapSprintKeyAgainToStopSprinting = value));
+		
+		y += ROW_HEIGHT;
+		
 		generateLeftSideText(y, elements, Text.of("Resume Sprinting After Hitting Obstacle"));
 		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.resumeSprintingAfterHittingObstacle, value -> cfg.resumeSprintingAfterHittingObstacle = value));
 		

@@ -12,6 +12,7 @@ public final class BetterControlsConfig{
 	
 	public final KeyBindingWithModifier keyToggleSprint = new KeyBindingWithModifier("key.bettercontrols.toggle_sprint");
 	public boolean doubleTapForwardToSprint = true;
+	public boolean tapSprintKeyAgainToStopSprinting = false;
 	public boolean resumeSprintingAfterHittingObstacle = false;
 	
 	public final KeyBindingWithModifier keyToggleSneak = new KeyBindingWithModifier("key.bettercontrols.toggle_sneak");

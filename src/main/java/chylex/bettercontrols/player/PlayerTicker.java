@@ -44,6 +44,7 @@ public final class PlayerTicker{
 	private final ToggleTracker toggleWalkForward = new ToggleTracker(cfg().keyToggleWalkForward, mc().options.keyForward);
 	private final ToggleTracker toggleJump = new ToggleTracker(cfg().keyToggleJump, mc().options.keyJump);
 	
+	private boolean waitingForSprintKeyRelease = false;
 	private boolean stopSprintingAfterReleasingSprintKey = false;
 	private boolean wasHittingObstacle = false;
 	private boolean wasSprintingBeforeHittingObstacle = false;
@@ -67,9 +68,26 @@ public final class PlayerTicker{
 		
 		if (isSprintToggled){
 			stopSprintingAfterReleasingSprintKey = false;
+			waitingForSprintKeyRelease = false;
 		}
 		else if (wasSprintToggled){
 			stopSprintingAfterReleasingSprintKey = true;
+			waitingForSprintKeyRelease = false;
+		}
+		else if (cfg().tapSprintKeyAgainToStopSprinting){
+			if (opts.keySprint.isPressed()){
+				if (!waitingForSprintKeyRelease){
+					waitingForSprintKeyRelease = true;
+					stopSprintingAfterReleasingSprintKey = player.isSprinting();
+				}
+			}
+			else{
+				if (player.isSprinting() && !waitingForSprintKeyRelease){
+					stopSprintingAfterReleasingSprintKey = false;
+				}
+				
+				waitingForSprintKeyRelease = false;
+			}
 		}
 		
 		if (stopSprintingAfterReleasingSprintKey && !opts.keySprint.isPressed()){

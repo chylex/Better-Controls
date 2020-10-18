@@ -9,6 +9,7 @@
     "AccessControlsListCategory",
     "AccessControlsListKeyBinding",
     "AccessKeyBindingFields",
+    "AccessOptionButtonWidgetOption",
     "AccessScreenButtons",
     "HookClientPlayerInputTick",
     "HookClientPlayerTick",

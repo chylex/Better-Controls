@@ -3,11 +3,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +12,7 @@ import java.util.function.Consumer;
 
 public final class KeyBindingWidget extends ButtonWidget{
 	private final KeyBinding binding;
-	private final Text bindingName;
+	private final String bindingName;
 	
 	private final List<AbstractButtonWidget> linkedButtons = new ArrayList<>(1);
 	
@@ -23,9 +20,9 @@ public final class KeyBindingWidget extends ButtonWidget{
 	private boolean isEditing;
 	
 	public KeyBindingWidget(final int x, final int y, final int width, final int height, final KeyBinding binding, final Consumer<KeyBindingWidget> onEditingStarted){
-		super(x, y, width, height, LiteralText.EMPTY, btn -> {});
+		super(x, y, width, height, "", btn -> {});
 		this.binding = binding;
-		this.bindingName = new TranslatableText(binding.getTranslationKey());
+		this.bindingName = I18n.translate(binding.getId());
 		this.onEditingStarted = onEditingStarted;
 		updateKeyBindingText();
 	}
@@ -36,12 +33,12 @@ public final class KeyBindingWidget extends ButtonWidget{
 	
 	public void linkButtonToBoundState(final AbstractButtonWidget button){
 		linkedButtons.add(button);
-		button.active = !binding.isUnbound();
+		button.active = !binding.isNotBound();
 	}
 	
 	@Override
-	protected MutableText getNarrationMessage(){
-		return binding.isUnbound() ? new TranslatableText("narrator.controls.unbound", bindingName) : new TranslatableText("narrator.controls.bound", bindingName, super.getNarrationMessage());
+	protected String getNarrationMessage(){
+		return binding.isNotBound() ? I18n.translate("narrator.controls.unbound", bindingName) : I18n.translate("narrator.controls.bound", bindingName, super.getNarrationMessage());
 	}
 	
 	@Override
@@ -51,12 +48,12 @@ public final class KeyBindingWidget extends ButtonWidget{
 		updateKeyBindingText();
 	}
 	
-	public void bindAndStopEditing(final InputUtil.Key key){
-		binding.setBoundKey(key);
+	public void bindAndStopEditing(final InputUtil.KeyCode key){
+		binding.setKeyCode(key);
 		stopEditing();
 		
 		for(final AbstractButtonWidget button : linkedButtons){
-			button.active = !binding.isUnbound();
+			button.active = !binding.isNotBound();
 		}
 	}
 	
@@ -68,7 +65,7 @@ public final class KeyBindingWidget extends ButtonWidget{
 	public void updateKeyBindingText(){
 		boolean hasConflict = false;
 		
-		if (!binding.isUnbound()){
+		if (!binding.isNotBound()){
 			for(final KeyBinding other : MinecraftClient.getInstance().options.keysAll){
 				if (binding != other && binding.equals(other)){
 					hasConflict = true;
@@ -77,13 +74,13 @@ public final class KeyBindingWidget extends ButtonWidget{
 		}
 		
 		if (isEditing){
-			setMessage((new LiteralText("> ")).append(binding.getBoundKeyLocalizedText().shallowCopy().formatted(Formatting.YELLOW)).append(" <").formatted(Formatting.YELLOW));
+			setMessage(Formatting.WHITE + "> " + Formatting.YELLOW + binding.getLocalizedName() + Formatting.WHITE + " <");
 		}
 		else if (hasConflict){
-			setMessage(binding.getBoundKeyLocalizedText().shallowCopy().formatted(Formatting.RED));
+			setMessage(Formatting.RED + binding.getLocalizedName());
 		}
 		else{
-			setMessage(binding.isUnbound() ? Text.of("(No Binding)") : binding.getBoundKeyLocalizedText());
+			setMessage(binding.isNotBound() ? "(No Binding)" : binding.getLocalizedName());
 		}
 	}
 }

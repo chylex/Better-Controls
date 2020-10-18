@@ -55,7 +55,7 @@ public final class PlayerTicker{
 	
 	public void atHead(final ClientPlayerEntity player){
 		if (FlightHelper.shouldFlyOnGround(player)){
-			player.setOnGround(false);
+			player.onGround = false;
 		}
 		
 		if (!cfg().doubleTapForwardToSprint){
@@ -138,7 +138,7 @@ public final class PlayerTicker{
 	public void afterSuperCall(final ClientPlayerEntity player){
 		if (FlightHelper.shouldFlyOnGround(player)){
 			final boolean isSneaking = player.isSneaking();
-			final boolean isOnGround = player.isOnGround();
+			final boolean isOnGround = player.onGround;
 			
 			if (!isSneaking){
 				wasSneakingBeforeTouchingGround = false;
@@ -165,7 +165,7 @@ public final class PlayerTicker{
 				}
 				
 				if (cancelLanding){
-					player.setOnGround(false);
+					player.onGround = false;
 				}
 			}
 		}
@@ -192,7 +192,7 @@ public final class PlayerTicker{
 				}
 				else{
 					--temporaryFlyOnGroundTimer;
-					player.setOnGround(false);
+					player.onGround = false;
 				}
 			}
 		}

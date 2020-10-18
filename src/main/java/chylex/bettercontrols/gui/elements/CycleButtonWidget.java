@@ -9,7 +9,7 @@ public class CycleButtonWidget<T> extends ButtonWidget{
 	private T selectedValue;
 	
 	public CycleButtonWidget(final int x, final int y, final int width, final int height, final List<Option<T>> options, final T selectedValue, final Consumer<T> onChanged){
-		super(x, y, width, height, Option.find(options, selectedValue).getText(), btn -> {});
+		super(x, y, width, height, Option.find(options, selectedValue).getText().asFormattedString(), btn -> {});
 		this.options = options;
 		this.selectedValue = selectedValue;
 		this.onChanged = onChanged;
@@ -31,6 +31,6 @@ public class CycleButtonWidget<T> extends ButtonWidget{
 		
 		selectedValue = newSelectedOption.getValue();
 		onChanged.accept(selectedValue);
-		setMessage(newSelectedOption.getText());
+		setMessage(newSelectedOption.getText().asFormattedString());
 	}
 }

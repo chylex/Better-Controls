@@ -5,7 +5,6 @@ import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -83,7 +82,7 @@ public final class OptionListWidget extends ElementListWidget<Entry>{
 	}
 	
 	@Override
-	protected int getScrollbarPositionX(){
+	protected int getScrollbarPosition(){
 		return (width + ROW_WIDTH) / 2 + 4;
 	}
 	
@@ -102,7 +101,7 @@ public final class OptionListWidget extends ElementListWidget<Entry>{
 		}
 		
 		@Override
-		public void render(final MatrixStack matrices, final int index, final int y, final int x, final int entryWidth, final int entryHeight, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta){
+		public void render(final int index, final int y, final int x, final int entryWidth, final int entryHeight, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta){
 			for(final Element element : elements){
 				final Offset offset = offsets.get(element);
 				
@@ -118,7 +117,7 @@ public final class OptionListWidget extends ElementListWidget<Entry>{
 				}
 				
 				if (element instanceof Drawable){
-					((Drawable)element).render(matrices, mouseX, mouseY, tickDelta);
+					((Drawable)element).render(mouseX, mouseY, tickDelta);
 				}
 			}
 		}

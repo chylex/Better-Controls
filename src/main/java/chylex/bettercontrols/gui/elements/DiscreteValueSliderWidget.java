@@ -10,10 +10,11 @@ public final class DiscreteValueSliderWidget<T> extends SliderWidget{
 	private T selectedValue;
 	
 	public DiscreteValueSliderWidget(final int x, final int y, final int width, final int height, final List<Option<T>> options, final T selectedValue, final Consumer<T> onChanged){
-		super(x, y, width, height, Option.find(options, selectedValue).getText(), options.indexOf(Option.find(options, selectedValue)) / (options.size() - 1.0));
+		super(x, y, width, height, options.indexOf(Option.find(options, selectedValue)) / (options.size() - 1.0));
 		this.options = options;
 		this.selectedValue = selectedValue;
 		this.onChanged = onChanged;
+		updateMessage();
 	}
 	
 	public DiscreteValueSliderWidget(final int x, final int y, final int width, final List<Option<T>> options, final T selectedValue, final Consumer<T> onChanged){
@@ -26,7 +27,7 @@ public final class DiscreteValueSliderWidget<T> extends SliderWidget{
 	
 	@Override
 	protected void updateMessage(){
-		setMessage(getSelectedOption().getText());
+		setMessage(getSelectedOption().getText().asFormattedString());
 	}
 	
 	@Override

@@ -35,7 +35,7 @@ final class Json{
 	private static final String MOD_SUFFIX = ".Mod";
 	
 	static void writeKeyBinding(final JsonObject obj, final String key, final KeyBindingWithModifier keyBinding){
-		obj.addProperty(key + KEY_SUFFIX, keyBinding.getBoundKeyTranslationKey());
+		obj.addProperty(key + KEY_SUFFIX, keyBinding.getName());
 		
 		if (keyBinding.getModifier() != null){
 			obj.addProperty(key + MOD_SUFFIX, Integer.valueOf(keyBinding.getModifier().id));
@@ -44,7 +44,7 @@ final class Json{
 	
 	static void readKeyBinding(final JsonObject obj, final String key, final KeyBindingWithModifier keyBinding){
 		if (obj.has(key + KEY_SUFFIX)){
-			keyBinding.setBoundKey(InputUtil.fromTranslationKey(obj.get(key + KEY_SUFFIX).getAsString()));
+			keyBinding.setKeyCode(InputUtil.fromName(obj.get(key + KEY_SUFFIX).getAsString()));
 		}
 		
 		if (obj.has(key + MOD_SUFFIX)){

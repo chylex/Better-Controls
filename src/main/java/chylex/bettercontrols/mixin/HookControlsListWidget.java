@@ -23,7 +23,7 @@ public abstract class HookControlsListWidget extends ElementListWidget<Entry>{
 	@Inject(method = "<init>", at = @At("TAIL"))
 	public void init(final ControlsOptionsScreen parent, final MinecraftClient client, final CallbackInfo ci){
 		children().removeIf(it -> {
-			if (it instanceof CategoryEntry && KeyBindingWithModifier.checkCategoryMatches(((AccessControlsListCategory)it).getText())){
+			if (it instanceof CategoryEntry && KeyBindingWithModifier.checkCategoryMatches(((AccessControlsListCategory)it).getName())){
 				return true;
 			}
 			

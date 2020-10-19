@@ -6,11 +6,13 @@ import chylex.bettercontrols.input.ToggleTracker;
 import chylex.bettercontrols.input.ToggleTrackerForStickyKey;
 import chylex.bettercontrols.mixin.AccessCameraFields;
 import chylex.bettercontrols.mixin.AccessClientPlayerFields;
+import chylex.bettercontrols.mixin.AccessStickyKeyBindingStateGetter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.options.GameOptions;
 import java.lang.ref.WeakReference;
+import java.util.function.BooleanSupplier;
 
 public final class PlayerTicker{
 	private static PlayerTicker ticker = new PlayerTicker(null);
@@ -35,6 +37,7 @@ public final class PlayerTicker{
 	
 	private PlayerTicker(final ClientPlayerEntity player){
 		this.ref = new WeakReference<>(player);
+		setup();
 	}
 	
 	// Logic
@@ -46,12 +49,25 @@ public final class PlayerTicker{
 	
 	private boolean waitingForSprintKeyRelease = false;
 	private boolean stopSprintingAfterReleasingSprintKey = false;
+	
 	private boolean wasHittingObstacle = false;
 	private boolean wasSprintingBeforeHittingObstacle = false;
+	private int temporarySprintTimer = 0;
 	
 	private boolean wasSneakingBeforeTouchingGround = false;
 	private boolean holdingSneakWhileTouchingGround = false;
 	private int temporaryFlyOnGroundTimer = 0;
+	
+	private void setup(){
+		final AccessStickyKeyBindingStateGetter sprint = (AccessStickyKeyBindingStateGetter)mc().options.keySprint;
+		BooleanSupplier getter = sprint.getToggleGetter();
+		
+		if (getter instanceof SprintPressGetter){
+			getter = ((SprintPressGetter)getter).getWrapped();
+		}
+		
+		sprint.setToggleGetter(new SprintPressGetter(getter, () -> temporarySprintTimer > 0));
+	}
 	
 	public void atHead(final ClientPlayerEntity player){
 		if (FlightHelper.shouldFlyOnGround(player)){
@@ -65,6 +81,21 @@ public final class PlayerTicker{
 		final GameOptions opts = mc().options;
 		final boolean wasSprintToggled = opts.sprintToggled;
 		final boolean isSprintToggled = toggleSprint.tick();
+		
+		if (temporarySprintTimer > 0){
+			stopSprintingAfterReleasingSprintKey = false;
+			waitingForSprintKeyRelease = false;
+			
+			final int nextTemporarySprintTimer = temporarySprintTimer - 1;
+			temporarySprintTimer = 0;
+			
+			if (!opts.keySprint.isPressed() && opts.keyForward.isPressed()){
+				temporarySprintTimer = nextTemporarySprintTimer;
+			}
+			else if (cfg().tapSprintKeyAgainToStopSprinting){
+				stopSprintingAfterReleasingSprintKey = true;
+			}
+		}
 		
 		if (isSprintToggled){
 			stopSprintingAfterReleasingSprintKey = false;
@@ -123,7 +154,7 @@ public final class PlayerTicker{
 				}
 				else if (wasSprintingBeforeHittingObstacle){
 					wasSprintingBeforeHittingObstacle = false;
-					player.setSprinting(true);
+					temporarySprintTimer = 10;
 				}
 				
 				// collision also stops when the player lets go of movement keys

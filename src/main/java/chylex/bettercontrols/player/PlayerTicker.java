@@ -7,6 +7,7 @@ import chylex.bettercontrols.input.ToggleTracker;
 import chylex.bettercontrols.input.ToggleTrackerForStickyKey;
 import chylex.bettercontrols.mixin.AccessCameraFields;
 import chylex.bettercontrols.mixin.AccessClientPlayerFields;
+import chylex.bettercontrols.mixin.AccessGameRendererFields;
 import chylex.bettercontrols.mixin.AccessStickyKeyBindingStateGetter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.KeyboardInput;
@@ -81,7 +82,7 @@ public final class PlayerTicker{
 		
 		final SprintMode sprintMode;
 		
-		if (player.abilities.flying && (player.isCreative() || player.isSpectator())){
+		if (FlightHelper.isFlyingCreativeOrSpectator(player)){
 			sprintMode = cfg().sprintModeWhileFlying;
 		}
 		else{
@@ -179,6 +180,12 @@ public final class PlayerTicker{
 		else{
 			wasHittingObstacle = player.horizontalCollision;
 			wasSprintingBeforeHittingObstacle = false;
+		}
+		
+		if (cfg().disableChangingFovWhileFlying && FlightHelper.isFlyingCreativeOrSpectator(player)){
+			final AccessGameRendererFields renderer = (AccessGameRendererFields)mc().gameRenderer;
+			renderer.setMovementFovMultiplier(1F);
+			renderer.setLastMovementFovMultiplier(1F);
 		}
 	}
 	

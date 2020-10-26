@@ -42,6 +42,7 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		
 		Json.writeKeyBinding(obj, "Flight.KeyToggle.Creative", cfg.keyToggleFlight);
 		Json.setEnum(obj, "Flight.SprintMode", cfg.sprintModeWhileFlying);
+		Json.setBool(obj, "Flight.DisableChangingFOV", cfg.disableChangingFovWhileFlying);
 		Json.setBool(obj, "Flight.FlyOnGround.Creative", cfg.flyOnGroundInCreative);
 		Json.setFloat(obj, "Flight.SpeedMp.Creative.Default", cfg.flightSpeedMpCreativeDefault);
 		Json.setFloat(obj, "Flight.SpeedMp.Creative.Sprinting", cfg.flightSpeedMpCreativeSprinting);
@@ -75,6 +76,7 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		
 		Json.readKeyBinding(obj, "Flight.KeyToggle.Creative", cfg.keyToggleFlight);
 		cfg.sprintModeWhileFlying = Json.getEnum(obj, "Flight.SprintMode", cfg.sprintModeWhileFlying, SprintMode.class);
+		cfg.disableChangingFovWhileFlying = Json.getBool(obj, "Flight.DisableChangingFOV", cfg.disableChangingFovWhileFlying);
 		cfg.flyOnGroundInCreative = Json.getBool(obj, "Flight.FlyOnGround.Creative", cfg.flyOnGroundInCreative);
 		cfg.flightSpeedMpCreativeDefault = MathHelper.clamp(Json.getFloat(obj, "Flight.SpeedMp.Creative.Default", cfg.flightSpeedMpCreativeDefault), 0.25F, 8F);
 		cfg.flightSpeedMpCreativeSprinting = MathHelper.clamp(Json.getFloat(obj, "Flight.SpeedMp.Creative.Sprinting", cfg.flightSpeedMpCreativeSprinting), 0.25F, 8F);

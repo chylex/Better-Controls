@@ -13,6 +13,10 @@ final class FlightHelper{
 		return BetterControlsMod.config;
 	}
 	
+	static boolean isFlyingCreativeOrSpectator(final ClientPlayerEntity player){
+		return player.abilities.flying && (player.isCreative() || player.isSpectator());
+	}
+	
 	static boolean shouldFlyOnGround(final ClientPlayerEntity player){
 		return cfg().flyOnGroundInCreative && player.isCreative() && player.abilities.flying;
 	}

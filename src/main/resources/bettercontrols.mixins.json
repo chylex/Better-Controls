@@ -8,6 +8,7 @@
     "AccessClientPlayerFields",
     "AccessControlsListCategory",
     "AccessControlsListKeyBinding",
+    "AccessGameRendererFields",
     "AccessKeyBindingFields",
     "AccessScreenButtons",
     "AccessStickyKeyBindingStateGetter",

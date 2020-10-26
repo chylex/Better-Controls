@@ -9,6 +9,7 @@ import chylex.bettercontrols.gui.elements.Option;
 import chylex.bettercontrols.gui.elements.TextWidget;
 import chylex.bettercontrols.input.KeyBindingWithModifier;
 import chylex.bettercontrols.input.ModifierKey;
+import chylex.bettercontrols.input.SprintMode;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
@@ -39,6 +40,12 @@ public class BetterControlsScreen extends GameOptionsScreen{
 	private static final int TITLE_MARGIN_TOP = 3;
 	private static final int ROW_HEIGHT = 22;
 	
+	private final List<Option<SprintMode>> SPRINT_MODE_OPTIONS = Arrays.asList(
+		new Option<>(SprintMode.TAP_TO_START, Text.of("Tap To Start Sprinting")),
+		new Option<>(SprintMode.TAP_TO_TOGGLE, Text.of("Tap To Start / Stop Sprinting")),
+		new Option<>(SprintMode.HOLD, Text.of("Hold To Sprint"))
+	);
+	
 	// Options
 	
 	private int generateSprintingOptions(int y, final List<Element> elements){
@@ -48,13 +55,13 @@ public class BetterControlsScreen extends GameOptionsScreen{
 		
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, Text.of("Double Tap 'Walk Forwards' To Sprint"));
-		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.doubleTapForwardToSprint, value -> cfg.doubleTapForwardToSprint = value));
+		generateLeftSideText(y, elements, Text.of("Sprint Key Mode"));
+		elements.add(new CycleButtonWidget<>(col2(1), y, COL2_W, SPRINT_MODE_OPTIONS, cfg.sprintMode, value -> cfg.sprintMode = value));
 		
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, Text.of("Tap 'Sprint' While Sprinting To Stop"));
-		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.tapSprintKeyAgainToStopSprinting, value -> cfg.tapSprintKeyAgainToStopSprinting = value));
+		generateLeftSideText(y, elements, Text.of("Double Tap 'Walk Forwards' To Sprint"));
+		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.doubleTapForwardToSprint, value -> cfg.doubleTapForwardToSprint = value));
 		
 		y += ROW_HEIGHT;
 		
@@ -97,6 +104,11 @@ public class BetterControlsScreen extends GameOptionsScreen{
 		);
 		
 		generateKeyBindingWithModifierOption(y, elements, Text.of("Toggle Flight (Creative)"), cfg.keyToggleFlight);
+		
+		y += ROW_HEIGHT;
+		
+		generateLeftSideText(y, elements, Text.of("Sprint Key Mode While Flying"));
+		elements.add(new CycleButtonWidget<>(col2(1), y, COL2_W, SPRINT_MODE_OPTIONS, cfg.sprintModeWhileFlying, value -> cfg.sprintModeWhileFlying = value));
 		
 		y += ROW_HEIGHT;
 		

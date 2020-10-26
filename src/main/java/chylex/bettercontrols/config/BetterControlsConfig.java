@@ -1,5 +1,6 @@
 package chylex.bettercontrols.config;
 import chylex.bettercontrols.input.KeyBindingWithModifier;
+import chylex.bettercontrols.input.SprintMode;
 import net.minecraft.client.options.KeyBinding;
 import java.nio.file.Path;
 
@@ -11,14 +12,15 @@ public final class BetterControlsConfig{
 	private Path path;
 	
 	public final KeyBindingWithModifier keyToggleSprint = new KeyBindingWithModifier("key.bettercontrols.toggle_sprint");
+	public SprintMode sprintMode = SprintMode.TAP_TO_START;
 	public boolean doubleTapForwardToSprint = true;
-	public boolean tapSprintKeyAgainToStopSprinting = false;
 	public boolean resumeSprintingAfterHittingObstacle = false;
 	
 	public final KeyBindingWithModifier keyToggleSneak = new KeyBindingWithModifier("key.bettercontrols.toggle_sneak");
 	public boolean sneakingMovesCameraSmoothly = true;
 	
 	public final KeyBindingWithModifier keyToggleFlight = new KeyBindingWithModifier("key.bettercontrols.toggle_flight");
+	public SprintMode sprintModeWhileFlying = SprintMode.TAP_TO_START;
 	public boolean flyOnGroundInCreative = false;
 	public float flightSpeedMpCreativeDefault = 1F;
 	public float flightSpeedMpCreativeSprinting = 2F;

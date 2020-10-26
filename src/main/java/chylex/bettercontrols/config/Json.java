@@ -31,6 +31,30 @@ final class Json{
 		return obj.has(key) ? obj.get(key).getAsBoolean() : defaultValue;
 	}
 	
+	static <T extends Enum<T>> void setEnum(final JsonObject obj, final String key, final T value){
+		obj.addProperty(key, value.name());
+	}
+	
+	static <T extends Enum<T>> T getEnum(final JsonObject obj, final String key, final T defaultValue, final Class<T> enumClass){
+		if (!obj.has(key)){
+			return defaultValue;
+		}
+		
+		final T[] constants = enumClass.getEnumConstants();
+		
+		if (constants != null){
+			final String value = obj.get(key).getAsString();
+			
+			for(final T constant : constants){
+				if (constant.name().equalsIgnoreCase(value)){
+					return constant;
+				}
+			}
+		}
+		
+		return defaultValue;
+	}
+	
 	private static final String KEY_SUFFIX = ".Key";
 	private static final String MOD_SUFFIX = ".Mod";
 	

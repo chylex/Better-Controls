@@ -2,6 +2,7 @@ package chylex.bettercontrols.player;
 import chylex.bettercontrols.BetterControlsMod;
 import chylex.bettercontrols.config.BetterControlsConfig;
 import chylex.bettercontrols.gui.BetterControlsScreen;
+import chylex.bettercontrols.input.SprintMode;
 import chylex.bettercontrols.input.ToggleTracker;
 import chylex.bettercontrols.input.ToggleTrackerForStickyKey;
 import chylex.bettercontrols.mixin.AccessCameraFields;
@@ -78,6 +79,15 @@ public final class PlayerTicker{
 			((AccessClientPlayerFields)player).setTicksLeftToDoubleTapSprint(0);
 		}
 		
+		final SprintMode sprintMode;
+		
+		if (player.abilities.flying && (player.isCreative() || player.isSpectator())){
+			sprintMode = cfg().sprintModeWhileFlying;
+		}
+		else{
+			sprintMode = cfg().sprintMode;
+		}
+		
 		final GameOptions opts = mc().options;
 		final boolean wasSprintToggled = opts.sprintToggled;
 		final boolean isSprintToggled = toggleSprint.tick();
@@ -92,7 +102,7 @@ public final class PlayerTicker{
 			if (!opts.keySprint.isPressed() && opts.keyForward.isPressed()){
 				temporarySprintTimer = nextTemporarySprintTimer;
 			}
-			else if (cfg().tapSprintKeyAgainToStopSprinting){
+			else if (sprintMode == SprintMode.TAP_TO_TOGGLE){
 				stopSprintingAfterReleasingSprintKey = true;
 			}
 		}
@@ -105,7 +115,7 @@ public final class PlayerTicker{
 			stopSprintingAfterReleasingSprintKey = true;
 			waitingForSprintKeyRelease = true;
 		}
-		else if (cfg().tapSprintKeyAgainToStopSprinting){
+		else if (sprintMode == SprintMode.TAP_TO_TOGGLE){
 			if (opts.keySprint.isPressed()){
 				if (!waitingForSprintKeyRelease){
 					waitingForSprintKeyRelease = true;
@@ -118,6 +128,11 @@ public final class PlayerTicker{
 				}
 				
 				waitingForSprintKeyRelease = false;
+			}
+		}
+		else if (sprintMode == SprintMode.HOLD){
+			if (opts.keySprint.isPressed()){
+				stopSprintingAfterReleasingSprintKey = true;
 			}
 		}
 		

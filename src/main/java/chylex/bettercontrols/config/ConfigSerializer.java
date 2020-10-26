@@ -50,6 +50,7 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		
 		Json.writeKeyBinding(obj, "Misc.KeyToggleWalkForward", cfg.keyToggleWalkForward);
 		Json.writeKeyBinding(obj, "Misc.KeyToggleJump", cfg.keyToggleJump);
+		Json.writeKeyBinding(obj, "Misc.KeyResetAllToggles", cfg.keyResetAllToggles);
 		Json.writeKeyBinding(obj, "Misc.KeyOpenMenu", cfg.keyOpenMenu);
 		
 		return obj;
@@ -82,6 +83,7 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		
 		Json.readKeyBinding(obj, "Misc.KeyToggleWalkForward", cfg.keyToggleWalkForward);
 		Json.readKeyBinding(obj, "Misc.KeyToggleJump", cfg.keyToggleJump);
+		Json.readKeyBinding(obj, "Misc.KeyResetAllToggles", cfg.keyResetAllToggles);
 		Json.readKeyBinding(obj, "Misc.KeyOpenMenu", cfg.keyOpenMenu);
 		
 		return cfg;

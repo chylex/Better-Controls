@@ -29,6 +29,7 @@ public final class BetterControlsConfig{
 	
 	public final KeyBindingWithModifier keyToggleWalkForward = new KeyBindingWithModifier("key.bettercontrols.toggle_forward");
 	public final KeyBindingWithModifier keyToggleJump = new KeyBindingWithModifier("key.bettercontrols.toggle_jump");
+	public final KeyBindingWithModifier keyResetAllToggles = new KeyBindingWithModifier("key.bettercontrols.reset_all_toggles");
 	public final KeyBindingWithModifier keyOpenMenu = new KeyBindingWithModifier("key.bettercontrols.open_menu");
 	
 	BetterControlsConfig(){}
@@ -45,6 +46,7 @@ public final class BetterControlsConfig{
 			keyToggleFlight,
 			keyToggleWalkForward,
 			keyToggleJump,
+			keyResetAllToggles,
 			keyOpenMenu
 		};
 	}

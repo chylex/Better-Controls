@@ -80,4 +80,9 @@ public class ToggleTracker{
 	protected boolean isResetKeyPressed(){
 		return bindingReset.isPressed();
 	}
+	
+	public void reset(){
+		isToggled = false;
+		waitForRelease = false;
+	}
 }

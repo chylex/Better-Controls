@@ -99,7 +99,9 @@ public class BetterControlsScreen extends GameOptionsScreen{
 			new Option<>(Float.valueOf(2.00F), Text.of("2x")),
 			new Option<>(Float.valueOf(3.00F), Text.of("3x")),
 			new Option<>(Float.valueOf(4.00F), Text.of("4x")),
+			new Option<>(Float.valueOf(5.00F), Text.of("5x")),
 			new Option<>(Float.valueOf(6.00F), Text.of("6x")),
+			new Option<>(Float.valueOf(7.00F), Text.of("7x")),
 			new Option<>(Float.valueOf(8.00F), Text.of("8x"))
 		);
 		

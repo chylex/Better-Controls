@@ -5,5 +5,6 @@
   "key.bettercontrols.toggle_flight": "Toggle Flight",
   "key.bettercontrols.toggle_forward": "Toggle Walk Forwards",
   "key.bettercontrols.toggle_jump": "Toggle Jump",
+  "key.bettercontrols.reset_all_toggles": "Reset All Toggles",
   "key.bettercontrols.open_menu": "Open Menu"
 }

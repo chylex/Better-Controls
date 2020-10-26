@@ -255,6 +255,13 @@ public final class PlayerTicker{
 			}
 		}
 		
+		if (cfg().keyResetAllToggles.wasPressed()){
+			toggleSprint.reset();
+			toggleSneak.reset();
+			toggleWalkForward.reset();
+			toggleJump.reset();
+		}
+		
 		if (cfg().keyOpenMenu.isPressed()){
 			mc().openScreen(new BetterControlsScreen(null));
 		}

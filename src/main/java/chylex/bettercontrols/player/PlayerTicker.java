@@ -204,9 +204,7 @@ public final class PlayerTicker{
 		}
 		
 		if (cfg().disableChangingFovWhileFlying && FlightHelper.isFlyingCreativeOrSpectator(player)){
-			final AccessGameRendererFields renderer = (AccessGameRendererFields)mc().gameRenderer;
-			renderer.setMovementFovMultiplier(1F);
-			renderer.setLastMovementFovMultiplier(1F);
+			((AccessGameRendererFields)mc().gameRenderer).setMovementFovMultiplier(1F);
 		}
 	}
 	

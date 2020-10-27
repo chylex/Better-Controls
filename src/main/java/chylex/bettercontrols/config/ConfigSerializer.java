@@ -48,6 +48,10 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		Json.setFloat(obj, "Flight.SpeedMp.Creative.Sprinting", cfg.flightSpeedMpCreativeSprinting);
 		Json.setFloat(obj, "Flight.SpeedMp.Spectator.Default", cfg.flightSpeedMpSpectatorDefault);
 		Json.setFloat(obj, "Flight.SpeedMp.Spectator.Sprinting", cfg.flightSpeedMpSpectatorSprinting);
+		Json.setFloat(obj, "Flight.VerticalBoost.Creative.Default", cfg.flightVerticalBoostCreativeDefault);
+		Json.setFloat(obj, "Flight.VerticalBoost.Creative.Sprinting", cfg.flightVerticalBoostCreativeSprinting);
+		Json.setFloat(obj, "Flight.VerticalBoost.Spectator.Default", cfg.flightVerticalBoostSpectatorDefault);
+		Json.setFloat(obj, "Flight.VerticalBoost.Spectator.Sprinting", cfg.flightVerticalBoostSpectatorSprinting);
 		
 		Json.writeKeyBinding(obj, "Misc.KeyToggleWalkForward", cfg.keyToggleWalkForward);
 		Json.writeKeyBinding(obj, "Misc.KeyToggleJump", cfg.keyToggleJump);
@@ -82,6 +86,10 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		cfg.flightSpeedMpCreativeSprinting = MathHelper.clamp(Json.getFloat(obj, "Flight.SpeedMp.Creative.Sprinting", cfg.flightSpeedMpCreativeSprinting), 0.25F, 8F);
 		cfg.flightSpeedMpSpectatorDefault = MathHelper.clamp(Json.getFloat(obj, "Flight.SpeedMp.Spectator.Default", cfg.flightSpeedMpSpectatorDefault), 0.25F, 8F);
 		cfg.flightSpeedMpSpectatorSprinting = MathHelper.clamp(Json.getFloat(obj, "Flight.SpeedMp.Spectator.Sprinting", cfg.flightSpeedMpSpectatorSprinting), 0.25F, 8F);
+		cfg.flightVerticalBoostCreativeDefault = MathHelper.clamp(Json.getFloat(obj, "Flight.VerticalBoost.Creative.Default", cfg.flightVerticalBoostCreativeDefault), 0F, 3F);
+		cfg.flightVerticalBoostCreativeSprinting = MathHelper.clamp(Json.getFloat(obj, "Flight.VerticalBoost.Creative.Sprinting", cfg.flightVerticalBoostCreativeSprinting), 0F, 3F);
+		cfg.flightVerticalBoostSpectatorDefault = MathHelper.clamp(Json.getFloat(obj, "Flight.VerticalBoost.Spectator.Default", cfg.flightVerticalBoostSpectatorDefault), 0F, 3F);
+		cfg.flightVerticalBoostSpectatorSprinting = MathHelper.clamp(Json.getFloat(obj, "Flight.VerticalBoost.Spectator.Sprinting", cfg.flightVerticalBoostSpectatorSprinting), 0F, 3F);
 		
 		Json.readKeyBinding(obj, "Misc.KeyToggleWalkForward", cfg.keyToggleWalkForward);
 		Json.readKeyBinding(obj, "Misc.KeyToggleJump", cfg.keyToggleJump);

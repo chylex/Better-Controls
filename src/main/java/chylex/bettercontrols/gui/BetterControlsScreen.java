@@ -177,7 +177,7 @@ public class BetterControlsScreen extends GameOptionsScreen{
 		
 		y += ROW_HEIGHT;
 		
-		generateKeyBindingWithModifierOption(y, elements, Text.of("Reset All Toggles"), cfg.keyResetAllToggles);
+		generateKeyBindingWithModifierOption(y, elements, text("Reset All Toggles"), cfg.keyResetAllToggles);
 		
 		y += ROW_HEIGHT * 4 / 3;
 		

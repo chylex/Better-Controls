@@ -7,7 +7,4 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface AccessGameRendererFields{
 	@Accessor
 	void setMovementFovMultiplier(float value);
-	
-	@Accessor
-	void setLastMovementFovMultiplier(float value);
 }

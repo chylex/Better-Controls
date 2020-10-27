@@ -13,6 +13,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.options.GameOptions;
+import net.minecraft.util.math.MathHelper;
 import java.lang.ref.WeakReference;
 import java.util.function.BooleanSupplier;
 
@@ -157,10 +158,30 @@ public final class PlayerTicker{
 			player.input.jumping |= toggleJump.tick();
 		}
 		
-		final float flightSpeed = FlightHelper.getFlightSpeed(player);
-		
-		if (flightSpeed > 0F){
-			player.abilities.setFlySpeed(flightSpeed);
+		if (FlightHelper.isFlyingCreativeOrSpectator(player)){
+			final float flightSpeed = FlightHelper.getFlightSpeed(player);
+			
+			if (flightSpeed > 0F){
+				player.abilities.setFlySpeed(flightSpeed);
+			}
+			
+			final float verticalVelocity = FlightHelper.getExtraVerticalVelocity(player);
+			
+			if (!MathHelper.approximatelyEquals(verticalVelocity, 0F) && player == mc().getCameraEntity()){
+				int direction = 0;
+				
+				if (player.input.sneaking){
+					--direction;
+				}
+				
+				if (player.input.jumping){
+					++direction;
+				}
+				
+				if (direction != 0){
+					player.setVelocity(player.getVelocity().add(0D, flightSpeed * verticalVelocity * direction, 0D));
+				}
+			}
 		}
 		
 		if (cfg().resumeSprintingAfterHittingObstacle){

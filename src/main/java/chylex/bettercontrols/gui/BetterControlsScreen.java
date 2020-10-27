@@ -104,6 +104,18 @@ public class BetterControlsScreen extends GameOptionsScreen{
 			new Option<>(Float.valueOf(8.00F), text("8x"))
 		);
 		
+		final List<Option<Float>> flightVerticalBoostOptions = Arrays.asList(
+			new Option<>(Float.valueOf(0.00F), text("None")),
+			new Option<>(Float.valueOf(0.25F), text("+25%")),
+			new Option<>(Float.valueOf(0.50F), text("+50%")),
+			new Option<>(Float.valueOf(0.75F), text("+75%")),
+			new Option<>(Float.valueOf(1.00F), text("+100%")),
+			new Option<>(Float.valueOf(1.50F), text("+150%")),
+			new Option<>(Float.valueOf(2.00F), text("+200%")),
+			new Option<>(Float.valueOf(2.50F), text("+250%")),
+			new Option<>(Float.valueOf(3.00F), text("+300%"))
+		);
+		
 		generateKeyBindingWithModifierOption(y, elements, text("Toggle Flight (Creative)"), cfg.keyToggleFlight);
 		
 		y += ROW_HEIGHT;
@@ -123,23 +135,32 @@ public class BetterControlsScreen extends GameOptionsScreen{
 		
 		y += ROW_HEIGHT * 4 / 3;
 		
-		generateLeftSideText(y, elements, text("Speed Multiplier (Creative)"));
-		elements.add(new DiscreteValueSliderWidget<>(col2(1), y, COL2_W, flightSpeedOptions, cfg.flightSpeedMpCreativeDefault, value -> cfg.flightSpeedMpCreativeDefault = value));
+		elements.add(new TextWidget(col4(2), y, COL4_W - TEXT_PADDING_RIGHT, text("Creative"), CENTER));
+		elements.add(new TextWidget(col4(3), y, COL4_W - TEXT_PADDING_RIGHT, text("Spectator"), CENTER));
+		
+		y += ROW_HEIGHT * 7 / 8;
+		
+		generateLeftSideText(y, elements, text("Speed Multiplier (Default)"));
+		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, flightSpeedOptions, cfg.flightSpeedMpCreativeDefault, value -> cfg.flightSpeedMpCreativeDefault = value));
+		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, flightSpeedOptions, cfg.flightSpeedMpSpectatorDefault, value -> cfg.flightSpeedMpSpectatorDefault = value));
 		
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, text("Speed Multiplier (Creative + Sprinting)"));
-		elements.add(new DiscreteValueSliderWidget<>(col2(1), y, COL2_W, flightSpeedOptions, cfg.flightSpeedMpCreativeSprinting, value -> cfg.flightSpeedMpCreativeSprinting = value));
+		generateLeftSideText(y, elements, text("Speed Multiplier (Sprinting)"));
+		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, flightSpeedOptions, cfg.flightSpeedMpCreativeSprinting, value -> cfg.flightSpeedMpCreativeSprinting = value));
+		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, flightSpeedOptions, cfg.flightSpeedMpSpectatorSprinting, value -> cfg.flightSpeedMpSpectatorSprinting = value));
 		
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, text("Speed Multiplier (Spectator)"));
-		elements.add(new DiscreteValueSliderWidget<>(col2(1), y, COL2_W, flightSpeedOptions, cfg.flightSpeedMpSpectatorDefault, value -> cfg.flightSpeedMpSpectatorDefault = value));
+		generateLeftSideText(y, elements, text("Vertical Speed Boost (Default)"));
+		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, flightVerticalBoostOptions, cfg.flightVerticalBoostCreativeDefault, value -> cfg.flightVerticalBoostCreativeDefault = value));
+		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, flightVerticalBoostOptions, cfg.flightVerticalBoostSpectatorDefault, value -> cfg.flightVerticalBoostSpectatorDefault = value));
 		
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, text("Speed Multiplier (Spectator + Sprinting)"));
-		elements.add(new DiscreteValueSliderWidget<>(col2(1), y, COL2_W, flightSpeedOptions, cfg.flightSpeedMpSpectatorSprinting, value -> cfg.flightSpeedMpSpectatorSprinting = value));
+		generateLeftSideText(y, elements, text("Vertical Speed Boost (Sprinting)"));
+		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, flightVerticalBoostOptions, cfg.flightVerticalBoostCreativeSprinting, value -> cfg.flightVerticalBoostCreativeSprinting = value));
+		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, flightVerticalBoostOptions, cfg.flightVerticalBoostSpectatorSprinting, value -> cfg.flightVerticalBoostSpectatorSprinting = value));
 		
 		y += ROW_HEIGHT;
 		return y;

@@ -8,6 +8,7 @@ final class FlightHelper{
 	
 	private static final float BASE_FLIGHT_SPEED = 0.05F;
 	private static final float BASE_FLIGHT_SPEED_SPRINT_MP_INV = 0.5F; // sprinting doubles speed in PlayerEntity.travel
+	private static final float BASE_VERTICAL_VELOCITY = 3F;
 	
 	private static BetterControlsConfig cfg(){
 		return BetterControlsMod.config;
@@ -36,6 +37,28 @@ final class FlightHelper{
 			}
 			else{
 				return BASE_FLIGHT_SPEED * cfg().flightSpeedMpSpectatorDefault;
+			}
+		}
+		else{
+			return 0F;
+		}
+	}
+	
+	static float getExtraVerticalVelocity(final ClientPlayerEntity player){
+		if (player.isCreative()){
+			if (player.isSprinting()){
+				return BASE_VERTICAL_VELOCITY * cfg().flightVerticalBoostCreativeSprinting;
+			}
+			else{
+				return BASE_VERTICAL_VELOCITY * cfg().flightVerticalBoostCreativeDefault;
+			}
+		}
+		else if (player.isSpectator()){
+			if (player.isSprinting()){
+				return BASE_VERTICAL_VELOCITY * cfg().flightVerticalBoostSpectatorSprinting;
+			}
+			else{
+				return BASE_VERTICAL_VELOCITY * cfg().flightVerticalBoostSpectatorDefault;
 			}
 		}
 		else{

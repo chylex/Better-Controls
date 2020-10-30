@@ -10,10 +10,11 @@ public final class DiscreteValueSliderWidget<T> extends AbstractSlider{
 	private T selectedValue;
 	
 	public DiscreteValueSliderWidget(final int x, final int y, final int width, final int height, final List<Option<T>> options, final T selectedValue, final Consumer<T> onChanged){
-		super(x, y, width, height, Option.find(options, selectedValue).getText(), options.indexOf(Option.find(options, selectedValue)) / (options.size() - 1.0));
+		super(x, y, width, height, options.indexOf(Option.find(options, selectedValue)) / (options.size() - 1.0));
 		this.options = options;
 		this.selectedValue = selectedValue;
 		this.onChanged = onChanged;
+		updateMessage();
 	}
 	
 	public DiscreteValueSliderWidget(final int x, final int y, final int width, final List<Option<T>> options, final T selectedValue, final Consumer<T> onChanged){
@@ -21,16 +22,16 @@ public final class DiscreteValueSliderWidget<T> extends AbstractSlider{
 	}
 	
 	public Option<T> getSelectedOption(){
-		return options.get(MathHelper.floor(MathHelper.clampedLerp(0.0, options.size() - 1.0, sliderValue)));
+		return options.get(MathHelper.floor(MathHelper.clampedLerp(0.0, options.size() - 1.0, value)));
 	}
 	
 	@Override
-	protected void func_230979_b_(){
-		setMessage(getSelectedOption().getText());
+	protected void updateMessage(){
+		setMessage(getSelectedOption().getText().getString());
 	}
 	
 	@Override
-	protected void func_230972_a_(){
+	protected void applyValue(){
 		final T newSelectedValue = getSelectedOption().getValue();
 		
 		if (selectedValue != newSelectedValue){

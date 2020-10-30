@@ -1,15 +1,14 @@
 package chylex.bettercontrols.input;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings.Type;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import javax.annotation.Nullable;
 
 public class KeyBindingWithModifier extends KeyBinding{
 	public static final String CATEGORY = "key.categories.bettercontrols";
 	
-	public static boolean checkCategoryMatches(final ITextComponent text){
-		return text instanceof TranslationTextComponent && CATEGORY.equals(((TranslationTextComponent)text).getKey());
+	public static boolean checkCategoryMatches(final String text){
+		return I18n.format(CATEGORY).equals(text);
 	}
 	
 	@Nullable

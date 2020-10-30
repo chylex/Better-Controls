@@ -2,7 +2,6 @@ package chylex.bettercontrols.util;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.client.util.InputMappings.Input;
-import net.minecraft.util.text.ITextComponent;
 
 public final class Key{
 	private Key(){}
@@ -21,8 +20,8 @@ public final class Key{
 		return binding.isPressed();
 	}
 	
-	public static ITextComponent getBoundKeyText(final KeyBinding binding){
-		return binding.func_238171_j_();
+	public static String getBoundKeyText(final KeyBinding binding){
+		return binding.getLocalizedName();
 	}
 	
 	public static void bind(final KeyBinding binding, final Input input){

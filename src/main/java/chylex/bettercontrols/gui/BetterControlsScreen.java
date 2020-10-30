@@ -12,12 +12,11 @@ import chylex.bettercontrols.input.ModifierKey;
 import chylex.bettercontrols.input.SprintMode;
 import chylex.bettercontrols.util.Key;
 import chylex.bettercontrols.util.LiteralText;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.gui.DialogTexts;
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.SettingsScreen;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import org.lwjgl.glfw.GLFW;
 import javax.annotation.Nullable;
@@ -242,8 +241,8 @@ public class BetterControlsScreen extends SettingsScreen{
 		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, text("Miscellaneous"), CENTER));
 		y = generateMiscellaneousOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;
 		
-		addButton(new Button(width / 2 - 99, height - 29, 200, 20, DialogTexts.GUI_DONE, btn -> minecraft.displayGuiScreen(parentScreen)));
-		addListener(optionsWidget = new OptionListWidget(21, height - 32, width, height, elements, y - TITLE_MARGIN_TOP + BOTTOM_PADDING));
+		addButton(new Button(width / 2 - 99, height - 29, 200, 20, I18n.format("gui.done"), btn -> minecraft.displayGuiScreen(parentScreen)));
+		children.add(optionsWidget = new OptionListWidget(21, height - 32, width, height, elements, y - TITLE_MARGIN_TOP + BOTTOM_PADDING));
 	}
 	
 	@Override
@@ -252,11 +251,11 @@ public class BetterControlsScreen extends SettingsScreen{
 	}
 	
 	@Override
-	public void render(final MatrixStack matrices, final int mouseX, final int mouseY, final float delta){
-		renderBackground(matrices);
-		optionsWidget.render(matrices, mouseX, mouseY, delta);
-		drawCenteredString(matrices, font, title, width / 2, 8, (255 << 16) | (255 << 8) | 255);
-		super.render(matrices, mouseX, mouseY, delta);
+	public void render(final int mouseX, final int mouseY, final float delta){
+		renderBackground();
+		optionsWidget.render(mouseX, mouseY, delta);
+		drawCenteredString(font, title.getString(), width / 2, 8, (255 << 16) | (255 << 8) | 255);
+		super.render(mouseX, mouseY, delta);
 	}
 	
 	private void startEditingKeyBinding(final KeyBindingWidget widget){

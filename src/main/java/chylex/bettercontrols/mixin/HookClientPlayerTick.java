@@ -22,7 +22,7 @@ public abstract class HookClientPlayerTick extends AbstractClientPlayerEntity{
 		PlayerTicker.get(player).atHead(player);
 	}
 	
-	@Inject(method = "livingTick()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/MovementInput;tickMovement(Z)V", ordinal = 0, shift = AFTER))
+	@Inject(method = "livingTick()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/MovementInput;func_225607_a_(Z)V", ordinal = 0, shift = AFTER))
 	private void afterInputTick(final CallbackInfo info){
 		final ClientPlayerEntity player = (ClientPlayerEntity)(Object)this;
 		PlayerTicker.get(player).afterInputTick(player);

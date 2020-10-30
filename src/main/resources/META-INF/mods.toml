@@ -18,13 +18,13 @@ The features complement vanilla mechanics without giving unfair advantages, so s
 [[dependencies.bettercontrols]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.16.2,)"
+versionRange = "[1.15.2,1.16)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.bettercontrols]]
 modId = "forge"
 mandatory = true
-versionRange = "[31,)"
+versionRange = "[31.2.44,)"
 ordering = "NONE"
 side = "BOTH"

@@ -1,6 +1,5 @@
 package chylex.bettercontrols.gui;
 import chylex.bettercontrols.gui.OptionListWidget.Entry;
-import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.IRenderable;
 import net.minecraft.client.gui.widget.list.AbstractOptionList;
@@ -86,12 +85,12 @@ public final class OptionListWidget extends AbstractOptionList<Entry>{
 		}
 		
 		@Override
-		public List<? extends IGuiEventListener> getEventListeners(){
+		public List<? extends IGuiEventListener> children(){
 			return Collections.unmodifiableList(elements);
 		}
 		
 		@Override
-		public void render(final MatrixStack matrices, final int index, final int y, final int x, final int entryWidth, final int entryHeight, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta){
+		public void render(final int index, final int y, final int x, final int entryWidth, final int entryHeight, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta){
 			for(final IGuiEventListener element : elements){
 				final Offset offset = offsets.get(element);
 				
@@ -107,7 +106,7 @@ public final class OptionListWidget extends AbstractOptionList<Entry>{
 				}
 				
 				if (element instanceof IRenderable){
-					((IRenderable)element).render(matrices, mouseX, mouseY, tickDelta);
+					((IRenderable)element).render(mouseX, mouseY, tickDelta);
 				}
 			}
 		}

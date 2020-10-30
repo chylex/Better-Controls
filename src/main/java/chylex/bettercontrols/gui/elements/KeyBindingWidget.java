@@ -2,11 +2,10 @@ package chylex.bettercontrols.gui.elements;
 import chylex.bettercontrols.util.Key;
 import net.minecraft.client.gui.widget.button.AbstractButton;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
-import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ public final class KeyBindingWidget extends Button{
 	private boolean isEditing;
 	
 	public KeyBindingWidget(final int x, final int y, final int width, final int height, final KeyBinding binding, final Consumer<KeyBindingWidget> onEditingStarted){
-		super(x, y, width, height, StringTextComponent.EMPTY, btn -> {});
+		super(x, y, width, height, "", btn -> {});
 		this.binding = binding;
 		this.bindingName = new TranslationTextComponent(binding.getTranslationKey());
 		this.onEditingStarted = onEditingStarted;
@@ -41,8 +40,8 @@ public final class KeyBindingWidget extends Button{
 	}
 	
 	@Override
-	protected IFormattableTextComponent getNarrationMessage(){
-		return Key.isUnbound(binding) ? new TranslationTextComponent("narrator.controls.unbound", bindingName) : new TranslationTextComponent("narrator.controls.bound", bindingName, super.getNarrationMessage());
+	protected String getNarrationMessage(){
+		return Key.isUnbound(binding) ? I18n.format("narrator.controls.unbound", bindingName) : I18n.format("narrator.controls.bound", bindingName, super.getNarrationMessage());
 	}
 	
 	@Override
@@ -79,13 +78,13 @@ public final class KeyBindingWidget extends Button{
 		}
 		
 		if (isEditing){
-			setMessage((new StringTextComponent("> ")).append(Key.getBoundKeyText(binding).deepCopy().mergeStyle(TextFormatting.YELLOW)).appendString(" <").mergeStyle(TextFormatting.YELLOW));
+			setMessage(TextFormatting.WHITE + "> " + TextFormatting.YELLOW + Key.getBoundKeyText(binding) + TextFormatting.WHITE + " <");
 		}
 		else if (hasConflict){
-			setMessage(Key.getBoundKeyText(binding).deepCopy().mergeStyle(TextFormatting.RED));
+			setMessage(TextFormatting.RED + Key.getBoundKeyText(binding));
 		}
 		else{
-			setMessage(Key.isUnbound(binding) ? new StringTextComponent("(No Binding)") : Key.getBoundKeyText(binding));
+			setMessage(Key.isUnbound(binding) ? "(No Binding)" : Key.getBoundKeyText(binding));
 		}
 	}
 }

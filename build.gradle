@@ -22,8 +22,8 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 
-def mcversion = "1.16.3"
-def forgeversion = "34.1.0"
+def mcversion = "1.15.2"
+def forgeversion = "31.2.45"
 
 def prefixName = 'displayName = '
 def prefixVersion = 'version = '
@@ -39,7 +39,7 @@ archivesBaseName = metaName.replaceAll('\\s', '')
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
 
 minecraft {
-	mappings channel: 'snapshot', version: '20201028-1.16.3'
+	mappings channel: 'snapshot', version: '20201030-1.15.1'
 	
 	runs {
 		client {
@@ -62,7 +62,7 @@ dependencies {
 }
 
 jar {
-	archiveName = archivesBaseName + '-' + mcversion + '+v' + version + '.jar'
+	archiveName = archivesBaseName + '-' + mcversion + '-v' + version + '.jar'
 	
 	from('./') {
 		include 'LICENSE'

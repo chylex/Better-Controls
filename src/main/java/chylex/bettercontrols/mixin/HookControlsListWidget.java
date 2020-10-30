@@ -22,7 +22,7 @@ public abstract class HookControlsListWidget extends AbstractOptionList<Entry>{
 	
 	@Inject(method = "<init>", at = @At("TAIL"))
 	public void init(final ControlsScreen parent, final Minecraft client, final CallbackInfo ci){
-		getEventListeners().removeIf(it -> {
+		children().removeIf(it -> {
 			if (it instanceof CategoryEntry && KeyBindingWithModifier.checkCategoryMatches(((AccessControlsListCategory)it).getText())){
 				return true;
 			}

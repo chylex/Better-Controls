@@ -10,6 +10,7 @@
     "AccessControlsListKeyBinding",
     "AccessGameRendererFields",
     "AccessKeyBindingFields",
+    "AccessOptionButtonWidgetOption",
     "AccessScreenButtons",
     "AccessStickyKeyBindingStateGetter",
     "HookClientPlayerInputTick",

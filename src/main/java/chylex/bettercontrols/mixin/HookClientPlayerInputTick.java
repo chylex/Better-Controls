@@ -12,7 +12,7 @@ import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 
 @Mixin(MovementInputFromOptions.class)
 public abstract class HookClientPlayerInputTick{
-	@Inject(method = "tickMovement(Z)V", at = @At(value = "FIELD", target = "Lnet/minecraft/util/MovementInputFromOptions;forwardKeyDown:Z", ordinal = 0, shift = AFTER))
+	@Inject(method = "func_225607_a_(Z)V", at = @At(value = "FIELD", target = "Lnet/minecraft/util/MovementInputFromOptions;forwardKeyDown:Z", ordinal = 0, shift = AFTER))
 	private void afterInputTick(final CallbackInfo info){
 		final MovementInput input = (MovementInput)(Object)this;
 		final ClientPlayerEntity player = MINECRAFT.player;

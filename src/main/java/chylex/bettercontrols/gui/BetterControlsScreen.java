@@ -246,7 +246,7 @@ public class BetterControlsScreen extends SettingsScreen{
 	}
 	
 	@Override
-	public void onClose(){
+	public void removed(){
 		BetterControlsMod.config.save();
 	}
 	

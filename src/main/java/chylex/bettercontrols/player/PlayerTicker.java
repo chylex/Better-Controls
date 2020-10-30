@@ -9,13 +9,18 @@ import chylex.bettercontrols.mixin.AccessCameraFields;
 import chylex.bettercontrols.mixin.AccessClientPlayerFields;
 import chylex.bettercontrols.mixin.AccessGameRendererFields;
 import chylex.bettercontrols.mixin.AccessStickyKeyBindingStateGetter;
-import net.minecraft.client.MinecraftClient;
+import chylex.bettercontrols.util.Key;
 import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.options.GameOptions;
 import net.minecraft.util.math.MathHelper;
 import java.lang.ref.WeakReference;
 import java.util.function.BooleanSupplier;
+import static chylex.bettercontrols.util.Statics.KEY_FORWARD;
+import static chylex.bettercontrols.util.Statics.KEY_JUMP;
+import static chylex.bettercontrols.util.Statics.KEY_SNEAK;
+import static chylex.bettercontrols.util.Statics.KEY_SPRINT;
+import static chylex.bettercontrols.util.Statics.MINECRAFT;
+import static chylex.bettercontrols.util.Statics.OPTIONS;
 
 public final class PlayerTicker{
 	private static PlayerTicker ticker = new PlayerTicker(null);
@@ -26,10 +31,6 @@ public final class PlayerTicker{
 		}
 		
 		return ticker;
-	}
-	
-	private static MinecraftClient mc(){
-		return MinecraftClient.getInstance();
 	}
 	
 	private static BetterControlsConfig cfg(){
@@ -45,10 +46,10 @@ public final class PlayerTicker{
 	
 	// Logic
 	
-	private final ToggleTracker toggleSprint = new ToggleTrackerForStickyKey(cfg().keyToggleSprint, mc().options.keySprint, toggled -> mc().options.sprintToggled = toggled);
-	private final ToggleTracker toggleSneak = new ToggleTrackerForStickyKey(cfg().keyToggleSneak, mc().options.keySneak, toggled -> mc().options.sneakToggled = toggled);
-	private final ToggleTracker toggleWalkForward = new ToggleTracker(cfg().keyToggleWalkForward, mc().options.keyForward);
-	private final ToggleTracker toggleJump = new ToggleTracker(cfg().keyToggleJump, mc().options.keyJump);
+	private final ToggleTracker toggleSprint = new ToggleTrackerForStickyKey(cfg().keyToggleSprint, KEY_SPRINT, toggled -> OPTIONS.sprintToggled = toggled);
+	private final ToggleTracker toggleSneak = new ToggleTrackerForStickyKey(cfg().keyToggleSneak, KEY_SNEAK, toggled -> OPTIONS.sneakToggled = toggled);
+	private final ToggleTracker toggleWalkForward = new ToggleTracker(cfg().keyToggleWalkForward, KEY_FORWARD);
+	private final ToggleTracker toggleJump = new ToggleTracker(cfg().keyToggleJump, KEY_JUMP);
 	
 	private boolean waitingForSprintKeyRelease = false;
 	private boolean stopSprintingAfterReleasingSprintKey = false;
@@ -62,7 +63,7 @@ public final class PlayerTicker{
 	private int temporaryFlyOnGroundTimer = 0;
 	
 	private void setup(){
-		final AccessStickyKeyBindingStateGetter sprint = (AccessStickyKeyBindingStateGetter)mc().options.keySprint;
+		final AccessStickyKeyBindingStateGetter sprint = (AccessStickyKeyBindingStateGetter)KEY_SPRINT;
 		BooleanSupplier getter = sprint.getToggleGetter();
 		
 		if (getter instanceof SprintPressGetter){
@@ -90,8 +91,7 @@ public final class PlayerTicker{
 			sprintMode = cfg().sprintMode;
 		}
 		
-		final GameOptions opts = mc().options;
-		final boolean wasSprintToggled = opts.sprintToggled;
+		final boolean wasSprintToggled = OPTIONS.sprintToggled;
 		final boolean isSprintToggled = toggleSprint.tick();
 		
 		if (temporarySprintTimer > 0){
@@ -101,7 +101,7 @@ public final class PlayerTicker{
 			final int nextTemporarySprintTimer = temporarySprintTimer - 1;
 			temporarySprintTimer = 0;
 			
-			if (!opts.keySprint.isPressed() && opts.keyForward.isPressed()){
+			if (!Key.isPressed(KEY_SPRINT) && Key.isPressed(KEY_FORWARD)){
 				temporarySprintTimer = nextTemporarySprintTimer;
 			}
 			else if (sprintMode == SprintMode.TAP_TO_TOGGLE){
@@ -118,7 +118,7 @@ public final class PlayerTicker{
 			waitingForSprintKeyRelease = true;
 		}
 		else if (sprintMode == SprintMode.TAP_TO_TOGGLE){
-			if (opts.keySprint.isPressed()){
+			if (Key.isPressed(KEY_SPRINT)){
 				if (!waitingForSprintKeyRelease){
 					waitingForSprintKeyRelease = true;
 					stopSprintingAfterReleasingSprintKey = player.isSprinting();
@@ -133,12 +133,12 @@ public final class PlayerTicker{
 			}
 		}
 		else if (sprintMode == SprintMode.HOLD){
-			if (opts.keySprint.isPressed()){
+			if (Key.isPressed(KEY_SPRINT)){
 				stopSprintingAfterReleasingSprintKey = true;
 			}
 		}
 		
-		if (stopSprintingAfterReleasingSprintKey && !opts.keySprint.isPressed()){
+		if (stopSprintingAfterReleasingSprintKey && !Key.isPressed(KEY_SPRINT)){
 			stopSprintingAfterReleasingSprintKey = false;
 			waitingForSprintKeyRelease = false;
 			player.setSprinting(false);
@@ -148,13 +148,13 @@ public final class PlayerTicker{
 	}
 	
 	public void afterInputAssignsPressingForward(final KeyboardInput input){
-		if (mc().currentScreen == null){
+		if (MINECRAFT.currentScreen == null){
 			input.pressingForward |= toggleWalkForward.tick();
 		}
 	}
 	
 	public void afterInputTick(final ClientPlayerEntity player){
-		if (mc().currentScreen == null && !player.abilities.flying){
+		if (MINECRAFT.currentScreen == null && !player.abilities.flying){
 			player.input.jumping |= toggleJump.tick();
 		}
 		
@@ -167,7 +167,7 @@ public final class PlayerTicker{
 			
 			final float verticalVelocity = FlightHelper.getExtraVerticalVelocity(player);
 			
-			if (!MathHelper.approximatelyEquals(verticalVelocity, 0F) && player == mc().getCameraEntity()){
+			if (!MathHelper.approximatelyEquals(verticalVelocity, 0F) && player == MINECRAFT.getCameraEntity()){
 				int direction = 0;
 				
 				if (player.input.sneaking){
@@ -187,7 +187,7 @@ public final class PlayerTicker{
 		if (cfg().resumeSprintingAfterHittingObstacle){
 			if (wasHittingObstacle != player.horizontalCollision){
 				if (!wasHittingObstacle){
-					wasSprintingBeforeHittingObstacle = player.isSprinting() || mc().options.keySprint.isPressed();
+					wasSprintingBeforeHittingObstacle = player.isSprinting() || Key.isPressed(KEY_SPRINT);
 				}
 				else if (wasSprintingBeforeHittingObstacle){
 					wasSprintingBeforeHittingObstacle = false;
@@ -204,7 +204,7 @@ public final class PlayerTicker{
 		}
 		
 		if (cfg().disableChangingFovWhileFlying && FlightHelper.isFlyingCreativeOrSpectator(player)){
-			((AccessGameRendererFields)mc().gameRenderer).setMovementFovMultiplier(1F);
+			((AccessGameRendererFields)MINECRAFT.gameRenderer).setMovementFovMultiplier(1F);
 		}
 	}
 	
@@ -248,7 +248,7 @@ public final class PlayerTicker{
 		}
 		
 		if (player.isCreative()){
-			if (cfg().keyToggleFlight.wasPressed()){
+			if (Key.wasPressed(cfg().keyToggleFlight)){
 				final boolean isFlying = !player.abilities.flying;
 				
 				player.abilities.flying = isFlying;
@@ -274,22 +274,22 @@ public final class PlayerTicker{
 		}
 		
 		if (!cfg().sneakingMovesCameraSmoothly){
-			final AccessCameraFields camera = (AccessCameraFields)mc().gameRenderer.getCamera();
+			final AccessCameraFields camera = (AccessCameraFields)MINECRAFT.gameRenderer.getCamera();
 			
 			if (camera.getFocusedEntity() == player){
 				camera.setCameraY(player.getStandingEyeHeight());
 			}
 		}
 		
-		if (cfg().keyResetAllToggles.wasPressed()){
+		if (Key.wasPressed(cfg().keyResetAllToggles)){
 			toggleSprint.reset();
 			toggleSneak.reset();
 			toggleWalkForward.reset();
 			toggleJump.reset();
 		}
 		
-		if (cfg().keyOpenMenu.isPressed()){
-			mc().openScreen(new BetterControlsScreen(null));
+		if (Key.isPressed(cfg().keyOpenMenu)){
+			MINECRAFT.openScreen(new BetterControlsScreen(null));
 		}
 	}
 }

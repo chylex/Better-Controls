@@ -1,13 +1,13 @@
 package chylex.bettercontrols.gui.elements;
-import net.minecraft.text.Text;
+import chylex.bettercontrols.util.LiteralText;
 import java.util.List;
 import java.util.Objects;
 
 public final class Option<T>{
 	private final T value;
-	private final Text text;
+	private final LiteralText text;
 	
-	public Option(final T value, final Text text){
+	public Option(final T value, final LiteralText text){
 		this.value = value;
 		this.text = text;
 	}
@@ -16,7 +16,7 @@ public final class Option<T>{
 		return value;
 	}
 	
-	public Text getText(){
+	public LiteralText getText(){
 		return text;
 	}
 	

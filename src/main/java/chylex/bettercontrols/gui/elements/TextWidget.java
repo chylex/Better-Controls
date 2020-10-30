@@ -1,23 +1,23 @@
 package chylex.bettercontrols.gui.elements;
 import chylex.bettercontrols.gui.OptionListWidget.Widget;
+import chylex.bettercontrols.util.LiteralText;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.text.Text;
 import java.util.List;
 
 public final class TextWidget extends DrawableHelper implements Widget{
 	public static final int LEFT = 0;
 	public static final int CENTER = 1;
 	
-	private final Text text;
+	private final LiteralText text;
 	private int x;
 	private int y;
 	private final int width;
 	private final int height;
 	private final int align;
 	
-	public TextWidget(final int x, final int y, final int width, final int height, final Text text, final int align){
+	public TextWidget(final int x, final int y, final int width, final int height, final LiteralText text, final int align){
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -26,11 +26,11 @@ public final class TextWidget extends DrawableHelper implements Widget{
 		this.align = align;
 	}
 	
-	public TextWidget(final int x, final int y, final int width, final Text text, final int align){
+	public TextWidget(final int x, final int y, final int width, final LiteralText text, final int align){
 		this(x, y, width, 20, text, align);
 	}
 	
-	public TextWidget(final int x, final int y, final int width, final Text text){
+	public TextWidget(final int x, final int y, final int width, final LiteralText text){
 		this(x, y, width, 20, text, LEFT);
 	}
 	

@@ -1,7 +1,6 @@
 package chylex.bettercontrols.config;
 import chylex.bettercontrols.input.KeyBindingWithModifier;
 import chylex.bettercontrols.input.SprintMode;
-import net.minecraft.client.options.KeyBinding;
 import java.nio.file.Path;
 
 public final class BetterControlsConfig{
@@ -44,8 +43,8 @@ public final class BetterControlsConfig{
 		return this;
 	}
 	
-	public KeyBinding[] getAllKeyBindings(){
-		return new KeyBinding[]{
+	public KeyBindingWithModifier[] getAllKeyBindings(){
+		return new KeyBindingWithModifier[]{
 			keyToggleSprint,
 			keyToggleSneak,
 			keyToggleFlight,

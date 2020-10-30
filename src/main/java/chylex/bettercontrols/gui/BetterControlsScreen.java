@@ -10,7 +10,7 @@ import chylex.bettercontrols.gui.elements.TextWidget;
 import chylex.bettercontrols.input.KeyBindingWithModifier;
 import chylex.bettercontrols.input.ModifierKey;
 import chylex.bettercontrols.input.SprintMode;
-import net.minecraft.client.MinecraftClient;
+import chylex.bettercontrols.util.LiteralText;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.options.GameOptionsScreen;
@@ -18,8 +18,6 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,9 +28,11 @@ import static chylex.bettercontrols.gui.OptionListWidget.ROW_WIDTH;
 import static chylex.bettercontrols.gui.OptionListWidget.col2;
 import static chylex.bettercontrols.gui.OptionListWidget.col4;
 import static chylex.bettercontrols.gui.elements.TextWidget.CENTER;
+import static chylex.bettercontrols.util.LiteralText.text;
+import static chylex.bettercontrols.util.Statics.OPTIONS;
 
 public class BetterControlsScreen extends GameOptionsScreen{
-	public static final LiteralText TITLE = new LiteralText("Better Controls");
+	public static final LiteralText TITLE = text("Better Controls");
 	
 	private static final int BOTTOM_PADDING = 3;
 	private static final int TEXT_PADDING_RIGHT = 4;
@@ -189,10 +189,6 @@ public class BetterControlsScreen extends GameOptionsScreen{
 	
 	// Helpers
 	
-	private static Text text(final String str){
-		return new LiteralText(str);
-	}
-	
 	private static final List<Option<ModifierKey>> MODIFIER_OPTIONS = Arrays.asList(
 		new Option<>(null, text("(No Modifier)")),
 		new Option<>(ModifierKey.CONTROL, text("Control")),
@@ -200,7 +196,7 @@ public class BetterControlsScreen extends GameOptionsScreen{
 		new Option<>(ModifierKey.ALT, text("Alt"))
 	);
 	
-	private void generateKeyBindingWithModifierOption(final int y, final List<Element> elements, final Text text, final KeyBindingWithModifier binding){
+	private void generateKeyBindingWithModifierOption(final int y, final List<Element> elements, final LiteralText text, final KeyBindingWithModifier binding){
 		final CycleButtonWidget<ModifierKey> modifierButton = new CycleButtonWidget<>(col4(2), y, COL4_W, MODIFIER_OPTIONS, binding.getModifier(), binding::setModifier);
 		final KeyBindingWidget bindingButton = new KeyBindingWidget(col4(3), y, COL4_W, binding, this::startEditingKeyBinding);
 		bindingButton.linkButtonToBoundState(modifierButton);
@@ -211,7 +207,7 @@ public class BetterControlsScreen extends GameOptionsScreen{
 		allKeyBindings.add(bindingButton);
 	}
 	
-	private static void generateLeftSideText(final int y, final List<Element> elements, final Text text){
+	private static void generateLeftSideText(final int y, final List<Element> elements, final LiteralText text){
 		elements.add(new TextWidget(col2(0), y, COL2_W - TEXT_PADDING_RIGHT, text));
 	}
 	
@@ -222,7 +218,7 @@ public class BetterControlsScreen extends GameOptionsScreen{
 	private final List<KeyBindingWidget> allKeyBindings = new ArrayList<>();
 	
 	public BetterControlsScreen(final Screen parentScreen){
-		super(parentScreen, MinecraftClient.getInstance().options, TITLE);
+		super(parentScreen, OPTIONS, TITLE);
 	}
 	
 	@Override

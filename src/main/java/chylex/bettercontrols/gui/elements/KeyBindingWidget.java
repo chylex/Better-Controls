@@ -1,5 +1,5 @@
 package chylex.bettercontrols.gui.elements;
-import net.minecraft.client.MinecraftClient;
+import chylex.bettercontrols.util.Key;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.options.KeyBinding;
@@ -9,6 +9,7 @@ import net.minecraft.util.Formatting;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import static chylex.bettercontrols.util.Statics.OPTIONS;
 
 public final class KeyBindingWidget extends ButtonWidget{
 	private final KeyBinding binding;
@@ -33,12 +34,12 @@ public final class KeyBindingWidget extends ButtonWidget{
 	
 	public void linkButtonToBoundState(final AbstractButtonWidget button){
 		linkedButtons.add(button);
-		button.active = !binding.isNotBound();
+		button.active = !Key.isUnbound(binding);
 	}
 	
 	@Override
 	protected String getNarrationMessage(){
-		return binding.isNotBound() ? I18n.translate("narrator.controls.unbound", bindingName) : I18n.translate("narrator.controls.bound", bindingName, super.getNarrationMessage());
+		return Key.isUnbound(binding) ? I18n.translate("narrator.controls.unbound", bindingName) : I18n.translate("narrator.controls.bound", bindingName, super.getNarrationMessage());
 	}
 	
 	@Override
@@ -49,11 +50,11 @@ public final class KeyBindingWidget extends ButtonWidget{
 	}
 	
 	public void bindAndStopEditing(final InputUtil.KeyCode key){
-		binding.setKeyCode(key);
+		Key.bind(binding, key);
 		stopEditing();
 		
 		for(final AbstractButtonWidget button : linkedButtons){
-			button.active = !binding.isNotBound();
+			button.active = !Key.isUnbound(binding);
 		}
 	}
 	
@@ -65,10 +66,11 @@ public final class KeyBindingWidget extends ButtonWidget{
 	public void updateKeyBindingText(){
 		boolean hasConflict = false;
 		
-		if (!binding.isNotBound()){
-			for(final KeyBinding other : MinecraftClient.getInstance().options.keysAll){
+		if (!Key.isUnbound(binding)){
+			for(final KeyBinding other : OPTIONS.keysAll){
 				if (binding != other && binding.equals(other)){
 					hasConflict = true;
+					break;
 				}
 			}
 		}
@@ -77,10 +79,10 @@ public final class KeyBindingWidget extends ButtonWidget{
 			setMessage(Formatting.WHITE + "> " + Formatting.YELLOW + binding.getLocalizedName() + Formatting.WHITE + " <");
 		}
 		else if (hasConflict){
-			setMessage(Formatting.RED + binding.getLocalizedName());
+			setMessage(Formatting.RED + Key.getBoundKeyText(binding));
 		}
 		else{
-			setMessage(binding.isNotBound() ? "(No Binding)" : binding.getLocalizedName());
+			setMessage(Key.isUnbound(binding) ? "(No Binding)" : Key.getBoundKeyText(binding));
 		}
 	}
 }

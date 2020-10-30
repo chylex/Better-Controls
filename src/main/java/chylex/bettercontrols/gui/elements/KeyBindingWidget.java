@@ -1,5 +1,5 @@
 package chylex.bettercontrols.gui.elements;
-import net.minecraft.client.MinecraftClient;
+import chylex.bettercontrols.util.Key;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.options.KeyBinding;
@@ -12,6 +12,7 @@ import net.minecraft.util.Formatting;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import static chylex.bettercontrols.util.Statics.OPTIONS;
 
 public final class KeyBindingWidget extends ButtonWidget{
 	private final KeyBinding binding;
@@ -36,12 +37,12 @@ public final class KeyBindingWidget extends ButtonWidget{
 	
 	public void linkButtonToBoundState(final AbstractButtonWidget button){
 		linkedButtons.add(button);
-		button.active = !binding.isUnbound();
+		button.active = !Key.isUnbound(binding);
 	}
 	
 	@Override
 	protected MutableText getNarrationMessage(){
-		return binding.isUnbound() ? new TranslatableText("narrator.controls.unbound", bindingName) : new TranslatableText("narrator.controls.bound", bindingName, super.getNarrationMessage());
+		return Key.isUnbound(binding) ? new TranslatableText("narrator.controls.unbound", bindingName) : new TranslatableText("narrator.controls.bound", bindingName, super.getNarrationMessage());
 	}
 	
 	@Override
@@ -52,11 +53,11 @@ public final class KeyBindingWidget extends ButtonWidget{
 	}
 	
 	public void bindAndStopEditing(final InputUtil.Key key){
-		binding.setBoundKey(key);
+		Key.bind(binding, key);
 		stopEditing();
 		
 		for(final AbstractButtonWidget button : linkedButtons){
-			button.active = !binding.isUnbound();
+			button.active = !Key.isUnbound(binding);
 		}
 	}
 	
@@ -68,22 +69,23 @@ public final class KeyBindingWidget extends ButtonWidget{
 	public void updateKeyBindingText(){
 		boolean hasConflict = false;
 		
-		if (!binding.isUnbound()){
-			for(final KeyBinding other : MinecraftClient.getInstance().options.keysAll){
+		if (!Key.isUnbound(binding)){
+			for(final KeyBinding other : OPTIONS.keysAll){
 				if (binding != other && binding.equals(other)){
 					hasConflict = true;
+					break;
 				}
 			}
 		}
 		
 		if (isEditing){
-			setMessage((new LiteralText("> ")).append(binding.getBoundKeyLocalizedText().shallowCopy().formatted(Formatting.YELLOW)).append(" <").formatted(Formatting.YELLOW));
+			setMessage((new LiteralText("> ")).append(Key.getBoundKeyText(binding).copy().formatted(Formatting.YELLOW)).append(" <").formatted(Formatting.YELLOW));
 		}
 		else if (hasConflict){
-			setMessage(binding.getBoundKeyLocalizedText().shallowCopy().formatted(Formatting.RED));
+			setMessage(Key.getBoundKeyText(binding).copy().formatted(Formatting.RED));
 		}
 		else{
-			setMessage(binding.isUnbound() ? Text.of("(No Binding)") : binding.getBoundKeyLocalizedText());
+			setMessage(Key.isUnbound(binding) ? Text.of("(No Binding)") : Key.getBoundKeyText(binding));
 		}
 	}
 }

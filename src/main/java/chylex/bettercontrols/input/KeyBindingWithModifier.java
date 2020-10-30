@@ -19,11 +19,12 @@ public class KeyBindingWithModifier extends KeyBinding{
 		super(translationKey, Type.KEYSYM, -1, CATEGORY);
 	}
 	
-	public void setModifier(final @Nullable ModifierKey modifier){
+	public void setModifier(@Nullable final ModifierKey modifier){
 		this.modifier = modifier;
 	}
 	
-	public @Nullable ModifierKey getModifier(){
+	@Nullable
+	public ModifierKey getModifier(){
 		return modifier;
 	}
 	

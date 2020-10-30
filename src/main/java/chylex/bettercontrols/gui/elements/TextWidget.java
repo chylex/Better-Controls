@@ -1,25 +1,25 @@
 package chylex.bettercontrols.gui.elements;
 import chylex.bettercontrols.gui.OptionListWidget.Widget;
-import net.minecraft.client.MinecraftClient;
+import chylex.bettercontrols.util.LiteralText;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
-import net.minecraft.text.Text;
 import java.util.List;
+import static chylex.bettercontrols.util.Statics.MINECRAFT;
 
 public final class TextWidget extends DrawableHelper implements Widget{
 	public static final int LEFT = 0;
 	public static final int CENTER = 1;
 	
-	private final Text text;
+	private final LiteralText text;
 	private int x;
 	private int y;
 	private final int width;
 	private final int height;
 	private final int align;
 	
-	public TextWidget(final int x, final int y, final int width, final int height, final Text text, final int align){
+	public TextWidget(final int x, final int y, final int width, final int height, final LiteralText text, final int align){
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -28,11 +28,11 @@ public final class TextWidget extends DrawableHelper implements Widget{
 		this.align = align;
 	}
 	
-	public TextWidget(final int x, final int y, final int width, final Text text, final int align){
+	public TextWidget(final int x, final int y, final int width, final LiteralText text, final int align){
 		this(x, y, width, 20, text, align);
 	}
 	
-	public TextWidget(final int x, final int y, final int width, final Text text){
+	public TextWidget(final int x, final int y, final int width, final LiteralText text){
 		this(x, y, width, 20, text, LEFT);
 	}
 	
@@ -58,7 +58,7 @@ public final class TextWidget extends DrawableHelper implements Widget{
 	
 	@Override
 	public void render(final MatrixStack matrices, final int mouseX, final int mouseY, final float delta){
-		final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+		final TextRenderer textRenderer = MINECRAFT.textRenderer;
 		final List<OrderedText> lines = textRenderer.wrapLines(text, width);
 		final int lineHeight = textRenderer.fontHeight + 1;
 		

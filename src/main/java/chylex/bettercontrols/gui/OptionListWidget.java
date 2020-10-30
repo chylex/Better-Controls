@@ -1,6 +1,5 @@
 package chylex.bettercontrols.gui;
 import chylex.bettercontrols.gui.OptionListWidget.Entry;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.widget.AbstractButtonWidget;
@@ -12,30 +11,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import static chylex.bettercontrols.util.Statics.MINECRAFT;
 
 public final class OptionListWidget extends ElementListWidget<Entry>{
 	public static final int ROW_WIDTH = 408;
 	public static final int ROW_PADDING = 2;
 	
 	public static final int COL2_W = (ROW_WIDTH / 2) - ROW_PADDING;
-	public static final int COL3_W = (ROW_WIDTH / 3) - ROW_PADDING;
 	public static final int COL4_W = (ROW_WIDTH / 4) - ROW_PADDING;
-	public static final int COL6_W = (ROW_WIDTH / 6) - ROW_PADDING;
 	
 	public static int col2(final int column){
 		return (column * ROW_WIDTH) / 2;
 	}
 	
-	public static int col3(final int column){
-		return (column * ROW_WIDTH) / 3;
-	}
-	
 	public static int col4(final int column){
 		return (column * ROW_WIDTH) / 4;
-	}
-	
-	public static int col6(final int column){
-		return (column * ROW_WIDTH) / 6;
 	}
 	
 	private static Offset getElementOffset(final Element element){
@@ -68,7 +58,7 @@ public final class OptionListWidget extends ElementListWidget<Entry>{
 	}
 	
 	public OptionListWidget(final int top, final int bottom, final int width, final int height, final List<Element> widgets, final int innerHeight){
-		super(MinecraftClient.getInstance(), width, height, top, bottom, innerHeight);
+		super(MINECRAFT, width, height, top, bottom, innerHeight);
 		addEntry(new Entry(widgets));
 	}
 	

@@ -1,19 +1,11 @@
 package chylex.bettercontrols.config;
 import chylex.bettercontrols.input.KeyBindingWithModifier;
 import chylex.bettercontrols.input.ModifierKey;
+import chylex.bettercontrols.util.Key;
 import com.google.gson.JsonObject;
-import net.minecraft.client.util.InputUtil;
 
 final class Json{
 	private Json(){}
-	
-	static void setInt(final JsonObject obj, final String key, final int value){
-		obj.addProperty(key, Integer.valueOf(value));
-	}
-	
-	static int getInt(final JsonObject obj, final String key, final int defaultValue){
-		return obj.has(key) ? obj.get(key).getAsInt() : defaultValue;
-	}
 	
 	static void setFloat(final JsonObject obj, final String key, final float value){
 		obj.addProperty(key, Float.valueOf(value));
@@ -59,7 +51,7 @@ final class Json{
 	private static final String MOD_SUFFIX = ".Mod";
 	
 	static void writeKeyBinding(final JsonObject obj, final String key, final KeyBindingWithModifier keyBinding){
-		obj.addProperty(key + KEY_SUFFIX, keyBinding.getBoundKeyTranslationKey());
+		obj.addProperty(key + KEY_SUFFIX, Key.writeBinding(keyBinding));
 		
 		if (keyBinding.getModifier() != null){
 			obj.addProperty(key + MOD_SUFFIX, Integer.valueOf(keyBinding.getModifier().id));
@@ -68,7 +60,7 @@ final class Json{
 	
 	static void readKeyBinding(final JsonObject obj, final String key, final KeyBindingWithModifier keyBinding){
 		if (obj.has(key + KEY_SUFFIX)){
-			keyBinding.setBoundKey(InputUtil.fromTranslationKey(obj.get(key + KEY_SUFFIX).getAsString()));
+			Key.readBinding(keyBinding, obj.get(key + KEY_SUFFIX).getAsString());
 		}
 		
 		if (obj.has(key + MOD_SUFFIX)){

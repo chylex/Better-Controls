@@ -1,7 +1,7 @@
 package chylex.bettercontrols.input;
 import chylex.bettercontrols.mixin.AccessKeyBindingFields;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.settings.KeyBinding;
 import java.util.HashSet;
 import java.util.Set;
 

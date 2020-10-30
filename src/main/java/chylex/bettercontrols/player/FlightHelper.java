@@ -1,7 +1,7 @@
 package chylex.bettercontrols.player;
 import chylex.bettercontrols.BetterControlsMod;
 import chylex.bettercontrols.config.BetterControlsConfig;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 
 final class FlightHelper{
 	private FlightHelper(){}
@@ -15,11 +15,11 @@ final class FlightHelper{
 	}
 	
 	static boolean isFlyingCreativeOrSpectator(final ClientPlayerEntity player){
-		return player.abilities.flying && (player.isCreative() || player.isSpectator());
+		return player.abilities.isFlying && (player.isCreative() || player.isSpectator());
 	}
 	
 	static boolean shouldFlyOnGround(final ClientPlayerEntity player){
-		return cfg().flyOnGroundInCreative && player.isCreative() && player.abilities.flying;
+		return cfg().flyOnGroundInCreative && player.isCreative() && player.abilities.isFlying;
 	}
 	
 	static float getFlightSpeed(final ClientPlayerEntity player){

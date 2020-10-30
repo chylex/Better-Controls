@@ -1,11 +1,11 @@
 package chylex.bettercontrols.mixin;
-import net.minecraft.client.gui.screen.options.ControlsListWidget.KeyBindingEntry;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.gui.widget.list.KeyBindingList.KeyEntry;
+import net.minecraft.client.settings.KeyBinding;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(KeyBindingEntry.class)
+@Mixin(KeyEntry.class)
 public interface AccessControlsListKeyBinding{
-	@Accessor
+	@Accessor("keybinding")
 	KeyBinding getBinding();
 }

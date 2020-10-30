@@ -1,31 +1,32 @@
 package chylex.bettercontrols.gui.elements;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.options.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
+import chylex.bettercontrols.util.Key;
+import net.minecraft.client.gui.widget.button.AbstractButton;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.util.InputMappings;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import static chylex.bettercontrols.util.Statics.OPTIONS;
 
-public final class KeyBindingWidget extends ButtonWidget{
+public final class KeyBindingWidget extends Button{
 	private final KeyBinding binding;
-	private final Text bindingName;
+	private final ITextComponent bindingName;
 	
-	private final List<AbstractButtonWidget> linkedButtons = new ArrayList<>(1);
+	private final List<AbstractButton> linkedButtons = new ArrayList<>(1);
 	
 	private final Consumer<KeyBindingWidget> onEditingStarted;
 	private boolean isEditing;
 	
 	public KeyBindingWidget(final int x, final int y, final int width, final int height, final KeyBinding binding, final Consumer<KeyBindingWidget> onEditingStarted){
-		super(x, y, width, height, LiteralText.EMPTY, btn -> {});
+		super(x, y, width, height, StringTextComponent.EMPTY, btn -> {});
 		this.binding = binding;
-		this.bindingName = new TranslatableText(binding.getTranslationKey());
+		this.bindingName = new TranslationTextComponent(binding.getTranslationKey());
 		this.onEditingStarted = onEditingStarted;
 		updateKeyBindingText();
 	}
@@ -34,14 +35,14 @@ public final class KeyBindingWidget extends ButtonWidget{
 		this(x, y, width, 20, binding, onEditingStarted);
 	}
 	
-	public void linkButtonToBoundState(final AbstractButtonWidget button){
+	public void linkButtonToBoundState(final AbstractButton button){
 		linkedButtons.add(button);
-		button.active = !binding.isUnbound();
+		button.active = !Key.isUnbound(binding);
 	}
 	
 	@Override
-	protected MutableText getNarrationMessage(){
-		return binding.isUnbound() ? new TranslatableText("narrator.controls.unbound", bindingName) : new TranslatableText("narrator.controls.bound", bindingName, super.getNarrationMessage());
+	protected IFormattableTextComponent getNarrationMessage(){
+		return Key.isUnbound(binding) ? new TranslationTextComponent("narrator.controls.unbound", bindingName) : new TranslationTextComponent("narrator.controls.bound", bindingName, super.getNarrationMessage());
 	}
 	
 	@Override
@@ -51,12 +52,12 @@ public final class KeyBindingWidget extends ButtonWidget{
 		updateKeyBindingText();
 	}
 	
-	public void bindAndStopEditing(final InputUtil.Key key){
-		binding.setBoundKey(key);
+	public void bindAndStopEditing(final InputMappings.Input key){
+		Key.bind(binding, key);
 		stopEditing();
 		
-		for(final AbstractButtonWidget button : linkedButtons){
-			button.active = !binding.isUnbound();
+		for(final AbstractButton button : linkedButtons){
+			button.active = !Key.isUnbound(binding);
 		}
 	}
 	
@@ -68,22 +69,23 @@ public final class KeyBindingWidget extends ButtonWidget{
 	public void updateKeyBindingText(){
 		boolean hasConflict = false;
 		
-		if (!binding.isUnbound()){
-			for(final KeyBinding other : MinecraftClient.getInstance().options.keysAll){
+		if (!Key.isUnbound(binding)){
+			for(final KeyBinding other : OPTIONS.keyBindings){
 				if (binding != other && binding.equals(other)){
 					hasConflict = true;
+					break;
 				}
 			}
 		}
 		
 		if (isEditing){
-			setMessage((new LiteralText("> ")).append(binding.getBoundKeyLocalizedText().shallowCopy().formatted(Formatting.YELLOW)).append(" <").formatted(Formatting.YELLOW));
+			setMessage((new StringTextComponent("> ")).append(Key.getBoundKeyText(binding).deepCopy().mergeStyle(TextFormatting.YELLOW)).appendString(" <").mergeStyle(TextFormatting.YELLOW));
 		}
 		else if (hasConflict){
-			setMessage(binding.getBoundKeyLocalizedText().shallowCopy().formatted(Formatting.RED));
+			setMessage(Key.getBoundKeyText(binding).deepCopy().mergeStyle(TextFormatting.RED));
 		}
 		else{
-			setMessage(binding.isUnbound() ? Text.of("(No Binding)") : binding.getBoundKeyLocalizedText());
+			setMessage(Key.isUnbound(binding) ? new StringTextComponent("(No Binding)") : Key.getBoundKeyText(binding));
 		}
 	}
 }

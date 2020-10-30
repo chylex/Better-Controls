@@ -1,15 +1,15 @@
 package chylex.bettercontrols.input;
-import net.minecraft.client.options.KeyBinding;
-import net.minecraft.client.util.InputUtil.Type;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.util.InputMappings.Type;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import javax.annotation.Nullable;
 
 public class KeyBindingWithModifier extends KeyBinding{
 	public static final String CATEGORY = "key.categories.bettercontrols";
 	
-	public static boolean checkCategoryMatches(final Text text){
-		return text instanceof TranslatableText && CATEGORY.equals(((TranslatableText)text).getKey());
+	public static boolean checkCategoryMatches(final ITextComponent text){
+		return text instanceof TranslationTextComponent && CATEGORY.equals(((TranslationTextComponent)text).getKey());
 	}
 	
 	@Nullable
@@ -19,21 +19,22 @@ public class KeyBindingWithModifier extends KeyBinding{
 		super(translationKey, Type.KEYSYM, -1, CATEGORY);
 	}
 	
-	public void setModifier(final @Nullable ModifierKey modifier){
+	public void setModifier(@Nullable final ModifierKey modifier){
 		this.modifier = modifier;
 	}
 	
-	public @Nullable ModifierKey getModifier(){
+	@Nullable
+	public ModifierKey getModifier(){
 		return modifier;
+	}
+	
+	@Override
+	public boolean isKeyDown(){
+		return super.isKeyDown() && (modifier == null || modifier.isPressed());
 	}
 	
 	@Override
 	public boolean isPressed(){
 		return super.isPressed() && (modifier == null || modifier.isPressed());
-	}
-	
-	@Override
-	public boolean wasPressed(){
-		return super.wasPressed() && (modifier == null || modifier.isPressed());
 	}
 }

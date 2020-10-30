@@ -1,41 +1,88 @@
-plugins {
-	id 'fabric-loom' version '0.5-SNAPSHOT'
-	id 'maven-publish'
+buildscript {
+	repositories {
+		maven { url = 'https://files.minecraftforge.net/maven' }
+		maven { url = 'https://dist.creeper.host/Sponge/maven' }
+		jcenter()
+		mavenCentral()
+	}
+	
+	dependencies {
+		classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+		classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+	}
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+repositories {
+	maven {
+		url "https://maven.tterrag.com/"
+	}
+}
 
-archivesBaseName = project.archives_base_name
-version = project.mod_version
-group = project.maven_group
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'eclipse'
+
+def mcversion = "1.16.3"
+def forgeversion = "34.1.0"
+
+def prefixName = 'displayName = '
+def prefixVersion = 'version = '
+
+def metaLines = file('src/main/resources/META-INF/mods.toml').readLines()
+def metaName = metaLines.find { line -> line.startsWith(prefixName) }.substring(prefixName.length())[1..-2]
+def metaVersion = metaLines.find { line -> line.startsWith(prefixVersion) }.substring(prefixVersion.length())[1..-2]
+
+group = 'chylex.bettercontrols'
+version = metaVersion
+archivesBaseName = metaName.replaceAll('\\s', '')
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+
+minecraft {
+	mappings channel: 'snapshot', version: '20201028-1.16.3'
+	
+	runs {
+		client {
+			workingDirectory file('run')
+			
+			property 'mixin.env.disableRefMap', 'true'
+			arg '-mixin.config=bettercontrols.mixins.json'
+			
+			mods {
+				bettercontrols {
+					source sourceSets.main
+				}
+			}
+		}
+	}
+}
 
 dependencies {
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	minecraft 'net.minecraftforge:forge:' + mcversion + '-' + forgeversion
 }
-
-processResources {
-	inputs.property "version", project.version
-	
-	from(sourceSets.main.resources.srcDirs) {
-		include "fabric.mod.json"
-		expand "version": project.version
-	}
-	
-	from(sourceSets.main.resources.srcDirs) {
-		exclude "fabric.mod.json"
-	}
-}
-
-tasks.withType(JavaCompile) {
-	options.encoding = "UTF-8"
-}
-
-version = 'v' + version
 
 jar {
-	from "LICENSE"
-	exclude "io/github/prospector/"
+	archiveName = archivesBaseName + '-' + mcversion + '+v' + version + '.jar'
+	
+	from('./') {
+		include 'LICENSE'
+	}
+	
+	manifest {
+		attributes([
+			'Specification-Title'     : 'bettercontrols',
+			'Specification-Version'   : '1',
+			'Specification-Vendor'    : 'chylex',
+			
+			'Implementation-Title'    : metaName,
+			'Implementation-Version'  : metaVersion,
+			'Implementation-Vendor'   : 'chylex',
+			
+			'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+			
+			'MixinConfigs'            : 'bettercontrols.mixins.json'
+		])
+	}
+	
+	finalizedBy('reobfJar')
 }

@@ -1,16 +1,16 @@
 package chylex.bettercontrols.mixin;
-import net.minecraft.client.options.StickyKeyBinding;
+import net.minecraft.client.settings.ToggleableKeyBinding;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import java.util.function.BooleanSupplier;
 
-@Mixin(StickyKeyBinding.class)
+@Mixin(ToggleableKeyBinding.class)
 public interface AccessStickyKeyBindingStateGetter{
-	@Accessor
+	@Accessor("getterToggle")
 	BooleanSupplier getToggleGetter();
 	
-	@Accessor
+	@Accessor("getterToggle")
 	@Mutable
 	void setToggleGetter(final BooleanSupplier toggleGetter);
 }

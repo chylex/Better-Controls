@@ -10,18 +10,17 @@ import chylex.bettercontrols.gui.elements.TextWidget;
 import chylex.bettercontrols.input.KeyBindingWithModifier;
 import chylex.bettercontrols.input.ModifierKey;
 import chylex.bettercontrols.input.SprintMode;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Element;
+import chylex.bettercontrols.util.Key;
+import chylex.bettercontrols.util.LiteralText;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.gui.DialogTexts;
+import net.minecraft.client.gui.IGuiEventListener;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ScreenTexts;
-import net.minecraft.client.gui.screen.options.GameOptionsScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.options.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.screen.SettingsScreen;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.settings.KeyBinding;
 import org.lwjgl.glfw.GLFW;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,9 +30,11 @@ import static chylex.bettercontrols.gui.OptionListWidget.ROW_WIDTH;
 import static chylex.bettercontrols.gui.OptionListWidget.col2;
 import static chylex.bettercontrols.gui.OptionListWidget.col4;
 import static chylex.bettercontrols.gui.elements.TextWidget.CENTER;
+import static chylex.bettercontrols.util.LiteralText.text;
+import static chylex.bettercontrols.util.Statics.OPTIONS;
 
-public class BetterControlsScreen extends GameOptionsScreen{
-	public static final LiteralText TITLE = new LiteralText("Better Controls");
+public class BetterControlsScreen extends SettingsScreen{
+	public static final LiteralText TITLE = text("Better Controls");
 	
 	private static final int BOTTOM_PADDING = 3;
 	private static final int TEXT_PADDING_RIGHT = 4;
@@ -41,45 +42,45 @@ public class BetterControlsScreen extends GameOptionsScreen{
 	private static final int ROW_HEIGHT = 22;
 	
 	private final List<Option<SprintMode>> SPRINT_MODE_OPTIONS = Arrays.asList(
-		new Option<>(SprintMode.TAP_TO_START, Text.of("Tap To Start Sprinting")),
-		new Option<>(SprintMode.TAP_TO_TOGGLE, Text.of("Tap To Start / Stop Sprinting")),
-		new Option<>(SprintMode.HOLD, Text.of("Hold To Sprint"))
+		new Option<>(SprintMode.TAP_TO_START, text("Tap To Start Sprinting")),
+		new Option<>(SprintMode.TAP_TO_TOGGLE, text("Tap To Start / Stop Sprinting")),
+		new Option<>(SprintMode.HOLD, text("Hold To Sprint"))
 	);
 	
 	// Options
 	
-	private int generateSprintingOptions(int y, final List<Element> elements){
+	private int generateSprintingOptions(int y, final List<IGuiEventListener> elements){
 		final BetterControlsConfig cfg = BetterControlsMod.config;
 		
-		generateKeyBindingWithModifierOption(y, elements, Text.of("Toggle Sprint"), cfg.keyToggleSprint);
+		generateKeyBindingWithModifierOption(y, elements, text("Toggle Sprint"), cfg.keyToggleSprint);
 		
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, Text.of("Sprint Key Mode"));
+		generateLeftSideText(y, elements, text("Sprint Key Mode"));
 		elements.add(new CycleButtonWidget<>(col2(1), y, COL2_W, SPRINT_MODE_OPTIONS, cfg.sprintMode, value -> cfg.sprintMode = value));
 		
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, Text.of("Double Tap 'Walk Forwards' To Sprint"));
+		generateLeftSideText(y, elements, text("Double Tap 'Walk Forwards' To Sprint"));
 		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.doubleTapForwardToSprint, value -> cfg.doubleTapForwardToSprint = value));
 		
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, Text.of("Resume Sprinting After Hitting Obstacle"));
+		generateLeftSideText(y, elements, text("Resume Sprinting After Hitting Obstacle"));
 		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.resumeSprintingAfterHittingObstacle, value -> cfg.resumeSprintingAfterHittingObstacle = value));
 		
 		y += ROW_HEIGHT;
 		return y;
 	}
 	
-	private int generateSneakingOptions(int y, final List<Element> elements){
+	private int generateSneakingOptions(int y, final List<IGuiEventListener> elements){
 		final BetterControlsConfig cfg = BetterControlsMod.config;
 		
-		generateKeyBindingWithModifierOption(y, elements, Text.of("Toggle Sneak"), cfg.keyToggleSneak);
+		generateKeyBindingWithModifierOption(y, elements, text("Toggle Sneak"), cfg.keyToggleSneak);
 		
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, Text.of("Move Camera Smoothly"));
+		generateLeftSideText(y, elements, text("Move Camera Smoothly"));
 		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.sneakingMovesCameraSmoothly, value -> cfg.sneakingMovesCameraSmoothly = value));
 		
 		y += ROW_HEIGHT;
@@ -87,79 +88,79 @@ public class BetterControlsScreen extends GameOptionsScreen{
 	}
 	
 	@SuppressWarnings({ "AutoBoxing", "AutoUnboxing" })
-	private int generateFlightOptions(int y, final List<Element> elements){
+	private int generateFlightOptions(int y, final List<IGuiEventListener> elements){
 		final BetterControlsConfig cfg = BetterControlsMod.config;
 		
 		final List<Option<Float>> flightSpeedOptions = Arrays.asList(
-			new Option<>(Float.valueOf(0.25F), Text.of("0.25x")),
-			new Option<>(Float.valueOf(0.50F), Text.of("0.5x")),
-			new Option<>(Float.valueOf(0.75F), Text.of("0.75x")),
-			new Option<>(Float.valueOf(1.00F), Text.of("1x")),
-			new Option<>(Float.valueOf(1.50F), Text.of("1.5x")),
-			new Option<>(Float.valueOf(2.00F), Text.of("2x")),
-			new Option<>(Float.valueOf(3.00F), Text.of("3x")),
-			new Option<>(Float.valueOf(4.00F), Text.of("4x")),
-			new Option<>(Float.valueOf(5.00F), Text.of("5x")),
-			new Option<>(Float.valueOf(6.00F), Text.of("6x")),
-			new Option<>(Float.valueOf(7.00F), Text.of("7x")),
-			new Option<>(Float.valueOf(8.00F), Text.of("8x"))
+			new Option<>(Float.valueOf(0.25F), text("0.25x")),
+			new Option<>(Float.valueOf(0.50F), text("0.5x")),
+			new Option<>(Float.valueOf(0.75F), text("0.75x")),
+			new Option<>(Float.valueOf(1.00F), text("1x")),
+			new Option<>(Float.valueOf(1.50F), text("1.5x")),
+			new Option<>(Float.valueOf(2.00F), text("2x")),
+			new Option<>(Float.valueOf(3.00F), text("3x")),
+			new Option<>(Float.valueOf(4.00F), text("4x")),
+			new Option<>(Float.valueOf(5.00F), text("5x")),
+			new Option<>(Float.valueOf(6.00F), text("6x")),
+			new Option<>(Float.valueOf(7.00F), text("7x")),
+			new Option<>(Float.valueOf(8.00F), text("8x"))
 		);
 		
 		final List<Option<Float>> flightVerticalBoostOptions = Arrays.asList(
-			new Option<>(Float.valueOf(0.00F), Text.of("None")),
-			new Option<>(Float.valueOf(0.25F), Text.of("+25%")),
-			new Option<>(Float.valueOf(0.50F), Text.of("+50%")),
-			new Option<>(Float.valueOf(0.75F), Text.of("+75%")),
-			new Option<>(Float.valueOf(1.00F), Text.of("+100%")),
-			new Option<>(Float.valueOf(1.50F), Text.of("+150%")),
-			new Option<>(Float.valueOf(2.00F), Text.of("+200%")),
-			new Option<>(Float.valueOf(2.50F), Text.of("+250%")),
-			new Option<>(Float.valueOf(3.00F), Text.of("+300%"))
+			new Option<>(Float.valueOf(0.00F), text("None")),
+			new Option<>(Float.valueOf(0.25F), text("+25%")),
+			new Option<>(Float.valueOf(0.50F), text("+50%")),
+			new Option<>(Float.valueOf(0.75F), text("+75%")),
+			new Option<>(Float.valueOf(1.00F), text("+100%")),
+			new Option<>(Float.valueOf(1.50F), text("+150%")),
+			new Option<>(Float.valueOf(2.00F), text("+200%")),
+			new Option<>(Float.valueOf(2.50F), text("+250%")),
+			new Option<>(Float.valueOf(3.00F), text("+300%"))
 		);
 		
-		generateKeyBindingWithModifierOption(y, elements, Text.of("Toggle Flight (Creative)"), cfg.keyToggleFlight);
+		generateKeyBindingWithModifierOption(y, elements, text("Toggle Flight (Creative)"), cfg.keyToggleFlight);
 		
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, Text.of("Sprint Key Mode While Flying"));
+		generateLeftSideText(y, elements, text("Sprint Key Mode While Flying"));
 		elements.add(new CycleButtonWidget<>(col2(1), y, COL2_W, SPRINT_MODE_OPTIONS, cfg.sprintModeWhileFlying, value -> cfg.sprintModeWhileFlying = value));
 		
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, Text.of("Disable Field Of View Changing"));
+		generateLeftSideText(y, elements, text("Disable Field Of View Changing"));
 		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.disableChangingFovWhileFlying, value -> cfg.disableChangingFovWhileFlying = value));
 		
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, Text.of("Fly On Ground (Creative Mode)"));
+		generateLeftSideText(y, elements, text("Fly On Ground (Creative Mode)"));
 		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.flyOnGroundInCreative, value -> cfg.flyOnGroundInCreative = value));
 		
 		y += ROW_HEIGHT * 4 / 3;
 		
-		elements.add(new TextWidget(col4(2), y, COL4_W - TEXT_PADDING_RIGHT, Text.of("Creative"), CENTER));
-		elements.add(new TextWidget(col4(3), y, COL4_W - TEXT_PADDING_RIGHT, Text.of("Spectator"), CENTER));
+		elements.add(new TextWidget(col4(2), y, COL4_W - TEXT_PADDING_RIGHT, text("Creative"), CENTER));
+		elements.add(new TextWidget(col4(3), y, COL4_W - TEXT_PADDING_RIGHT, text("Spectator"), CENTER));
 		
 		y += ROW_HEIGHT * 7 / 8;
 		
-		generateLeftSideText(y, elements, Text.of("Speed Multiplier (Default)"));
+		generateLeftSideText(y, elements, text("Speed Multiplier (Default)"));
 		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, flightSpeedOptions, cfg.flightSpeedMpCreativeDefault, value -> cfg.flightSpeedMpCreativeDefault = value));
 		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, flightSpeedOptions, cfg.flightSpeedMpSpectatorDefault, value -> cfg.flightSpeedMpSpectatorDefault = value));
 		
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, Text.of("Speed Multiplier (Sprinting)"));
+		generateLeftSideText(y, elements, text("Speed Multiplier (Sprinting)"));
 		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, flightSpeedOptions, cfg.flightSpeedMpCreativeSprinting, value -> cfg.flightSpeedMpCreativeSprinting = value));
 		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, flightSpeedOptions, cfg.flightSpeedMpSpectatorSprinting, value -> cfg.flightSpeedMpSpectatorSprinting = value));
 		
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, Text.of("Vertical Speed Boost (Default)"));
+		generateLeftSideText(y, elements, text("Vertical Speed Boost (Default)"));
 		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, flightVerticalBoostOptions, cfg.flightVerticalBoostCreativeDefault, value -> cfg.flightVerticalBoostCreativeDefault = value));
 		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, flightVerticalBoostOptions, cfg.flightVerticalBoostSpectatorDefault, value -> cfg.flightVerticalBoostSpectatorDefault = value));
 		
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, Text.of("Vertical Speed Boost (Sprinting)"));
+		generateLeftSideText(y, elements, text("Vertical Speed Boost (Sprinting)"));
 		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, flightVerticalBoostOptions, cfg.flightVerticalBoostCreativeSprinting, value -> cfg.flightVerticalBoostCreativeSprinting = value));
 		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, flightVerticalBoostOptions, cfg.flightVerticalBoostSpectatorSprinting, value -> cfg.flightVerticalBoostSpectatorSprinting = value));
 		
@@ -167,22 +168,22 @@ public class BetterControlsScreen extends GameOptionsScreen{
 		return y;
 	}
 	
-	private int generateMiscellaneousOptions(int y, final List<Element> elements){
+	private int generateMiscellaneousOptions(int y, final List<IGuiEventListener> elements){
 		final BetterControlsConfig cfg = BetterControlsMod.config;
 		
-		generateKeyBindingWithModifierOption(y, elements, Text.of("Toggle Walk Forwards"), cfg.keyToggleWalkForward);
+		generateKeyBindingWithModifierOption(y, elements, text("Toggle Walk Forwards"), cfg.keyToggleWalkForward);
 		
 		y += ROW_HEIGHT;
 		
-		generateKeyBindingWithModifierOption(y, elements, Text.of("Toggle Jump"), cfg.keyToggleJump);
+		generateKeyBindingWithModifierOption(y, elements, text("Toggle Jump"), cfg.keyToggleJump);
 		
 		y += ROW_HEIGHT;
 		
-		generateKeyBindingWithModifierOption(y, elements, Text.of("Reset All Toggles"), cfg.keyResetAllToggles);
+		generateKeyBindingWithModifierOption(y, elements, text("Reset All Toggles"), cfg.keyResetAllToggles);
 		
 		y += ROW_HEIGHT * 4 / 3;
 		
-		generateKeyBindingWithModifierOption(y, elements, Text.of("Open Better Controls Menu"), cfg.keyOpenMenu);
+		generateKeyBindingWithModifierOption(y, elements, text("Open Better Controls Menu"), cfg.keyOpenMenu);
 		
 		y += ROW_HEIGHT;
 		return y;
@@ -191,13 +192,13 @@ public class BetterControlsScreen extends GameOptionsScreen{
 	// Helpers
 	
 	private static final List<Option<ModifierKey>> MODIFIER_OPTIONS = Arrays.asList(
-		new Option<>(null, Text.of("(No Modifier)")),
-		new Option<>(ModifierKey.CONTROL, Text.of("Control")),
-		new Option<>(ModifierKey.SHIFT, Text.of("Shift")),
-		new Option<>(ModifierKey.ALT, Text.of("Alt"))
+		new Option<>(null, text("(No Modifier)")),
+		new Option<>(ModifierKey.CONTROL, text("Control")),
+		new Option<>(ModifierKey.SHIFT, text("Shift")),
+		new Option<>(ModifierKey.ALT, text("Alt"))
 	);
 	
-	private void generateKeyBindingWithModifierOption(final int y, final List<Element> elements, final Text text, final KeyBindingWithModifier binding){
+	private void generateKeyBindingWithModifierOption(final int y, final List<IGuiEventListener> elements, final LiteralText text, final KeyBindingWithModifier binding){
 		final CycleButtonWidget<ModifierKey> modifierButton = new CycleButtonWidget<>(col4(2), y, COL4_W, MODIFIER_OPTIONS, binding.getModifier(), binding::setModifier);
 		final KeyBindingWidget bindingButton = new KeyBindingWidget(col4(3), y, COL4_W, binding, this::startEditingKeyBinding);
 		bindingButton.linkButtonToBoundState(modifierButton);
@@ -208,7 +209,7 @@ public class BetterControlsScreen extends GameOptionsScreen{
 		allKeyBindings.add(bindingButton);
 	}
 	
-	private static void generateLeftSideText(final int y, final List<Element> elements, final Text text){
+	private static void generateLeftSideText(final int y, final List<IGuiEventListener> elements, final LiteralText text){
 		elements.add(new TextWidget(col2(0), y, COL2_W - TEXT_PADDING_RIGHT, text));
 	}
 	
@@ -218,35 +219,35 @@ public class BetterControlsScreen extends GameOptionsScreen{
 	private KeyBindingWidget editingKeyBinding;
 	private final List<KeyBindingWidget> allKeyBindings = new ArrayList<>();
 	
-	public BetterControlsScreen(final Screen parentScreen){
-		super(parentScreen, MinecraftClient.getInstance().options, TITLE);
+	public BetterControlsScreen(@Nullable final Screen parentScreen){
+		super(parentScreen, OPTIONS, TITLE);
 	}
 	
 	@Override
 	public void init(){
 		allKeyBindings.clear();
 		
-		final List<Element> elements = new ArrayList<>();
+		final List<IGuiEventListener> elements = new ArrayList<>();
 		int y = 0;
 		
-		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, Text.of("Sprinting"), CENTER));
+		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, text("Sprinting"), CENTER));
 		y = generateSprintingOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;
 		
-		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, Text.of("Sneaking"), CENTER));
+		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, text("Sneaking"), CENTER));
 		y = generateSneakingOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;
 		
-		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, Text.of("Flying"), CENTER));
+		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, text("Flying"), CENTER));
 		y = generateFlightOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;
 		
-		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, Text.of("Miscellaneous"), CENTER));
+		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, text("Miscellaneous"), CENTER));
 		y = generateMiscellaneousOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;
 		
-		addButton(new ButtonWidget(width / 2 - 99, height - 29, 200, 20, ScreenTexts.DONE, btn -> client.openScreen(parent)));
-		addChild(optionsWidget = new OptionListWidget(21, height - 32, width, height, elements, y - TITLE_MARGIN_TOP + BOTTOM_PADDING));
+		addButton(new Button(width / 2 - 99, height - 29, 200, 20, DialogTexts.GUI_DONE, btn -> minecraft.displayGuiScreen(parentScreen)));
+		addListener(optionsWidget = new OptionListWidget(21, height - 32, width, height, elements, y - TITLE_MARGIN_TOP + BOTTOM_PADDING));
 	}
 	
 	@Override
-	public void removed(){
+	public void onClose(){
 		BetterControlsMod.config.save();
 	}
 	
@@ -254,7 +255,7 @@ public class BetterControlsScreen extends GameOptionsScreen{
 	public void render(final MatrixStack matrices, final int mouseX, final int mouseY, final float delta){
 		renderBackground(matrices);
 		optionsWidget.render(matrices, mouseX, mouseY, delta);
-		drawCenteredText(matrices, textRenderer, title, width / 2, 8, (255 << 16) | (255 << 8) | 255);
+		drawCenteredString(matrices, font, title, width / 2, 8, (255 << 16) | (255 << 8) | 255);
 		super.render(matrices, mouseX, mouseY, delta);
 	}
 	
@@ -269,7 +270,7 @@ public class BetterControlsScreen extends GameOptionsScreen{
 	@Override
 	public boolean mouseClicked(final double mouseX, final double mouseY, final int button){
 		if (editingKeyBinding != null){
-			editingKeyBinding.bindAndStopEditing(InputUtil.Type.MOUSE.createFromCode(button));
+			editingKeyBinding.bindAndStopEditing(Key.inputFromMouse(button));
 			onKeyBindingEditingFinished();
 			return true;
 		}
@@ -282,10 +283,10 @@ public class BetterControlsScreen extends GameOptionsScreen{
 	public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers){
 		if (editingKeyBinding != null){
 			if (keyCode == GLFW.GLFW_KEY_ESCAPE){
-				editingKeyBinding.bindAndStopEditing(InputUtil.UNKNOWN_KEY);
+				editingKeyBinding.bindAndStopEditing(Key.INVALID);
 			}
 			else{
-				editingKeyBinding.bindAndStopEditing(InputUtil.fromKeyCode(keyCode, scanCode));
+				editingKeyBinding.bindAndStopEditing(Key.inputFromKeyboard(keyCode, scanCode));
 			}
 			
 			onKeyBindingEditingFinished();
@@ -298,7 +299,7 @@ public class BetterControlsScreen extends GameOptionsScreen{
 	
 	private void onKeyBindingEditingFinished(){
 		editingKeyBinding = null;
-		KeyBinding.updateKeysByCode();
+		KeyBinding.resetKeyBindingArrayAndHash();
 		
 		for(final KeyBindingWidget widget : allKeyBindings){
 			widget.updateKeyBindingText();

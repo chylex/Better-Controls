@@ -63,7 +63,7 @@ public final class OptionListWidget extends ElementListWidget<Entry>{
 	}
 	
 	@Override
-	protected int getRowLeft(){
+	public int getRowLeft(){
 		return super.getRowLeft() - ROW_PADDING;
 	}
 	

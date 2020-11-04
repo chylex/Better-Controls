@@ -62,7 +62,7 @@ public final class OptionListWidget extends AbstractOptionList<Entry>{
 	}
 	
 	@Override
-	protected int getRowLeft(){
+	public int getRowLeft(){
 		return super.getRowLeft() - ROW_PADDING;
 	}
 	

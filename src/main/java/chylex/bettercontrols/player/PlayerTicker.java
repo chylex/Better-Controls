@@ -12,7 +12,6 @@ import chylex.bettercontrols.mixin.AccessStickyKeyBindingStateGetter;
 import chylex.bettercontrols.util.Key;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.util.MovementInput;
-import net.minecraft.util.math.MathHelper;
 import java.lang.ref.WeakReference;
 import java.util.function.BooleanSupplier;
 import static chylex.bettercontrols.util.Statics.KEY_FORWARD;
@@ -160,14 +159,13 @@ public final class PlayerTicker{
 		
 		if (FlightHelper.isFlyingCreativeOrSpectator(player)){
 			final float flightSpeed = FlightHelper.getFlightSpeed(player);
+			final float verticalVelocity = FlightHelper.getExtraVerticalVelocity(player);
 			
 			if (flightSpeed > 0F){
 				player.abilities.setFlySpeed(flightSpeed);
 			}
 			
-			final float verticalVelocity = FlightHelper.getExtraVerticalVelocity(player);
-			
-			if (!MathHelper.epsilonEquals(verticalVelocity, 0F) && player == MINECRAFT.getRenderViewEntity()){
+			if (Math.abs(verticalVelocity) > 1E-5F && player == MINECRAFT.getRenderViewEntity()){
 				int direction = 0;
 				
 				if (player.movementInput.sneaking){

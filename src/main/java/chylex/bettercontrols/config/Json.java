@@ -11,8 +11,9 @@ final class Json{
 		obj.addProperty(key, Float.valueOf(value));
 	}
 	
-	static float getFloat(final JsonObject obj, final String key, final float defaultValue){
-		return obj.has(key) ? obj.get(key).getAsFloat() : defaultValue;
+	static float getFloat(final JsonObject obj, final String key, final float defaultValue, final float minValue, final float maxValue){
+		final float value = obj.has(key) ? obj.get(key).getAsFloat() : defaultValue;
+		return Math.max(minValue, Math.min(maxValue, value));
 	}
 	
 	static void setBool(final JsonObject obj, final String key, final boolean value){

@@ -81,15 +81,7 @@ public final class PlayerTicker{
 			((AccessClientPlayerFields)player).setTicksLeftToDoubleTapSprint(0);
 		}
 		
-		final SprintMode sprintMode;
-		
-		if (FlightHelper.isFlyingCreativeOrSpectator(player)){
-			sprintMode = cfg().sprintModeWhileFlying;
-		}
-		else{
-			sprintMode = cfg().sprintMode;
-		}
-		
+		final SprintMode sprintMode = cfg().sprintMode;
 		final boolean wasSprintToggled = OPTIONS.toggleSprint;
 		final boolean isSprintToggled = toggleSprint.tick();
 		
@@ -160,8 +152,9 @@ public final class PlayerTicker{
 		}
 		
 		if (FlightHelper.isFlyingCreativeOrSpectator(player)){
-			final float flightSpeed = FlightHelper.getFlightSpeed(player);
-			final float verticalVelocity = FlightHelper.getExtraVerticalVelocity(player);
+			final boolean boost = Key.isPressed(KEY_SPRINT);
+			final float flightSpeed = FlightHelper.getFlightSpeed(player, boost);
+			final float verticalVelocity = FlightHelper.getExtraVerticalVelocity(player, boost);
 			
 			if (flightSpeed > 0F){
 				player.abilities.setFlySpeed(flightSpeed);

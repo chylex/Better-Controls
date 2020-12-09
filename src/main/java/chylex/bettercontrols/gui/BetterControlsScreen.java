@@ -121,6 +121,11 @@ public class BetterControlsScreen extends GameOptionsScreen{
 		
 		y += ROW_HEIGHT;
 		
+		generateLeftSideText(y, elements, text("Double Tap 'Jump' To Fly (Creative)"));
+		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.doubleTapJumpToToggleFlight, value -> cfg.doubleTapJumpToToggleFlight = value));
+		
+		y += ROW_HEIGHT;
+		
 		generateLeftSideText(y, elements, text("Disable Flight Inertia"));
 		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.disableFlightInertia, value -> cfg.disableFlightInertia = value));
 		

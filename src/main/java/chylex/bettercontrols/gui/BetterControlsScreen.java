@@ -10,6 +10,7 @@ import chylex.bettercontrols.gui.elements.TextWidget;
 import chylex.bettercontrols.input.KeyBindingWithModifier;
 import chylex.bettercontrols.input.ModifierKey;
 import chylex.bettercontrols.input.SprintMode;
+import chylex.bettercontrols.util.Key;
 import chylex.bettercontrols.util.LiteralText;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
@@ -268,7 +269,7 @@ public class BetterControlsScreen extends GameOptionsScreen{
 	@Override
 	public boolean mouseClicked(final double mouseX, final double mouseY, final int button){
 		if (editingKeyBinding != null){
-			editingKeyBinding.bindAndStopEditing(InputUtil.Type.MOUSE.createFromCode(button));
+			editingKeyBinding.bindAndStopEditing(Key.inputFromMouse(button));
 			onKeyBindingEditingFinished();
 			return true;
 		}
@@ -281,10 +282,10 @@ public class BetterControlsScreen extends GameOptionsScreen{
 	public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers){
 		if (editingKeyBinding != null){
 			if (keyCode == GLFW.GLFW_KEY_ESCAPE){
-				editingKeyBinding.bindAndStopEditing(InputUtil.UNKNOWN_KEYCODE);
+				editingKeyBinding.bindAndStopEditing(Key.INVALID);
 			}
 			else{
-				editingKeyBinding.bindAndStopEditing(InputUtil.getKeyCode(keyCode, scanCode));
+				editingKeyBinding.bindAndStopEditing(Key.inputFromKeyboard(keyCode, scanCode));
 			}
 			
 			onKeyBindingEditingFinished();

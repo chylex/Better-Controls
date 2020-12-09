@@ -153,8 +153,10 @@ public final class PlayerTicker{
 	}
 	
 	public void afterInputTick(final ClientPlayerEntity player){
+		final MovementInput input = player.movementInput;
+		
 		if (MINECRAFT.currentScreen == null && !player.abilities.isFlying){
-			player.movementInput.jump |= toggleJump.tick();
+			input.jump |= toggleJump.tick();
 		}
 		
 		if (FlightHelper.isFlyingCreativeOrSpectator(player)){
@@ -168,16 +170,26 @@ public final class PlayerTicker{
 			if (Math.abs(verticalVelocity) > 1E-5F && player == MINECRAFT.getRenderViewEntity()){
 				int direction = 0;
 				
-				if (player.movementInput.sneaking){
+				if (input.sneaking){
 					--direction;
 				}
 				
-				if (player.movementInput.jump){
+				if (input.jump){
 					++direction;
 				}
 				
 				if (direction != 0){
 					player.setMotion(player.getMotion().add(0D, flightSpeed * verticalVelocity * direction, 0D));
+				}
+			}
+			
+			if (cfg().disableFlightInertia){
+				if (input.moveForward == 0F && input.moveStrafe == 0F){
+					player.setMotion(player.getMotion().mul(0.0, 1.0, 0.0));
+				}
+				
+				if (!input.jump && !input.sneaking){
+					player.setMotion(player.getMotion().mul(1.0, 0.0, 1.0));
 				}
 			}
 		}

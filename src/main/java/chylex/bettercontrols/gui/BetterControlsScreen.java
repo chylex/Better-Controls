@@ -126,6 +126,11 @@ public class BetterControlsScreen extends SettingsScreen{
 		
 		y += ROW_HEIGHT;
 		
+		generateLeftSideText(y, elements, text("Disable Flight Inertia"));
+		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.disableFlightInertia, value -> cfg.disableFlightInertia = value));
+		
+		y += ROW_HEIGHT;
+		
 		generateLeftSideText(y, elements, text("Disable Field Of View Changing"));
 		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.disableChangingFovWhileFlying, value -> cfg.disableChangingFovWhileFlying = value));
 		

@@ -121,11 +121,6 @@ public class BetterControlsScreen extends SettingsScreen{
 		
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, text("Sprint Key Mode While Flying"));
-		elements.add(new CycleButtonWidget<>(col2(1), y, COL2_W, SPRINT_MODE_OPTIONS, cfg.sprintModeWhileFlying, value -> cfg.sprintModeWhileFlying = value));
-		
-		y += ROW_HEIGHT;
-		
 		generateLeftSideText(y, elements, text("Disable Flight Inertia"));
 		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.disableFlightInertia, value -> cfg.disableFlightInertia = value));
 		

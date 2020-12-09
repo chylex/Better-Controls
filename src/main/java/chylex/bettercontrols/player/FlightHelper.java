@@ -7,7 +7,6 @@ final class FlightHelper{
 	private FlightHelper(){}
 	
 	private static final float BASE_FLIGHT_SPEED = 0.05F;
-	private static final float BASE_FLIGHT_SPEED_SPRINT_MP_INV = 0.5F; // sprinting doubles speed in PlayerEntity.travel
 	private static final float BASE_VERTICAL_VELOCITY = 3F;
 	
 	private static BetterControlsConfig cfg(){
@@ -22,18 +21,18 @@ final class FlightHelper{
 		return cfg().flyOnGroundInCreative && player.isCreative() && player.abilities.isFlying;
 	}
 	
-	static float getFlightSpeed(final ClientPlayerEntity player){
+	static float getFlightSpeed(final ClientPlayerEntity player, final boolean boost){
 		if (player.isCreative()){
-			if (player.isSprinting()){
-				return BASE_FLIGHT_SPEED * cfg().flightSpeedMpCreativeSprinting * BASE_FLIGHT_SPEED_SPRINT_MP_INV;
+			if (boost){
+				return BASE_FLIGHT_SPEED * cfg().flightSpeedMpCreativeSprinting;
 			}
 			else{
 				return BASE_FLIGHT_SPEED * cfg().flightSpeedMpCreativeDefault;
 			}
 		}
 		else if (player.isSpectator()){
-			if (player.isSprinting()){
-				return BASE_FLIGHT_SPEED * cfg().flightSpeedMpSpectatorSprinting * BASE_FLIGHT_SPEED_SPRINT_MP_INV;
+			if (boost){
+				return BASE_FLIGHT_SPEED * cfg().flightSpeedMpSpectatorSprinting;
 			}
 			else{
 				return BASE_FLIGHT_SPEED * cfg().flightSpeedMpSpectatorDefault;
@@ -44,9 +43,9 @@ final class FlightHelper{
 		}
 	}
 	
-	static float getExtraVerticalVelocity(final ClientPlayerEntity player){
+	static float getExtraVerticalVelocity(final ClientPlayerEntity player, final boolean isSprinting){
 		if (player.isCreative()){
-			if (player.isSprinting()){
+			if (isSprinting){
 				return BASE_VERTICAL_VELOCITY * cfg().flightVerticalBoostCreativeSprinting;
 			}
 			else{
@@ -54,7 +53,7 @@ final class FlightHelper{
 			}
 		}
 		else if (player.isSpectator()){
-			if (player.isSprinting()){
+			if (isSprinting){
 				return BASE_VERTICAL_VELOCITY * cfg().flightVerticalBoostSpectatorSprinting;
 			}
 			else{

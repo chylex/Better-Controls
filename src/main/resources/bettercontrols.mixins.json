@@ -18,6 +18,7 @@
     "HookControlsListWidget",
     "HookLoadGameOptions",
     "HookOpenScreen",
+    "HookPlayerFlightSpeed",
     "HookStickyKeyBindingState"
   ],
   "injectors": {

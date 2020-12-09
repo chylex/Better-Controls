@@ -20,6 +20,7 @@ public final class BetterControlsConfig{
 	
 	public final KeyBindingWithModifier keyToggleFlight = new KeyBindingWithModifier("key.bettercontrols.toggle_flight");
 	public SprintMode sprintModeWhileFlying = SprintMode.TAP_TO_START;
+	public boolean disableFlightInertia = false;
 	public boolean disableChangingFovWhileFlying = false;
 	public boolean flyOnGroundInCreative = false;
 	public float flightSpeedMpCreativeDefault = 1F;

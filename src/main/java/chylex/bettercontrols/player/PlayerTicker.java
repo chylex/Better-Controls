@@ -10,6 +10,7 @@ import chylex.bettercontrols.mixin.AccessClientPlayerFields;
 import chylex.bettercontrols.mixin.AccessGameRendererFields;
 import chylex.bettercontrols.mixin.AccessStickyKeyBindingStateGetter;
 import chylex.bettercontrols.util.Key;
+import net.minecraft.client.input.Input;
 import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.network.ClientPlayerEntity;
 import java.lang.ref.WeakReference;
@@ -153,8 +154,10 @@ public final class PlayerTicker{
 	}
 	
 	public void afterInputTick(final ClientPlayerEntity player){
+		final Input input = player.input;
+		
 		if (MINECRAFT.currentScreen == null && !player.abilities.flying){
-			player.input.jumping |= toggleJump.tick();
+			input.jumping |= toggleJump.tick();
 		}
 		
 		if (FlightHelper.isFlyingCreativeOrSpectator(player)){
@@ -168,16 +171,26 @@ public final class PlayerTicker{
 			if (Math.abs(verticalVelocity) > 1E-5F && player == MINECRAFT.getCameraEntity()){
 				int direction = 0;
 				
-				if (player.input.sneaking){
+				if (input.sneaking){
 					--direction;
 				}
 				
-				if (player.input.jumping){
+				if (input.jumping){
 					++direction;
 				}
 				
 				if (direction != 0){
 					player.setVelocity(player.getVelocity().add(0D, flightSpeed * verticalVelocity * direction, 0D));
+				}
+			}
+			
+			if (cfg().disableFlightInertia){
+				if (input.movementForward == 0F && input.movementSideways == 0F){
+					player.setVelocity(player.getVelocity().multiply(0.0, 1.0, 0.0));
+				}
+				
+				if (!input.jumping && !input.sneaking){
+					player.setVelocity(player.getVelocity().multiply(1.0, 0.0, 1.0));
 				}
 			}
 		}

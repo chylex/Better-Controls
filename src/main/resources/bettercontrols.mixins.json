@@ -11,6 +11,7 @@
     "AccessGameRendererFields",
     "AccessKeyBindingFields",
     "AccessOptionButtonWidgetOption",
+    "AccessPlayerFields",
     "AccessScreenButtons",
     "AccessStickyKeyBindingStateGetter",
     "HookClientPlayerInputTick",

@@ -40,7 +40,6 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		Json.setBool(obj, "Sneak.SmoothCamera", cfg.sneakingMovesCameraSmoothly);
 		
 		Json.writeKeyBinding(obj, "Flight.KeyToggle.Creative", cfg.keyToggleFlight);
-		Json.setEnum(obj, "Flight.SprintMode", cfg.sprintModeWhileFlying);
 		Json.setBool(obj, "Flight.DisableInertia", cfg.disableFlightInertia);
 		Json.setBool(obj, "Flight.DisableChangingFOV", cfg.disableChangingFovWhileFlying);
 		Json.setBool(obj, "Flight.FlyOnGround.Creative", cfg.flyOnGroundInCreative);
@@ -79,7 +78,6 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		cfg.sneakingMovesCameraSmoothly = Json.getBool(obj, "Sneak.SmoothCamera", cfg.sneakingMovesCameraSmoothly);
 		
 		Json.readKeyBinding(obj, "Flight.KeyToggle.Creative", cfg.keyToggleFlight);
-		cfg.sprintModeWhileFlying = Json.getEnum(obj, "Flight.SprintMode", cfg.sprintModeWhileFlying, SprintMode.class);
 		cfg.disableFlightInertia = Json.getBool(obj, "Flight.DisableInertia", cfg.disableFlightInertia);
 		cfg.disableChangingFovWhileFlying = Json.getBool(obj, "Flight.DisableChangingFOV", cfg.disableChangingFovWhileFlying);
 		cfg.flyOnGroundInCreative = Json.getBool(obj, "Flight.FlyOnGround.Creative", cfg.flyOnGroundInCreative);

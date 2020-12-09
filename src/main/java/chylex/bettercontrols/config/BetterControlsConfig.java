@@ -19,7 +19,6 @@ public final class BetterControlsConfig{
 	public boolean sneakingMovesCameraSmoothly = true;
 	
 	public final KeyBindingWithModifier keyToggleFlight = new KeyBindingWithModifier("key.bettercontrols.toggle_flight");
-	public SprintMode sprintModeWhileFlying = SprintMode.TAP_TO_START;
 	public boolean disableFlightInertia = false;
 	public boolean disableChangingFovWhileFlying = false;
 	public boolean flyOnGroundInCreative = false;

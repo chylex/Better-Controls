@@ -19,6 +19,7 @@ public final class BetterControlsConfig{
 	public boolean sneakingMovesCameraSmoothly = true;
 	
 	public final KeyBindingWithModifier keyToggleFlight = new KeyBindingWithModifier("key.bettercontrols.toggle_flight");
+	public boolean doubleTapJumpToToggleFlight = true;
 	public boolean disableFlightInertia = false;
 	public boolean disableChangingFovWhileFlying = false;
 	public boolean flyOnGroundInCreative = false;

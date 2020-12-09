@@ -8,6 +8,7 @@ import chylex.bettercontrols.input.ToggleTrackerForStickyKey;
 import chylex.bettercontrols.mixin.AccessCameraFields;
 import chylex.bettercontrols.mixin.AccessClientPlayerFields;
 import chylex.bettercontrols.mixin.AccessGameRendererFields;
+import chylex.bettercontrols.mixin.AccessPlayerFields;
 import chylex.bettercontrols.mixin.AccessStickyKeyBindingStateGetter;
 import chylex.bettercontrols.util.Key;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -79,6 +80,10 @@ public final class PlayerTicker{
 		
 		if (!cfg().doubleTapForwardToSprint){
 			((AccessClientPlayerFields)player).setTicksLeftToDoubleTapSprint(0);
+		}
+		
+		if (!cfg().doubleTapJumpToToggleFlight){
+			((AccessPlayerFields)player).setTicksLeftToDoubleTapFlight(0);
 		}
 		
 		final SprintMode sprintMode = cfg().sprintMode;

@@ -29,11 +29,15 @@ public final class Key{
 	}
 	
 	public static String writeBinding(final KeyBinding binding){
-		return binding.getTranslationKey();
+		return binding.getBoundKeyTranslationKey();
 	}
 	
 	public static void readBinding(final KeyBinding binding, final String serialized){
-		bind(binding, InputUtil.fromTranslationKey(serialized));
+		try{
+			bind(binding, InputUtil.fromTranslationKey(serialized));
+		}catch(final IllegalArgumentException e){
+			e.printStackTrace(); // let's not crash if the config file has garbage, okay?
+		}
 	}
 	
 	public static InputUtil.Key inputFromMouse(final int button){

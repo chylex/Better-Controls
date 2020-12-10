@@ -181,16 +181,6 @@ public final class PlayerTicker{
 					player.setVelocity(player.getVelocity().add(0D, flightSpeed * verticalVelocity * direction, 0D));
 				}
 			}
-			
-			if (cfg().disableFlightInertia){
-				if (input.movementForward == 0F && input.movementSideways == 0F){
-					player.setVelocity(player.getVelocity().multiply(0.0, 1.0, 0.0));
-				}
-				
-				if (!input.jumping && !input.sneaking){
-					player.setVelocity(player.getVelocity().multiply(1.0, 0.0, 1.0));
-				}
-			}
 		}
 		
 		if (cfg().resumeSprintingAfterHittingObstacle){
@@ -254,6 +244,18 @@ public final class PlayerTicker{
 		else{
 			wasSneakingBeforeTouchingGround = false;
 			holdingSneakWhileTouchingGround = false;
+		}
+		
+		if (FlightHelper.isFlyingCreativeOrSpectator(player) && cfg().disableFlightInertia){
+			final Input input = player.input;
+			
+			if (input.movementForward == 0F && input.movementSideways == 0F){
+				player.setVelocity(player.getVelocity().multiply(0.0, 1.0, 0.0));
+			}
+			
+			if (!input.jumping && !input.sneaking){
+				player.setVelocity(player.getVelocity().multiply(1.0, 0.0, 1.0));
+			}
 		}
 		
 		if (player.isCreative()){

@@ -5,6 +5,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(PlayerEntity.class)
 public interface AccessPlayerFields{
-	@Accessor("abilityResyncCountdown")
+	@Accessor("flyToggleTimer")
 	void setTicksLeftToDoubleTapFlight(int value);
 }

@@ -27,11 +27,14 @@ You can also bind a key that resets all **Toggle Keybinds** at once. That makes 
 
 #### Flying
 
-* **Sprint Key Mode While Flying** changes how the Sprint key behaves during flight.
+* **Double Tap 'Jump' To Fly** can be turned off to prevent accidental flight toggling.
+* **Disable Flight Inertia** stops you instantly when you stop holding movement keys.
 * **Disable Field Of View Changing** prevents sprinting, potions, and other factors from changing the FOV while flying in creative and spectator mode.
 * **Fly On Ground** lets you fly while touching the ground in creative mode (and also lets you stop flying by tapping Sneak while touching the ground).
 * **Flight Speed Multiplier** (0.25x - 8x) changes how fast you fly in creative and spectator mode.
 * **Vertical Speed Boost** (up to +300%) adds additional vertical speed boost while flying in creative and spectator mode.
+
+Both speed boosts can be configured separately for sprinting, which will be active when the Sprint key is held. Unlike in vanilla, the sprinting flight boost works in all directions.
 
 ## Installation
 

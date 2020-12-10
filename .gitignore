@@ -24,6 +24,10 @@ bin/
 .classpath
 .project
 
+# forge
+
+logs/
+
 # fabric
 
 run/

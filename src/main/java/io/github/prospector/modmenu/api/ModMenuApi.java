@@ -3,12 +3,12 @@ import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 
 @SuppressWarnings("unused")
-public interface ModMenuApi{
-	default ConfigScreenFactory<?> getModConfigScreenFactory(){
+public interface ModMenuApi {
+	default ConfigScreenFactory<?> getModConfigScreenFactory() {
 		return ignore -> null;
 	}
 	
-	default Map<String, ConfigScreenFactory<?>> getProvidedConfigScreenFactories(){
+	default Map<String, ConfigScreenFactory<?>> getProvidedConfigScreenFactories() {
 		return ImmutableMap.of();
 	}
 }

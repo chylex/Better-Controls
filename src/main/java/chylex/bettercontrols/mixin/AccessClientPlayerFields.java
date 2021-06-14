@@ -4,7 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(ClientPlayerEntity.class)
-public interface AccessClientPlayerFields{
+public interface AccessClientPlayerFields {
 	@Accessor
 	void setTicksLeftToDoubleTapSprint(int value);
 }

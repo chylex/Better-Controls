@@ -1,10 +1,10 @@
 package chylex.bettercontrols.util;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.options.GameOptions;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.option.KeyBinding;
 
-public final class Statics{
-	private Statics(){}
+public final class Statics {
+	private Statics() {}
 	
 	public static final MinecraftClient MINECRAFT = MinecraftClient.getInstance();
 	public static final GameOptions OPTIONS = MINECRAFT.options;

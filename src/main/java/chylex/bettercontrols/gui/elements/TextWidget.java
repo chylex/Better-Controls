@@ -8,7 +8,7 @@ import net.minecraft.text.OrderedText;
 import java.util.List;
 import static chylex.bettercontrols.util.Statics.MINECRAFT;
 
-public final class TextWidget extends DrawableHelper implements Widget{
+public final class TextWidget extends DrawableHelper implements Widget {
 	public static final int LEFT = 0;
 	public static final int CENTER = 1;
 	
@@ -19,7 +19,7 @@ public final class TextWidget extends DrawableHelper implements Widget{
 	private final int height;
 	private final int align;
 	
-	public TextWidget(final int x, final int y, final int width, final int height, final LiteralText text, final int align){
+	public TextWidget(final int x, final int y, final int width, final int height, final LiteralText text, final int align) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -28,36 +28,36 @@ public final class TextWidget extends DrawableHelper implements Widget{
 		this.align = align;
 	}
 	
-	public TextWidget(final int x, final int y, final int width, final LiteralText text, final int align){
+	public TextWidget(final int x, final int y, final int width, final LiteralText text, final int align) {
 		this(x, y, width, 20, text, align);
 	}
 	
-	public TextWidget(final int x, final int y, final int width, final LiteralText text){
+	public TextWidget(final int x, final int y, final int width, final LiteralText text) {
 		this(x, y, width, 20, text, LEFT);
 	}
 	
 	@Override
-	public int getX(){
+	public int getX() {
 		return x;
 	}
 	
 	@Override
-	public int getY(){
+	public int getY() {
 		return y;
 	}
 	
 	@Override
-	public void setX(final int x){
+	public void setX(final int x) {
 		this.x = x;
 	}
 	
 	@Override
-	public void setY(final int y){
+	public void setY(final int y) {
 		this.y = y;
 	}
 	
 	@Override
-	public void render(final MatrixStack matrices, final int mouseX, final int mouseY, final float delta){
+	public void render(final MatrixStack matrices, final int mouseX, final int mouseY, final float delta) {
 		final TextRenderer textRenderer = MINECRAFT.textRenderer;
 		final List<OrderedText> lines = textRenderer.wrapLines(text, width);
 		final int lineHeight = textRenderer.fontHeight + 1;
@@ -65,7 +65,7 @@ public final class TextWidget extends DrawableHelper implements Widget{
 		final int finalX = align == CENTER ? x + (width / 2) - (lines.stream().mapToInt(textRenderer::getWidth).max().orElse(0) / 2) : x;
 		final int finalY = y + (height / 2) - (lineHeight * lines.size() / 2) + 1;
 		
-		for(int i = 0; i < lines.size(); i++){
+		for (int i = 0; i < lines.size(); i++) {
 			final OrderedText line = lines.get(i);
 			textRenderer.drawWithShadow(matrices, line, finalX, finalY + (i * lineHeight), (255 << 16) | (255 << 8) | 255);
 		}

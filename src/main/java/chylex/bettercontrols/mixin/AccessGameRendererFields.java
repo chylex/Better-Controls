@@ -4,7 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(GameRenderer.class)
-public interface AccessGameRendererFields{
+public interface AccessGameRendererFields {
 	@Accessor
 	void setMovementFovMultiplier(float value);
 }

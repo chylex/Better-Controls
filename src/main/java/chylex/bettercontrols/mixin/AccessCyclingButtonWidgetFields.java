@@ -1,11 +1,12 @@
 package chylex.bettercontrols.mixin;
-import net.minecraft.client.gui.screen.option.ControlsListWidget.CategoryEntry;
+
+import net.minecraft.client.gui.widget.CyclingButtonWidget;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(CategoryEntry.class)
-public interface AccessControlsListCategory {
+@Mixin(CyclingButtonWidget.class)
+public interface AccessCyclingButtonWidgetFields {
 	@Accessor
-	Text getText();
+	Text getOptionText();
 }

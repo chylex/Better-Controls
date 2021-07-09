@@ -1,8 +1,7 @@
 buildscript {
 	repositories {
 		maven { url = 'https://files.minecraftforge.net/maven' }
-		maven { url = 'https://dist.creeper.host/Sponge/maven' }
-		jcenter()
+		maven { url = "https://repo.spongepowered.org/maven" }
 		mavenCentral()
 	}
 	
@@ -43,6 +42,19 @@ minecraft {
 	
 	runs {
 		client {
+			workingDirectory file('run')
+			
+			property 'mixin.env.disableRefMap', 'true'
+			arg '-mixin.config=bettercontrols.mixins.json'
+			
+			mods {
+				bettercontrols {
+					source sourceSets.main
+				}
+			}
+		}
+		
+		server {
 			workingDirectory file('run')
 			
 			property 'mixin.env.disableRefMap', 'true'

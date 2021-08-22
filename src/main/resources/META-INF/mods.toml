@@ -7,7 +7,7 @@ issueTrackerURL = "https://github.com/chylex/Better-Controls/issues"
 
 [[mods]]
 modId = "bettercontrols"
-version = "1.2.0"
+version = "1.2.0a"
 displayName = "Better Controls"
 logoFile = "icon.png"
 description = '''

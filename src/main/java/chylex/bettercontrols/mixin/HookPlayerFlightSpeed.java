@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 
+@SuppressWarnings("MethodMayBeStatic")
 @Mixin(Player.class)
 public abstract class HookPlayerFlightSpeed extends LivingEntity {
 	protected HookPlayerFlightSpeed(final EntityType<? extends LivingEntity> type, final Level world) {

@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static chylex.bettercontrols.util.Statics.MINECRAFT;
 
+@SuppressWarnings("MethodMayBeStatic")
 @Mixin(value = Minecraft.class, priority = 100)
 public abstract class HookOpenScreen {
 	@Inject(method = "setScreen", at = @At("TAIL"))

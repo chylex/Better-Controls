@@ -9,7 +9,6 @@ import chylex.bettercontrols.mixin.AccessCameraFields;
 import chylex.bettercontrols.mixin.AccessClientPlayerFields;
 import chylex.bettercontrols.mixin.AccessPlayerFields;
 import chylex.bettercontrols.mixin.AccessStickyKeyBindingStateGetter;
-import chylex.bettercontrols.util.Key;
 import net.minecraft.client.Camera;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
@@ -97,7 +96,7 @@ public final class PlayerTicker {
 			final int nextTemporarySprintTimer = temporarySprintTimer - 1;
 			temporarySprintTimer = 0;
 			
-			if (!Key.isPressed(KEY_SPRINT) && Key.isPressed(KEY_FORWARD)) {
+			if (!KEY_SPRINT.isDown() && KEY_FORWARD.isDown()) {
 				temporarySprintTimer = nextTemporarySprintTimer;
 			}
 			else if (sprintMode == SprintMode.TAP_TO_TOGGLE) {
@@ -114,7 +113,7 @@ public final class PlayerTicker {
 			waitingForSprintKeyRelease = true;
 		}
 		else if (sprintMode == SprintMode.TAP_TO_TOGGLE) {
-			if (Key.isPressed(KEY_SPRINT)) {
+			if (KEY_SPRINT.isDown()) {
 				if (!waitingForSprintKeyRelease) {
 					waitingForSprintKeyRelease = true;
 					stopSprintingAfterReleasingSprintKey = player.isSprinting();
@@ -129,12 +128,12 @@ public final class PlayerTicker {
 			}
 		}
 		else if (sprintMode == SprintMode.HOLD) {
-			if (Key.isPressed(KEY_SPRINT)) {
+			if (KEY_SPRINT.isDown()) {
 				stopSprintingAfterReleasingSprintKey = true;
 			}
 		}
 		
-		if (stopSprintingAfterReleasingSprintKey && !Key.isPressed(KEY_SPRINT)) {
+		if (stopSprintingAfterReleasingSprintKey && !KEY_SPRINT.isDown()) {
 			stopSprintingAfterReleasingSprintKey = false;
 			waitingForSprintKeyRelease = false;
 			player.setSprinting(false);
@@ -157,7 +156,7 @@ public final class PlayerTicker {
 		}
 		
 		if (FlightHelper.isFlyingCreativeOrSpectator(player)) {
-			final boolean boost = Key.isPressed(KEY_SPRINT);
+			final boolean boost = KEY_SPRINT.isDown();
 			final float flightSpeed = FlightHelper.getFlightSpeed(player, boost);
 			final float verticalVelocity = FlightHelper.getExtraVerticalVelocity(player, boost);
 			
@@ -185,7 +184,7 @@ public final class PlayerTicker {
 		if (cfg().resumeSprintingAfterHittingObstacle) {
 			if (wasHittingObstacle != player.horizontalCollision) {
 				if (!wasHittingObstacle) {
-					wasSprintingBeforeHittingObstacle = player.isSprinting() || Key.isPressed(KEY_SPRINT);
+					wasSprintingBeforeHittingObstacle = player.isSprinting() || KEY_SPRINT.isDown();
 				}
 				else if (wasSprintingBeforeHittingObstacle) {
 					wasSprintingBeforeHittingObstacle = false;
@@ -254,7 +253,7 @@ public final class PlayerTicker {
 		}
 		
 		if (player.isCreative()) {
-			if (Key.wasPressed(cfg().keyToggleFlight)) {
+			if (cfg().keyToggleFlight.consumeClick()) {
 				final boolean isFlying = !player.getAbilities().flying;
 				
 				player.getAbilities().flying = isFlying;
@@ -287,14 +286,14 @@ public final class PlayerTicker {
 			}
 		}
 		
-		if (Key.wasPressed(cfg().keyResetAllToggles)) {
+		if (cfg().keyResetAllToggles.consumeClick()) {
 			toggleSprint.reset();
 			toggleSneak.reset();
 			toggleWalkForward.reset();
 			toggleJump.reset();
 		}
 		
-		if (Key.isPressed(cfg().keyOpenMenu)) {
+		if (cfg().keyOpenMenu.isDown()) {
 			MINECRAFT.setScreen(new BetterControlsScreen(null));
 		}
 	}

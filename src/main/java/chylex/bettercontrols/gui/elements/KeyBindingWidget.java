@@ -1,5 +1,4 @@
 package chylex.bettercontrols.gui.elements;
-import chylex.bettercontrols.util.Key;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
@@ -37,12 +36,12 @@ public final class KeyBindingWidget extends Button {
 	
 	public void linkButtonToBoundState(final AbstractButton button) {
 		linkedButtons.add(button);
-		button.active = !Key.isUnbound(binding);
+		button.active = !binding.isUnbound();
 	}
 	
 	@Override
 	protected MutableComponent createNarrationMessage() {
-		return Key.isUnbound(binding) ? new TranslatableComponent("narrator.controls.unbound", bindingName) : new TranslatableComponent("narrator.controls.bound", bindingName, super.createNarrationMessage());
+		return binding.isUnbound() ? new TranslatableComponent("narrator.controls.unbound", bindingName) : new TranslatableComponent("narrator.controls.bound", bindingName, super.createNarrationMessage());
 	}
 	
 	@Override
@@ -53,11 +52,11 @@ public final class KeyBindingWidget extends Button {
 	}
 	
 	public void bindAndStopEditing(final InputConstants.Key key) {
-		Key.bind(binding, key);
+		binding.setKey(key);
 		stopEditing();
 		
 		for (final AbstractButton button : linkedButtons) {
-			button.active = !Key.isUnbound(binding);
+			button.active = !binding.isUnbound();
 		}
 	}
 	
@@ -69,7 +68,7 @@ public final class KeyBindingWidget extends Button {
 	public void updateKeyBindingText() {
 		boolean hasConflict = false;
 		
-		if (!Key.isUnbound(binding)) {
+		if (!binding.isUnbound()) {
 			for (final KeyMapping other : OPTIONS.keyMappings) {
 				if (binding != other && binding.equals(other)) {
 					hasConflict = true;
@@ -79,13 +78,13 @@ public final class KeyBindingWidget extends Button {
 		}
 		
 		if (isEditing) {
-			setMessage((new TextComponent("> ")).append(Key.getBoundKeyText(binding).copy().withStyle(ChatFormatting.YELLOW)).append(" <").withStyle(ChatFormatting.YELLOW));
+			setMessage((new TextComponent("> ")).append(binding.getTranslatedKeyMessage().copy().withStyle(ChatFormatting.YELLOW)).append(" <").withStyle(ChatFormatting.YELLOW));
 		}
 		else if (hasConflict) {
-			setMessage(Key.getBoundKeyText(binding).copy().withStyle(ChatFormatting.RED));
+			setMessage(binding.getTranslatedKeyMessage().copy().withStyle(ChatFormatting.RED));
 		}
 		else {
-			setMessage(Key.isUnbound(binding) ? new TextComponent("(No Binding)") : Key.getBoundKeyText(binding));
+			setMessage(binding.isUnbound() ? new TextComponent("(No Binding)") : binding.getTranslatedKeyMessage());
 		}
 	}
 }

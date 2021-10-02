@@ -10,8 +10,7 @@ import chylex.bettercontrols.gui.elements.TextWidget;
 import chylex.bettercontrols.input.KeyBindingWithModifier;
 import chylex.bettercontrols.input.ModifierKey;
 import chylex.bettercontrols.input.SprintMode;
-import chylex.bettercontrols.util.Key;
-import chylex.bettercontrols.util.LiteralText;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.components.Button;
@@ -19,6 +18,8 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.OptionsSubScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import java.util.ArrayList;
@@ -30,11 +31,14 @@ import static chylex.bettercontrols.gui.OptionListWidget.ROW_WIDTH;
 import static chylex.bettercontrols.gui.OptionListWidget.col2;
 import static chylex.bettercontrols.gui.OptionListWidget.col4;
 import static chylex.bettercontrols.gui.elements.TextWidget.CENTER;
-import static chylex.bettercontrols.util.LiteralText.text;
 import static chylex.bettercontrols.util.Statics.OPTIONS;
 
 public class BetterControlsScreen extends OptionsSubScreen {
-	public static final LiteralText TITLE = text("Better Controls");
+	private static TextComponent text(final String text) {
+		return new TextComponent(text);
+	}
+	
+	public static final Component TITLE = text("Better Controls");
 	
 	private static final int BOTTOM_PADDING = 3;
 	private static final int TEXT_PADDING_RIGHT = 4;
@@ -203,7 +207,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		new Option<>(ModifierKey.ALT, text("Alt"))
 	);
 	
-	private void generateKeyBindingWithModifierOption(final int y, final List<GuiEventListener> elements, final LiteralText text, final KeyBindingWithModifier binding) {
+	private void generateKeyBindingWithModifierOption(final int y, final List<GuiEventListener> elements, final Component text, final KeyBindingWithModifier binding) {
 		final CycleButtonWidget<ModifierKey> modifierButton = new CycleButtonWidget<>(col4(2), y, COL4_W, MODIFIER_OPTIONS, binding.getModifier(), binding::setModifier);
 		final KeyBindingWidget bindingButton = new KeyBindingWidget(col4(3), y, COL4_W, binding, this::startEditingKeyBinding);
 		bindingButton.linkButtonToBoundState(modifierButton);
@@ -214,7 +218,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		allKeyBindings.add(bindingButton);
 	}
 	
-	private static void generateLeftSideText(final int y, final List<GuiEventListener> elements, final LiteralText text) {
+	private static void generateLeftSideText(final int y, final List<GuiEventListener> elements, final Component text) {
 		elements.add(new TextWidget(col2(0), y, COL2_W - TEXT_PADDING_RIGHT, text));
 	}
 	
@@ -275,7 +279,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	@Override
 	public boolean mouseClicked(final double mouseX, final double mouseY, final int button) {
 		if (editingKeyBinding != null) {
-			editingKeyBinding.bindAndStopEditing(Key.inputFromMouse(button));
+			editingKeyBinding.bindAndStopEditing(InputConstants.Type.MOUSE.getOrCreate(button));
 			onKeyBindingEditingFinished();
 			return true;
 		}
@@ -288,10 +292,10 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers) {
 		if (editingKeyBinding != null) {
 			if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
-				editingKeyBinding.bindAndStopEditing(Key.INVALID);
+				editingKeyBinding.bindAndStopEditing(InputConstants.UNKNOWN);
 			}
 			else {
-				editingKeyBinding.bindAndStopEditing(Key.inputFromKeyboard(keyCode, scanCode));
+				editingKeyBinding.bindAndStopEditing(InputConstants.getKey(keyCode, scanCode));
 			}
 			
 			onKeyBindingEditingFinished();

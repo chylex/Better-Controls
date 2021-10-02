@@ -1,13 +1,13 @@
 package chylex.bettercontrols.gui.elements;
-import chylex.bettercontrols.util.LiteralText;
+import net.minecraft.network.chat.Component;
 import java.util.List;
 import java.util.Objects;
 
 public final class Option<T> {
 	private final T value;
-	private final LiteralText text;
+	private final Component text;
 	
-	public Option(final T value, final LiteralText text) {
+	public Option(final T value, final Component text) {
 		this.value = value;
 		this.text = text;
 	}
@@ -16,7 +16,7 @@ public final class Option<T> {
 		return value;
 	}
 	
-	public LiteralText getText() {
+	public Component getText() {
 		return text;
 	}
 	

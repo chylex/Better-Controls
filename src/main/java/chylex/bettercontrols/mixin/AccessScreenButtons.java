@@ -1,24 +1,16 @@
 package chylex.bettercontrols.mixin;
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.Selectable;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.gui.screens.Screen;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
-import java.util.List;
 
 @Mixin(Screen.class)
 public interface AccessScreenButtons {
-	@Accessor
-	List<Element> getChildren();
-	
-	@Accessor
-	List<Selectable> getSelectables();
-	
-	@Accessor
-	List<Drawable> getDrawables();
+	@Invoker
+	<T extends GuiEventListener & Widget & NarratableEntry> T callAddRenderableWidget(T widget);
 	
 	@Invoker
-	void callRemove(Element child);
+	void callRemoveWidget(GuiEventListener widget);
 }

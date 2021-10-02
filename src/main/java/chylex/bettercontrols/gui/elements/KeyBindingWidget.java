@@ -1,48 +1,48 @@
 package chylex.bettercontrols.gui.elements;
 import chylex.bettercontrols.util.Key;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.gui.components.AbstractButton;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import static chylex.bettercontrols.util.Statics.OPTIONS;
 
-public final class KeyBindingWidget extends ButtonWidget {
-	private final KeyBinding binding;
-	private final Text bindingName;
+public final class KeyBindingWidget extends Button {
+	private final KeyMapping binding;
+	private final Component bindingName;
 	
-	private final List<ClickableWidget> linkedButtons = new ArrayList<>(1);
+	private final List<AbstractButton> linkedButtons = new ArrayList<>(1);
 	
 	private final Consumer<KeyBindingWidget> onEditingStarted;
 	private boolean isEditing;
 	
-	public KeyBindingWidget(final int x, final int y, final int width, final int height, final KeyBinding binding, final Consumer<KeyBindingWidget> onEditingStarted) {
-		super(x, y, width, height, LiteralText.EMPTY, btn -> {});
+	public KeyBindingWidget(final int x, final int y, final int width, final int height, final KeyMapping binding, final Consumer<KeyBindingWidget> onEditingStarted) {
+		super(x, y, width, height, TextComponent.EMPTY, btn -> {});
 		this.binding = binding;
-		this.bindingName = new TranslatableText(binding.getTranslationKey());
+		this.bindingName = new TranslatableComponent(binding.saveString());
 		this.onEditingStarted = onEditingStarted;
 		updateKeyBindingText();
 	}
 	
-	public KeyBindingWidget(final int x, final int y, final int width, final KeyBinding binding, final Consumer<KeyBindingWidget> onEditingStarted) {
+	public KeyBindingWidget(final int x, final int y, final int width, final KeyMapping binding, final Consumer<KeyBindingWidget> onEditingStarted) {
 		this(x, y, width, 20, binding, onEditingStarted);
 	}
 	
-	public void linkButtonToBoundState(final ClickableWidget button) {
+	public void linkButtonToBoundState(final AbstractButton button) {
 		linkedButtons.add(button);
 		button.active = !Key.isUnbound(binding);
 	}
 	
 	@Override
-	protected MutableText getNarrationMessage() {
-		return Key.isUnbound(binding) ? new TranslatableText("narrator.controls.unbound", bindingName) : new TranslatableText("narrator.controls.bound", bindingName, super.getNarrationMessage());
+	protected MutableComponent createNarrationMessage() {
+		return Key.isUnbound(binding) ? new TranslatableComponent("narrator.controls.unbound", bindingName) : new TranslatableComponent("narrator.controls.bound", bindingName, super.createNarrationMessage());
 	}
 	
 	@Override
@@ -52,11 +52,11 @@ public final class KeyBindingWidget extends ButtonWidget {
 		updateKeyBindingText();
 	}
 	
-	public void bindAndStopEditing(final InputUtil.Key key) {
+	public void bindAndStopEditing(final InputConstants.Key key) {
 		Key.bind(binding, key);
 		stopEditing();
 		
-		for (final ClickableWidget button : linkedButtons) {
+		for (final AbstractButton button : linkedButtons) {
 			button.active = !Key.isUnbound(binding);
 		}
 	}
@@ -70,7 +70,7 @@ public final class KeyBindingWidget extends ButtonWidget {
 		boolean hasConflict = false;
 		
 		if (!Key.isUnbound(binding)) {
-			for (final KeyBinding other : OPTIONS.keysAll) {
+			for (final KeyMapping other : OPTIONS.keyMappings) {
 				if (binding != other && binding.equals(other)) {
 					hasConflict = true;
 					break;
@@ -79,13 +79,13 @@ public final class KeyBindingWidget extends ButtonWidget {
 		}
 		
 		if (isEditing) {
-			setMessage((new LiteralText("> ")).append(Key.getBoundKeyText(binding).copy().formatted(Formatting.YELLOW)).append(" <").formatted(Formatting.YELLOW));
+			setMessage((new TextComponent("> ")).append(Key.getBoundKeyText(binding).copy().withStyle(ChatFormatting.YELLOW)).append(" <").withStyle(ChatFormatting.YELLOW));
 		}
 		else if (hasConflict) {
-			setMessage(Key.getBoundKeyText(binding).copy().formatted(Formatting.RED));
+			setMessage(Key.getBoundKeyText(binding).copy().withStyle(ChatFormatting.RED));
 		}
 		else {
-			setMessage(Key.isUnbound(binding) ? Text.of("(No Binding)") : Key.getBoundKeyText(binding));
+			setMessage(Key.isUnbound(binding) ? new TextComponent("(No Binding)") : Key.getBoundKeyText(binding));
 		}
 	}
 }

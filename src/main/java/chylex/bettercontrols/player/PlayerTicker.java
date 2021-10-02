@@ -7,13 +7,12 @@ import chylex.bettercontrols.input.ToggleTracker;
 import chylex.bettercontrols.input.ToggleTrackerForStickyKey;
 import chylex.bettercontrols.mixin.AccessCameraFields;
 import chylex.bettercontrols.mixin.AccessClientPlayerFields;
-import chylex.bettercontrols.mixin.AccessGameRendererFields;
 import chylex.bettercontrols.mixin.AccessPlayerFields;
 import chylex.bettercontrols.mixin.AccessStickyKeyBindingStateGetter;
 import chylex.bettercontrols.util.Key;
-import net.minecraft.client.input.Input;
-import net.minecraft.client.input.KeyboardInput;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.Camera;
+import net.minecraft.client.player.Input;
+import net.minecraft.client.player.LocalPlayer;
 import java.lang.ref.WeakReference;
 import java.util.function.BooleanSupplier;
 import static chylex.bettercontrols.util.Statics.KEY_FORWARD;
@@ -26,7 +25,7 @@ import static chylex.bettercontrols.util.Statics.OPTIONS;
 public final class PlayerTicker {
 	private static PlayerTicker ticker = new PlayerTicker(null);
 	
-	public static PlayerTicker get(final ClientPlayerEntity player) {
+	public static PlayerTicker get(final LocalPlayer player) {
 		if (ticker.ref.get() != player) {
 			ticker = new PlayerTicker(player);
 		}
@@ -38,17 +37,17 @@ public final class PlayerTicker {
 		return BetterControlsMod.config;
 	}
 	
-	private final WeakReference<ClientPlayerEntity> ref;
+	private final WeakReference<LocalPlayer> ref;
 	
-	private PlayerTicker(final ClientPlayerEntity player) {
+	private PlayerTicker(final LocalPlayer player) {
 		this.ref = new WeakReference<>(player);
 		setup();
 	}
 	
 	// Logic
 	
-	private final ToggleTracker toggleSprint = new ToggleTrackerForStickyKey(cfg().keyToggleSprint, KEY_SPRINT, toggled -> OPTIONS.sprintToggled = toggled);
-	private final ToggleTracker toggleSneak = new ToggleTrackerForStickyKey(cfg().keyToggleSneak, KEY_SNEAK, toggled -> OPTIONS.sneakToggled = toggled);
+	private final ToggleTracker toggleSprint = new ToggleTrackerForStickyKey(cfg().keyToggleSprint, KEY_SPRINT, toggled -> OPTIONS.toggleSprint = toggled);
+	private final ToggleTracker toggleSneak = new ToggleTrackerForStickyKey(cfg().keyToggleSneak, KEY_SNEAK, toggled -> OPTIONS.toggleCrouch = toggled);
 	private final ToggleTracker toggleWalkForward = new ToggleTracker(cfg().keyToggleWalkForward, KEY_FORWARD);
 	private final ToggleTracker toggleJump = new ToggleTracker(cfg().keyToggleJump, KEY_JUMP);
 	
@@ -74,7 +73,7 @@ public final class PlayerTicker {
 		sprint.setToggleGetter(new SprintPressGetter(getter, () -> temporarySprintTimer > 0));
 	}
 	
-	public void atHead(final ClientPlayerEntity player) {
+	public void atHead(final LocalPlayer player) {
 		if (FlightHelper.shouldFlyOnGround(player)) {
 			player.setOnGround(false);
 		}
@@ -88,7 +87,7 @@ public final class PlayerTicker {
 		}
 		
 		final SprintMode sprintMode = cfg().sprintMode;
-		final boolean wasSprintToggled = OPTIONS.sprintToggled;
+		final boolean wasSprintToggled = OPTIONS.toggleSprint;
 		final boolean isSprintToggled = toggleSprint.tick();
 		
 		if (temporarySprintTimer > 0) {
@@ -144,16 +143,16 @@ public final class PlayerTicker {
 		toggleSneak.tick();
 	}
 	
-	public void afterInputAssignsPressingForward(final KeyboardInput input) {
-		if (MINECRAFT.currentScreen == null) {
-			input.pressingForward |= toggleWalkForward.tick();
+	public void afterInputAssignsPressingForward(final Input input) {
+		if (MINECRAFT.screen == null) {
+			input.up |= toggleWalkForward.tick();
 		}
 	}
 	
-	public void afterInputTick(final ClientPlayerEntity player) {
+	public void afterInputTick(final LocalPlayer player) {
 		final Input input = player.input;
 		
-		if (MINECRAFT.currentScreen == null && !player.getAbilities().flying) {
+		if (MINECRAFT.screen == null && !player.getAbilities().flying) {
 			input.jumping |= toggleJump.tick();
 		}
 		
@@ -163,13 +162,13 @@ public final class PlayerTicker {
 			final float verticalVelocity = FlightHelper.getExtraVerticalVelocity(player, boost);
 			
 			if (flightSpeed > 0F) {
-				player.getAbilities().setFlySpeed(flightSpeed);
+				player.getAbilities().setFlyingSpeed(flightSpeed);
 			}
 			
 			if (Math.abs(verticalVelocity) > 1E-5F && player == MINECRAFT.getCameraEntity()) {
 				int direction = 0;
 				
-				if (input.sneaking) {
+				if (input.shiftKeyDown) {
 					--direction;
 				}
 				
@@ -178,7 +177,7 @@ public final class PlayerTicker {
 				}
 				
 				if (direction != 0) {
-					player.setVelocity(player.getVelocity().add(0D, flightSpeed * verticalVelocity * direction, 0D));
+					player.setDeltaMovement(player.getDeltaMovement().add(0D, flightSpeed * verticalVelocity * direction, 0D));
 				}
 			}
 		}
@@ -201,15 +200,11 @@ public final class PlayerTicker {
 			wasHittingObstacle = player.horizontalCollision;
 			wasSprintingBeforeHittingObstacle = false;
 		}
-		
-		if (cfg().disableChangingFovWhileFlying && FlightHelper.isFlyingCreativeOrSpectator(player)) {
-			((AccessGameRendererFields)MINECRAFT.gameRenderer).setMovementFovMultiplier(1F);
-		}
 	}
 	
-	public void afterSuperCall(final ClientPlayerEntity player) {
+	public void afterSuperCall(final LocalPlayer player) {
 		if (FlightHelper.shouldFlyOnGround(player)) {
-			final boolean isSneaking = player.isSneaking();
+			final boolean isSneaking = player.isShiftKeyDown();
 			final boolean isOnGround = player.isOnGround();
 			
 			if (!isSneaking) {
@@ -231,7 +226,7 @@ public final class PlayerTicker {
 					}
 					else if (holdingSneakWhileTouchingGround) {
 						player.getAbilities().flying = false;
-						player.sendAbilitiesUpdate();
+						player.onUpdateAbilities();
 						cancelLanding = false;
 					}
 				}
@@ -249,12 +244,12 @@ public final class PlayerTicker {
 		if (FlightHelper.isFlyingCreativeOrSpectator(player) && cfg().disableFlightInertia) {
 			final Input input = player.input;
 			
-			if (input.movementForward == 0F && input.movementSideways == 0F) {
-				player.setVelocity(player.getVelocity().multiply(0.0, 1.0, 0.0));
+			if (input.forwardImpulse == 0F && input.leftImpulse == 0F) {
+				player.setDeltaMovement(player.getDeltaMovement().multiply(0.0, 1.0, 0.0));
 			}
 			
-			if (!input.jumping && !input.sneaking) {
-				player.setVelocity(player.getVelocity().multiply(1.0, 0.0, 1.0));
+			if (!input.jumping && !input.shiftKeyDown) {
+				player.setDeltaMovement(player.getDeltaMovement().multiply(1.0, 0.0, 1.0));
 			}
 		}
 		
@@ -263,7 +258,7 @@ public final class PlayerTicker {
 				final boolean isFlying = !player.getAbilities().flying;
 				
 				player.getAbilities().flying = isFlying;
-				player.sendAbilitiesUpdate();
+				player.onUpdateAbilities();
 				
 				if (isFlying) {
 					temporaryFlyOnGroundTimer = 10;
@@ -271,7 +266,7 @@ public final class PlayerTicker {
 			}
 			
 			if (temporaryFlyOnGroundTimer > 0) {
-				if (player.isSneaking()) {
+				if (player.isShiftKeyDown()) {
 					temporaryFlyOnGroundTimer = 0;
 				}
 				else {
@@ -285,10 +280,10 @@ public final class PlayerTicker {
 		}
 		
 		if (!cfg().sneakingMovesCameraSmoothly) {
-			final AccessCameraFields camera = (AccessCameraFields)MINECRAFT.gameRenderer.getCamera();
+			final Camera camera = MINECRAFT.gameRenderer.getMainCamera();
 			
-			if (camera.getFocusedEntity() == player) {
-				camera.setCameraY(player.getStandingEyeHeight());
+			if (camera.getEntity() == player) {
+				((AccessCameraFields)camera).setCameraY(player.getEyeHeight());
 			}
 		}
 		
@@ -300,7 +295,11 @@ public final class PlayerTicker {
 		}
 		
 		if (Key.isPressed(cfg().keyOpenMenu)) {
-			MINECRAFT.openScreen(new BetterControlsScreen(null));
+			MINECRAFT.setScreen(new BetterControlsScreen(null));
 		}
+	}
+	
+	public boolean shouldResetFOV(final LocalPlayer player) {
+		return cfg().disableChangingFovWhileFlying && FlightHelper.isFlyingCreativeOrSpectator(player);
 	}
 }

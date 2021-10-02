@@ -1,7 +1,7 @@
 package chylex.bettercontrols.player;
 import chylex.bettercontrols.BetterControlsMod;
 import chylex.bettercontrols.config.BetterControlsConfig;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.player.LocalPlayer;
 
 final class FlightHelper {
 	private FlightHelper() {}
@@ -13,15 +13,15 @@ final class FlightHelper {
 		return BetterControlsMod.config;
 	}
 	
-	static boolean isFlyingCreativeOrSpectator(final ClientPlayerEntity player) {
+	static boolean isFlyingCreativeOrSpectator(final LocalPlayer player) {
 		return player.getAbilities().flying && (player.isCreative() || player.isSpectator());
 	}
 	
-	static boolean shouldFlyOnGround(final ClientPlayerEntity player) {
+	static boolean shouldFlyOnGround(final LocalPlayer player) {
 		return cfg().flyOnGroundInCreative && player.isCreative() && player.getAbilities().flying;
 	}
 	
-	static float getFlightSpeed(final ClientPlayerEntity player, final boolean boost) {
+	static float getFlightSpeed(final LocalPlayer player, final boolean boost) {
 		if (player.isCreative()) {
 			if (boost) {
 				return BASE_FLIGHT_SPEED * cfg().flightSpeedMpCreativeSprinting;
@@ -43,7 +43,7 @@ final class FlightHelper {
 		}
 	}
 	
-	static float getExtraVerticalVelocity(final ClientPlayerEntity player, final boolean isSprinting) {
+	static float getExtraVerticalVelocity(final LocalPlayer player, final boolean isSprinting) {
 		if (player.isCreative()) {
 			if (isSprinting) {
 				return BASE_VERTICAL_VELOCITY * cfg().flightVerticalBoostCreativeSprinting;

@@ -1,50 +1,50 @@
 package chylex.bettercontrols.util;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.Text;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.network.chat.Component;
 
 public final class Key {
 	private Key() {}
 	
-	public static final InputUtil.Key INVALID = InputUtil.UNKNOWN_KEY;
+	public static final InputConstants.Key INVALID = InputConstants.UNKNOWN;
 	
-	public static boolean isUnbound(final KeyBinding binding) {
+	public static boolean isUnbound(final KeyMapping binding) {
 		return binding.isUnbound();
 	}
 	
-	public static boolean isPressed(final KeyBinding binding) {
-		return binding.isPressed();
+	public static boolean isPressed(final KeyMapping binding) {
+		return binding.isDown();
 	}
 	
-	public static boolean wasPressed(final KeyBinding binding) {
-		return binding.wasPressed();
+	public static boolean wasPressed(final KeyMapping binding) {
+		return binding.consumeClick();
 	}
 	
-	public static Text getBoundKeyText(final KeyBinding binding) {
-		return binding.getBoundKeyLocalizedText();
+	public static Component getBoundKeyText(final KeyMapping binding) {
+		return binding.getTranslatedKeyMessage();
 	}
 	
-	public static void bind(final KeyBinding binding, final InputUtil.Key input) {
-		binding.setBoundKey(input);
+	public static void bind(final KeyMapping binding, final InputConstants.Key input) {
+		binding.setKey(input);
 	}
 	
-	public static String writeBinding(final KeyBinding binding) {
-		return binding.getBoundKeyTranslationKey();
+	public static String writeBinding(final KeyMapping binding) {
+		return binding.saveString();
 	}
 	
-	public static void readBinding(final KeyBinding binding, final String serialized) {
+	public static void readBinding(final KeyMapping binding, final String serialized) {
 		try {
-			bind(binding, InputUtil.fromTranslationKey(serialized));
+			bind(binding, InputConstants.getKey(serialized));
 		} catch (final IllegalArgumentException e) {
 			e.printStackTrace(); // let's not crash if the config file has garbage, okay?
 		}
 	}
 	
-	public static InputUtil.Key inputFromMouse(final int button) {
-		return InputUtil.Type.MOUSE.createFromCode(button);
+	public static InputConstants.Key inputFromMouse(final int button) {
+		return InputConstants.Type.MOUSE.getOrCreate(button);
 	}
 	
-	public static InputUtil.Key inputFromKeyboard(final int keyCode, final int scanCode) {
-		return InputUtil.fromKeyCode(keyCode, scanCode);
+	public static InputConstants.Key inputFromKeyboard(final int keyCode, final int scanCode) {
+		return InputConstants.getKey(keyCode, scanCode);
 	}
 }

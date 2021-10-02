@@ -1,5 +1,5 @@
 package chylex.bettercontrols.input;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 
 public enum ModifierKey {
 	CONTROL(0) {

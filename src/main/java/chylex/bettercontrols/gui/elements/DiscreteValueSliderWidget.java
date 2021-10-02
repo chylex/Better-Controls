@@ -1,10 +1,10 @@
 package chylex.bettercontrols.gui.elements;
-import net.minecraft.client.gui.widget.SliderWidget;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.gui.components.AbstractSliderButton;
+import net.minecraft.util.Mth;
 import java.util.List;
 import java.util.function.Consumer;
 
-public final class DiscreteValueSliderWidget<T> extends SliderWidget {
+public final class DiscreteValueSliderWidget<T> extends AbstractSliderButton {
 	private final List<Option<T>> options;
 	private final Consumer<T> onChanged;
 	private T selectedValue;
@@ -21,7 +21,7 @@ public final class DiscreteValueSliderWidget<T> extends SliderWidget {
 	}
 	
 	public Option<T> getSelectedOption() {
-		return options.get(MathHelper.floor(MathHelper.clampedLerp(0.0, options.size() - 1.0, value)));
+		return options.get(Mth.floor(Mth.clampedLerp(0.0, options.size() - 1.0, value)));
 	}
 	
 	@Override

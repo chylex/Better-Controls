@@ -1,9 +1,9 @@
 package chylex.bettercontrols.gui.elements;
-import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.components.Button;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class CycleButtonWidget<T> extends ButtonWidget {
+public class CycleButtonWidget<T> extends Button {
 	private final List<Option<T>> options;
 	private final Consumer<T> onChanged;
 	private T selectedValue;

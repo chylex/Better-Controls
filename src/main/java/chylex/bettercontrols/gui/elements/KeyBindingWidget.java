@@ -22,16 +22,16 @@ public final class KeyBindingWidget extends Button {
 	private final Consumer<KeyBindingWidget> onEditingStarted;
 	private boolean isEditing;
 	
-	public KeyBindingWidget(final int x, final int y, final int width, final int height, final KeyMapping binding, final Consumer<KeyBindingWidget> onEditingStarted) {
+	public KeyBindingWidget(final int x, final int y, final int width, final int height, final Component bindingName, final KeyMapping binding, final Consumer<KeyBindingWidget> onEditingStarted) {
 		super(x, y, width, height, TextComponent.EMPTY, btn -> {});
 		this.binding = binding;
-		this.bindingName = new TranslatableComponent(binding.saveString());
+		this.bindingName = bindingName;
 		this.onEditingStarted = onEditingStarted;
 		updateKeyBindingText();
 	}
 	
-	public KeyBindingWidget(final int x, final int y, final int width, final KeyMapping binding, final Consumer<KeyBindingWidget> onEditingStarted) {
-		this(x, y, width, 20, binding, onEditingStarted);
+	public KeyBindingWidget(final int x, final int y, final int width, final Component bindingName, final KeyMapping binding, final Consumer<KeyBindingWidget> onEditingStarted) {
+		this(x, y, width, 20, bindingName, binding, onEditingStarted);
 	}
 	
 	public void linkButtonToBoundState(final AbstractButton button) {

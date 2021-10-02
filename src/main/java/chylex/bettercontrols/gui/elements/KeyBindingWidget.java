@@ -1,5 +1,6 @@
 package chylex.bettercontrols.gui.elements;
 import chylex.bettercontrols.util.Key;
+import chylex.bettercontrols.util.LiteralText;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
@@ -23,16 +24,16 @@ public final class KeyBindingWidget extends Button {
 	private final Consumer<KeyBindingWidget> onEditingStarted;
 	private boolean isEditing;
 	
-	public KeyBindingWidget(final int x, final int y, final int width, final int height, final KeyMapping binding, final Consumer<KeyBindingWidget> onEditingStarted) {
+	public KeyBindingWidget(final int x, final int y, final int width, final int height, final LiteralText bindingName, final KeyMapping binding, final Consumer<KeyBindingWidget> onEditingStarted) {
 		super(x, y, width, height, TextComponent.EMPTY, btn -> {});
 		this.binding = binding;
-		this.bindingName = new TranslatableComponent(binding.saveString());
+		this.bindingName = bindingName;
 		this.onEditingStarted = onEditingStarted;
 		updateKeyBindingText();
 	}
 	
-	public KeyBindingWidget(final int x, final int y, final int width, final KeyMapping binding, final Consumer<KeyBindingWidget> onEditingStarted) {
-		this(x, y, width, 20, binding, onEditingStarted);
+	public KeyBindingWidget(final int x, final int y, final int width, final LiteralText bindingName, final KeyMapping binding, final Consumer<KeyBindingWidget> onEditingStarted) {
+		this(x, y, width, 20, bindingName, binding, onEditingStarted);
 	}
 	
 	public void linkButtonToBoundState(final AbstractButton button) {

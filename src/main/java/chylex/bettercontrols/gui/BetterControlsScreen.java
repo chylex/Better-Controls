@@ -205,7 +205,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	
 	private void generateKeyBindingWithModifierOption(final int y, final List<GuiEventListener> elements, final LiteralText text, final KeyBindingWithModifier binding) {
 		final CycleButtonWidget<ModifierKey> modifierButton = new CycleButtonWidget<>(col4(2), y, COL4_W, MODIFIER_OPTIONS, binding.getModifier(), binding::setModifier);
-		final KeyBindingWidget bindingButton = new KeyBindingWidget(col4(3), y, COL4_W, binding, this::startEditingKeyBinding);
+		final KeyBindingWidget bindingButton = new KeyBindingWidget(col4(3), y, COL4_W, text, binding, this::startEditingKeyBinding);
 		bindingButton.linkButtonToBoundState(modifierButton);
 		
 		generateLeftSideText(y, elements, text);

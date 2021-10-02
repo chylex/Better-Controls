@@ -1,10 +1,10 @@
 package chylex.bettercontrols.input;
 import chylex.bettercontrols.util.Key;
-import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.KeyMapping;
 
 public class ToggleTracker{
-	protected final KeyBinding bindingToggle;
-	protected final KeyBinding bindingReset;
+	protected final KeyMapping bindingToggle;
+	protected final KeyMapping bindingReset;
 	
 	protected boolean isToggled;
 	
@@ -12,7 +12,7 @@ public class ToggleTracker{
 	private boolean hasToggledWhileHoldingReset;
 	private boolean skipNextToggle;
 	
-	public ToggleTracker(final KeyBinding bindingToggle, final KeyBinding bindingReset){
+	public ToggleTracker(final KeyMapping bindingToggle, final KeyMapping bindingReset){
 		this.bindingToggle = bindingToggle;
 		this.bindingReset = bindingReset;
 	}

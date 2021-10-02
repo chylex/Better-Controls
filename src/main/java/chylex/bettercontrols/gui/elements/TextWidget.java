@@ -1,14 +1,14 @@
 package chylex.bettercontrols.gui.elements;
-import chylex.bettercontrols.gui.OptionListWidget.Widget;
+import chylex.bettercontrols.gui.OptionListWidget.OptionWidget;
 import chylex.bettercontrols.util.LiteralText;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.gui.AbstractGui;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.util.IReorderingProcessor;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.util.FormattedCharSequence;
 import java.util.List;
 import static chylex.bettercontrols.util.Statics.MINECRAFT;
 
-public final class TextWidget extends AbstractGui implements Widget{
+public final class TextWidget extends GuiComponent implements OptionWidget{
 	public static final int LEFT = 0;
 	public static final int CENTER = 1;
 	
@@ -57,17 +57,17 @@ public final class TextWidget extends AbstractGui implements Widget{
 	}
 	
 	@Override
-	public void render(final MatrixStack matrices, final int mouseX, final int mouseY, final float delta){
-		final FontRenderer textRenderer = MINECRAFT.fontRenderer;
-		final List<IReorderingProcessor> lines = textRenderer.trimStringToWidth(text, width);
-		final int lineHeight = textRenderer.FONT_HEIGHT + 1;
+	public void render(final PoseStack matrices, final int mouseX, final int mouseY, final float delta){
+		final Font textRenderer = MINECRAFT.font;
+		final List<FormattedCharSequence> lines = textRenderer.split(text, width);
+		final int lineHeight = textRenderer.lineHeight + 1;
 		
-		final int finalX = align == CENTER ? x + (width / 2) - (lines.stream().mapToInt(textRenderer::func_243245_a).max().orElse(0) / 2) : x;
+		final int finalX = align == CENTER ? x + (width / 2) - (lines.stream().mapToInt(textRenderer::width).max().orElse(0) / 2) : x;
 		final int finalY = y + (height / 2) - (lineHeight * lines.size() / 2) + 1;
 		
 		for(int i = 0; i < lines.size(); i++){
-			final IReorderingProcessor line = lines.get(i);
-			textRenderer.func_238407_a_(matrices, line, finalX, finalY + (i * lineHeight), (255 << 16) | (255 << 8) | 255);
+			final FormattedCharSequence line = lines.get(i);
+			textRenderer.drawShadow(matrices, line, finalX, finalY + (i * lineHeight), (255 << 16) | (255 << 8) | 255);
 		}
 	}
 }

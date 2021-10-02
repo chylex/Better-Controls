@@ -1,14 +1,16 @@
 package chylex.bettercontrols.gui;
+import chylex.bettercontrols.mixin.AccessCycleButtonFields;
+import chylex.bettercontrols.mixin.AccessOptionFields;
 import chylex.bettercontrols.mixin.AccessScreenButtons;
-import net.minecraft.client.AbstractOption;
-import net.minecraft.client.gui.AccessibilityScreen;
-import net.minecraft.client.gui.IGuiEventListener;
-import net.minecraft.client.gui.INestedGuiEventHandler;
-import net.minecraft.client.gui.screen.ControlsScreen;
-import net.minecraft.client.gui.widget.button.AbstractButton;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.widget.button.OptionButton;
+import net.minecraft.client.Option;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.CycleButton;
+import net.minecraft.client.gui.components.events.ContainerEventHandler;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.screens.AccessibilityOptionsScreen;
+import net.minecraft.client.gui.screens.controls.ControlsScreen;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 import static chylex.bettercontrols.util.Statics.MINECRAFT;
 
@@ -17,46 +19,43 @@ public final class ScreenPatcher{
 	
 	public static void onControlsScreenOpened(final ControlsScreen screen){
 		final AccessScreenButtons accessor = (AccessScreenButtons)screen;
+		final List<? extends GuiEventListener> children = screen.children();
 		
-		final List<? extends IGuiEventListener> children = screen.getEventListeners();
-		final List<AbstractButton> buttons = accessor.getButtons();
-		
-		final AbstractButton autoJump = buttons
-			.stream()
-			.filter(it -> it instanceof OptionButton && ((OptionButton)it).func_238517_a_() == AbstractOption.AUTO_JUMP)
-			.findAny()
-			.orElse(null);
+		final CycleButton<?> autoJump = children.stream().flatMap(it -> getOptionButton(it, Option.AUTO_JUMP).stream()).findAny().orElse(null);
 		
 		if (autoJump != null){
-			children.remove(autoJump);
-			buttons.remove(autoJump);
+			final Button widget = new Button(autoJump.x, autoJump.y, autoJump.getWidth(), autoJump.getHeight(), BetterControlsScreen.TITLE.plainCopy().append("..."), btn -> {
+				MINECRAFT.setScreen(new BetterControlsScreen(screen));
+			});
 			
-			accessor.callAddButton(new Button(autoJump.x, autoJump.y, autoJump.getWidth(), 20, BetterControlsScreen.TITLE.copy().appendString("..."), btn -> {
-				MINECRAFT.displayGuiScreen(new BetterControlsScreen(screen));
-			}));
+			accessor.callRemoveWidget(autoJump);
+			accessor.callAddRenderableWidget(widget);
 		}
 	}
 	
-	public static void onAccessibilityScreenOpened(final AccessibilityScreen screen){
-		walkChildren(screen.getEventListeners(), it -> {
-			if (it instanceof OptionButton){
-				final OptionButton button = (OptionButton)it;
-				final AbstractOption option = button.func_238517_a_();
-				
-				if (option == AbstractOption.SPRINT || option == AbstractOption.SNEAK){
-					button.active = false;
-				}
-			}
+	public static void onAccessibilityScreenOpened(final AccessibilityOptionsScreen screen){
+		walkChildren(screen.children(), it -> {
+			getOptionButton(it, Option.TOGGLE_SPRINT).ifPresent(button -> button.active = false);
+			getOptionButton(it, Option.TOGGLE_CROUCH).ifPresent(button -> button.active = false);
 		});
 	}
 	
-	private static void walkChildren(final List<? extends IGuiEventListener> listeners, final Consumer<IGuiEventListener> callback){
-		for(final IGuiEventListener listener : listeners){
-			callback.accept(listener);
+	private static void walkChildren(final List<? extends GuiEventListener> elements, final Consumer<GuiEventListener> callback){
+		for (final GuiEventListener element : elements){
+			callback.accept(element);
 			
-			if (listener instanceof INestedGuiEventHandler){
-				walkChildren(((INestedGuiEventHandler)listener).getEventListeners(), callback);
+			if (element instanceof ContainerEventHandler){
+				walkChildren(((ContainerEventHandler)element).children(), callback);
 			}
+		}
+	}
+	
+	private static Optional<CycleButton<?>> getOptionButton(final GuiEventListener element, final Option option){
+		if (element instanceof CycleButton<?> && ((AccessOptionFields)option).getCaption().equals(((AccessCycleButtonFields)element).getName())){
+			return Optional.of((CycleButton<?>)element);
+		}
+		else{
+			return Optional.empty();
 		}
 	}
 }

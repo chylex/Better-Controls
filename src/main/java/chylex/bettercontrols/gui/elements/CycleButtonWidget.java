@@ -1,5 +1,5 @@
 package chylex.bettercontrols.gui.elements;
-import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.components.Button;
 import java.util.List;
 import java.util.function.Consumer;
 

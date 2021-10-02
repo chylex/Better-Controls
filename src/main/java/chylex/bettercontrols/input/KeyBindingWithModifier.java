@@ -1,15 +1,15 @@
 package chylex.bettercontrols.input;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.util.InputMappings.Type;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import com.mojang.blaze3d.platform.InputConstants.Type;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import javax.annotation.Nullable;
 
-public class KeyBindingWithModifier extends KeyBinding{
+public class KeyBindingWithModifier extends KeyMapping{
 	public static final String CATEGORY = "key.categories.bettercontrols";
 	
-	public static boolean checkCategoryMatches(final ITextComponent text){
-		return text instanceof TranslationTextComponent && CATEGORY.equals(((TranslationTextComponent)text).getKey());
+	public static boolean checkCategoryMatches(final Component text){
+		return text instanceof TranslatableComponent && CATEGORY.equals(((TranslatableComponent)text).getKey());
 	}
 	
 	@Nullable
@@ -29,12 +29,12 @@ public class KeyBindingWithModifier extends KeyBinding{
 	}
 	
 	@Override
-	public boolean isKeyDown(){
-		return super.isKeyDown() && (modifier == null || modifier.isPressed());
+	public boolean isDown(){
+		return super.isDown() && (modifier == null || modifier.isPressed());
 	}
 	
 	@Override
-	public boolean isPressed(){
-		return super.isPressed() && (modifier == null || modifier.isPressed());
+	public boolean consumeClick(){
+		return super.consumeClick() && (modifier == null || modifier.isPressed());
 	}
 }

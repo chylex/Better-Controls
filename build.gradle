@@ -6,14 +6,8 @@ buildscript {
 	}
 	
 	dependencies {
-		classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+		classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
 		classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
-	}
-}
-
-repositories {
-	maven {
-		url "https://maven.tterrag.com/"
 	}
 }
 
@@ -21,8 +15,8 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 
-def mcversion = "1.16.4"
-def forgeversion = "35.0.1"
+def mcversion = "1.17.1"
+def forgeversion = "37.0.75"
 
 def prefixName = 'displayName = '
 def prefixVersion = 'version = '
@@ -35,10 +29,10 @@ group = 'chylex.bettercontrols'
 version = metaVersion
 archivesBaseName = metaName.replaceAll('\\s', '')
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+java.toolchain.languageVersion = JavaLanguageVersion.of(16)
 
 minecraft {
-	mappings channel: 'snapshot', version: '20201028-1.16.3'
+	mappings channel: 'official', version: '1.17.1'
 	
 	runs {
 		client {

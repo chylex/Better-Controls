@@ -12,13 +12,13 @@ import chylex.bettercontrols.input.ModifierKey;
 import chylex.bettercontrols.input.SprintMode;
 import chylex.bettercontrols.util.Key;
 import chylex.bettercontrols.util.LiteralText;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.gui.DialogTexts;
-import net.minecraft.client.gui.IGuiEventListener;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.SettingsScreen;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.settings.KeyBinding;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.screens.OptionsSubScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.CommonComponents;
 import org.lwjgl.glfw.GLFW;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ import static chylex.bettercontrols.gui.elements.TextWidget.CENTER;
 import static chylex.bettercontrols.util.LiteralText.text;
 import static chylex.bettercontrols.util.Statics.OPTIONS;
 
-public class BetterControlsScreen extends SettingsScreen{
+public class BetterControlsScreen extends OptionsSubScreen{
 	public static final LiteralText TITLE = text("Better Controls");
 	
 	private static final int BOTTOM_PADDING = 3;
@@ -49,7 +49,7 @@ public class BetterControlsScreen extends SettingsScreen{
 	
 	// Options
 	
-	private int generateSprintingOptions(int y, final List<IGuiEventListener> elements){
+	private int generateSprintingOptions(int y, final List<GuiEventListener> elements){
 		final BetterControlsConfig cfg = BetterControlsMod.config;
 		
 		generateKeyBindingWithModifierOption(y, elements, text("Toggle Sprint"), cfg.keyToggleSprint);
@@ -73,7 +73,7 @@ public class BetterControlsScreen extends SettingsScreen{
 		return y;
 	}
 	
-	private int generateSneakingOptions(int y, final List<IGuiEventListener> elements){
+	private int generateSneakingOptions(int y, final List<GuiEventListener> elements){
 		final BetterControlsConfig cfg = BetterControlsMod.config;
 		
 		generateKeyBindingWithModifierOption(y, elements, text("Toggle Sneak"), cfg.keyToggleSneak);
@@ -88,7 +88,7 @@ public class BetterControlsScreen extends SettingsScreen{
 	}
 	
 	@SuppressWarnings({ "AutoBoxing", "AutoUnboxing" })
-	private int generateFlightOptions(int y, final List<IGuiEventListener> elements){
+	private int generateFlightOptions(int y, final List<GuiEventListener> elements){
 		final BetterControlsConfig cfg = BetterControlsMod.config;
 		
 		final List<Option<Float>> flightSpeedOptions = Arrays.asList(
@@ -173,7 +173,7 @@ public class BetterControlsScreen extends SettingsScreen{
 		return y;
 	}
 	
-	private int generateMiscellaneousOptions(int y, final List<IGuiEventListener> elements){
+	private int generateMiscellaneousOptions(int y, final List<GuiEventListener> elements){
 		final BetterControlsConfig cfg = BetterControlsMod.config;
 		
 		generateKeyBindingWithModifierOption(y, elements, text("Toggle Walk Forwards"), cfg.keyToggleWalkForward);
@@ -203,7 +203,7 @@ public class BetterControlsScreen extends SettingsScreen{
 		new Option<>(ModifierKey.ALT, text("Alt"))
 	);
 	
-	private void generateKeyBindingWithModifierOption(final int y, final List<IGuiEventListener> elements, final LiteralText text, final KeyBindingWithModifier binding){
+	private void generateKeyBindingWithModifierOption(final int y, final List<GuiEventListener> elements, final LiteralText text, final KeyBindingWithModifier binding){
 		final CycleButtonWidget<ModifierKey> modifierButton = new CycleButtonWidget<>(col4(2), y, COL4_W, MODIFIER_OPTIONS, binding.getModifier(), binding::setModifier);
 		final KeyBindingWidget bindingButton = new KeyBindingWidget(col4(3), y, COL4_W, binding, this::startEditingKeyBinding);
 		bindingButton.linkButtonToBoundState(modifierButton);
@@ -214,7 +214,7 @@ public class BetterControlsScreen extends SettingsScreen{
 		allKeyBindings.add(bindingButton);
 	}
 	
-	private static void generateLeftSideText(final int y, final List<IGuiEventListener> elements, final LiteralText text){
+	private static void generateLeftSideText(final int y, final List<GuiEventListener> elements, final LiteralText text){
 		elements.add(new TextWidget(col2(0), y, COL2_W - TEXT_PADDING_RIGHT, text));
 	}
 	
@@ -232,7 +232,7 @@ public class BetterControlsScreen extends SettingsScreen{
 	public void init(){
 		allKeyBindings.clear();
 		
-		final List<IGuiEventListener> elements = new ArrayList<>();
+		final List<GuiEventListener> elements = new ArrayList<>();
 		int y = 0;
 		
 		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, text("Sprinting"), CENTER));
@@ -247,17 +247,17 @@ public class BetterControlsScreen extends SettingsScreen{
 		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, text("Miscellaneous"), CENTER));
 		y = generateMiscellaneousOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;
 		
-		addButton(new Button(width / 2 - 99, height - 29, 200, 20, DialogTexts.GUI_DONE, btn -> minecraft.displayGuiScreen(parentScreen)));
-		addListener(optionsWidget = new OptionListWidget(21, height - 32, width, height, elements, y - TITLE_MARGIN_TOP + BOTTOM_PADDING));
+		addRenderableWidget(new Button(width / 2 - 99, height - 29, 200, 20, CommonComponents.GUI_DONE, btn -> minecraft.setScreen(lastScreen)));
+		addWidget(optionsWidget = new OptionListWidget(21, height - 32, width, height, elements, y - TITLE_MARGIN_TOP + BOTTOM_PADDING));
 	}
 	
 	@Override
-	public void onClose(){
+	public void removed(){
 		BetterControlsMod.config.save();
 	}
 	
 	@Override
-	public void render(final MatrixStack matrices, final int mouseX, final int mouseY, final float delta){
+	public void render(final PoseStack matrices, final int mouseX, final int mouseY, final float delta){
 		renderBackground(matrices);
 		optionsWidget.render(matrices, mouseX, mouseY, delta);
 		drawCenteredString(matrices, font, title, width / 2, 8, (255 << 16) | (255 << 8) | 255);
@@ -304,7 +304,7 @@ public class BetterControlsScreen extends SettingsScreen{
 	
 	private void onKeyBindingEditingFinished(){
 		editingKeyBinding = null;
-		KeyBinding.resetKeyBindingArrayAndHash();
+		KeyMapping.resetMapping();
 		
 		for(final KeyBindingWidget widget : allKeyBindings){
 			widget.updateKeyBindingText();

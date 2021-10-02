@@ -1,14 +1,10 @@
 package chylex.bettercontrols.mixin;
-import net.minecraft.client.renderer.ActiveRenderInfo;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.Camera;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(ActiveRenderInfo.class)
+@Mixin(Camera.class)
 public interface AccessCameraFields{
-	@Accessor("renderViewEntity")
-	Entity getFocusedEntity();
-	
-	@Accessor("height")
+	@Accessor("eyeHeight")
 	void setCameraY(float y);
 }

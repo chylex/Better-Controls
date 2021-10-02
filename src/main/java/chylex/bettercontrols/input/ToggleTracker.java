@@ -1,5 +1,4 @@
 package chylex.bettercontrols.input;
-import chylex.bettercontrols.util.Key;
 import net.minecraft.client.KeyMapping;
 
 public class ToggleTracker {
@@ -44,7 +43,7 @@ public class ToggleTracker {
 	public boolean tick() {
 		final boolean isHoldingReset = isResetKeyPressed();
 		
-		if (Key.isPressed(bindingToggle)) {
+		if (bindingToggle.isDown()) {
 			if (!waitForRelease) {
 				if (skipNextToggle) {
 					skipNextToggle = false;
@@ -79,7 +78,7 @@ public class ToggleTracker {
 	}
 	
 	protected boolean isResetKeyPressed() {
-		return Key.isPressed(bindingReset);
+		return bindingReset.isDown();
 	}
 	
 	public void reset() {

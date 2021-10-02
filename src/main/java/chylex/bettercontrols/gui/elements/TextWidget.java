@@ -1,9 +1,9 @@
 package chylex.bettercontrols.gui.elements;
 import chylex.bettercontrols.gui.OptionListWidget.OptionWidget;
-import chylex.bettercontrols.util.LiteralText;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import java.util.List;
 import static chylex.bettercontrols.util.Statics.MINECRAFT;
@@ -12,14 +12,14 @@ public final class TextWidget extends GuiComponent implements OptionWidget {
 	public static final int LEFT = 0;
 	public static final int CENTER = 1;
 	
-	private final LiteralText text;
+	private final Component text;
 	private int x;
 	private int y;
 	private final int width;
 	private final int height;
 	private final int align;
 	
-	public TextWidget(final int x, final int y, final int width, final int height, final LiteralText text, final int align) {
+	public TextWidget(final int x, final int y, final int width, final int height, final Component text, final int align) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -28,11 +28,11 @@ public final class TextWidget extends GuiComponent implements OptionWidget {
 		this.align = align;
 	}
 	
-	public TextWidget(final int x, final int y, final int width, final LiteralText text, final int align) {
+	public TextWidget(final int x, final int y, final int width, final Component text, final int align) {
 		this(x, y, width, 20, text, align);
 	}
 	
-	public TextWidget(final int x, final int y, final int width, final LiteralText text) {
+	public TextWidget(final int x, final int y, final int width, final Component text) {
 		this(x, y, width, 20, text, LEFT);
 	}
 	

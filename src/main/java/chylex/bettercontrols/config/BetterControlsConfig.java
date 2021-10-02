@@ -45,7 +45,7 @@ public final class BetterControlsConfig {
 	}
 	
 	public KeyBindingWithModifier[] getAllKeyBindings() {
-		return new KeyBindingWithModifier[]{
+		return new KeyBindingWithModifier[] {
 			keyToggleSprint,
 			keyToggleSneak,
 			keyToggleFlight,

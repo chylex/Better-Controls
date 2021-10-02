@@ -32,11 +32,11 @@ public enum ModifierKey {
 	public abstract boolean isPressed();
 	
 	public static ModifierKey getById(final int id) {
-		switch (id) {
-			case 0: return CONTROL;
-			case 1: return SHIFT;
-			case 2: return ALT;
-			default: return null;
-		}
+		return switch (id) {
+			case 0 -> CONTROL;
+			case 1 -> SHIFT;
+			case 2 -> ALT;
+			default -> null;
+		};
 	}
 }

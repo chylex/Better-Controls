@@ -1,8 +1,8 @@
 package chylex.bettercontrols.config;
 import chylex.bettercontrols.input.KeyBindingWithModifier;
 import chylex.bettercontrols.input.ModifierKey;
-import chylex.bettercontrols.util.Key;
 import com.google.gson.JsonObject;
+import com.mojang.blaze3d.platform.InputConstants;
 
 final class Json {
 	private Json() {}
@@ -52,7 +52,7 @@ final class Json {
 	private static final String MOD_SUFFIX = ".Mod";
 	
 	static void writeKeyBinding(final JsonObject obj, final String key, final KeyBindingWithModifier keyBinding) {
-		obj.addProperty(key + KEY_SUFFIX, Key.writeBinding(keyBinding));
+		obj.addProperty(key + KEY_SUFFIX, keyBinding.saveString());
 		
 		if (keyBinding.getModifier() != null) {
 			obj.addProperty(key + MOD_SUFFIX, Integer.valueOf(keyBinding.getModifier().id));
@@ -61,7 +61,11 @@ final class Json {
 	
 	static void readKeyBinding(final JsonObject obj, final String key, final KeyBindingWithModifier keyBinding) {
 		if (obj.has(key + KEY_SUFFIX)) {
-			Key.readBinding(keyBinding, obj.get(key + KEY_SUFFIX).getAsString());
+			try {
+				keyBinding.setKey(InputConstants.getKey(obj.get(key + KEY_SUFFIX).getAsString()));
+			} catch (final IllegalArgumentException e) {
+				e.printStackTrace(); // let's not crash if the config file has garbage, okay?
+			}
 		}
 		
 		if (obj.has(key + MOD_SUFFIX)) {

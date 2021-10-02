@@ -15,19 +15,19 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ControlList.class)
-public abstract class HookControlsListWidget extends ContainerObjectSelectionList<Entry>{
-	public HookControlsListWidget(final Minecraft client, final int width, final int height, final int top, final int bottom, final int itemHeight){
+public abstract class HookControlsListWidget extends ContainerObjectSelectionList<Entry> {
+	public HookControlsListWidget(final Minecraft client, final int width, final int height, final int top, final int bottom, final int itemHeight) {
 		super(client, width, height, top, bottom, itemHeight);
 	}
 	
 	@Inject(method = "<init>", at = @At("TAIL"))
-	public void init(final ControlsScreen parent, final Minecraft client, final CallbackInfo ci){
+	public void init(final ControlsScreen parent, final Minecraft client, final CallbackInfo ci) {
 		children().removeIf(it -> {
-			if (it instanceof CategoryEntry && KeyBindingWithModifier.checkCategoryMatches(((AccessControlsListCategory)it).getText())){
+			if (it instanceof CategoryEntry && KeyBindingWithModifier.checkCategoryMatches(((AccessControlsListCategory)it).getText())) {
 				return true;
 			}
 			
-			if (it instanceof KeyEntry && ArrayUtils.contains(BetterControlsMod.config.getAllKeyBindings(), ((AccessControlsListKeyBinding)it).getBinding())){
+			if (it instanceof KeyEntry && ArrayUtils.contains(BetterControlsMod.config.getAllKeyBindings(), ((AccessControlsListKeyBinding)it).getBinding())) {
 				return true;
 			}
 			

@@ -11,25 +11,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.function.BooleanSupplier;
 
 @Mixin(ToggleKeyMapping.class)
-public abstract class HookStickyKeyBindingState extends KeyMapping{
+public abstract class HookStickyKeyBindingState extends KeyMapping {
 	@Shadow
 	@Final
 	private BooleanSupplier needsToggle;
 	
-	public HookStickyKeyBindingState(final String translationKey, final int code, final String category){
+	public HookStickyKeyBindingState(final String translationKey, final int code, final String category) {
 		super(translationKey, code, category);
 	}
 	
 	@Inject(method = "setDown", at = @At("HEAD"), cancellable = true)
-	public void setPressed(final boolean pressed, final CallbackInfo info){
-		if (ToggleTrackerForStickyKey.isOverrideEnabled(this)){
+	public void setPressed(final boolean pressed, final CallbackInfo info) {
+		if (ToggleTrackerForStickyKey.isOverrideEnabled(this)) {
 			((AccessKeyBindingFields)this).setPressedField(pressed);
 			info.cancel();
 		}
 	}
 	
 	@Override
-	public boolean isDown(){
+	public boolean isDown() {
 		return super.isDown() || (ToggleTrackerForStickyKey.isOverrideEnabled(this) && needsToggle.getAsBoolean());
 	}
 }

@@ -2,7 +2,7 @@ package chylex.bettercontrols.input;
 import chylex.bettercontrols.util.Key;
 import net.minecraft.client.KeyMapping;
 
-public class ToggleTracker{
+public class ToggleTracker {
 	protected final KeyMapping bindingToggle;
 	protected final KeyMapping bindingReset;
 	
@@ -12,7 +12,7 @@ public class ToggleTracker{
 	private boolean hasToggledWhileHoldingReset;
 	private boolean skipNextToggle;
 	
-	public ToggleTracker(final KeyMapping bindingToggle, final KeyMapping bindingReset){
+	public ToggleTracker(final KeyMapping bindingToggle, final KeyMapping bindingReset) {
 		this.bindingToggle = bindingToggle;
 		this.bindingReset = bindingReset;
 	}
@@ -41,15 +41,15 @@ public class ToggleTracker{
 	 *   +CTRL, +G, -CTRL, +CTRL, +G, +G  -->  toggled on
 	 */
 	
-	public boolean tick(){
+	public boolean tick() {
 		final boolean isHoldingReset = isResetKeyPressed();
 		
-		if (Key.isPressed(bindingToggle)){
-			if (!waitForRelease){
-				if (skipNextToggle){
+		if (Key.isPressed(bindingToggle)) {
+			if (!waitForRelease) {
+				if (skipNextToggle) {
 					skipNextToggle = false;
 				}
-				else{
+				else {
 					isToggled = !isToggled;
 				}
 				
@@ -57,32 +57,32 @@ public class ToggleTracker{
 				hasToggledWhileHoldingReset = isHoldingReset;
 			}
 		}
-		else{
+		else {
 			waitForRelease = false;
 		}
 		
-		if (isToggled){
-			if (hasToggledWhileHoldingReset && !isHoldingReset){
+		if (isToggled) {
+			if (hasToggledWhileHoldingReset && !isHoldingReset) {
 				hasToggledWhileHoldingReset = false;
 			}
-			else if (!hasToggledWhileHoldingReset && isHoldingReset){
+			else if (!hasToggledWhileHoldingReset && isHoldingReset) {
 				isToggled = false;
 				skipNextToggle = true;
 			}
 		}
 		
-		if (skipNextToggle && !isHoldingReset){
+		if (skipNextToggle && !isHoldingReset) {
 			skipNextToggle = false;
 		}
 		
 		return isToggled;
 	}
 	
-	protected boolean isResetKeyPressed(){
+	protected boolean isResetKeyPressed() {
 		return Key.isPressed(bindingReset);
 	}
 	
-	public void reset(){
+	public void reset() {
 		isToggled = false;
 		waitForRelease = false;
 	}

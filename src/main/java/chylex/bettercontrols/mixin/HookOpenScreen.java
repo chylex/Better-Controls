@@ -10,17 +10,18 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static chylex.bettercontrols.util.Statics.MINECRAFT;
 
+@SuppressWarnings("MethodMayBeStatic")
 @Mixin(value = Minecraft.class, priority = 100)
-public abstract class HookOpenScreen{
+public abstract class HookOpenScreen {
 	@Inject(method = "setScreen", at = @At("TAIL"))
-	private void openScreen(final Screen ignore, final CallbackInfo ci){
+	private void openScreen(final Screen ignore, final CallbackInfo ci) {
 		final Screen screen = MINECRAFT.screen;
 		
-		if (screen != null && !Screen.hasAltDown()){
-			if (screen.getClass() == ControlsScreen.class){
+		if (screen != null && !Screen.hasAltDown()) {
+			if (screen.getClass() == ControlsScreen.class) {
 				ScreenPatcher.onControlsScreenOpened((ControlsScreen)screen);
 			}
-			else if (screen.getClass() == AccessibilityOptionsScreen.class){
+			else if (screen.getClass() == AccessibilityOptionsScreen.class) {
 				ScreenPatcher.onAccessibilityScreenOpened((AccessibilityOptionsScreen)screen);
 			}
 		}

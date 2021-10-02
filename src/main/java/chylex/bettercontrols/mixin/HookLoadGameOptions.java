@@ -11,15 +11,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Options.class)
-public abstract class HookLoadGameOptions{
+public abstract class HookLoadGameOptions {
 	private boolean hasLoaded = false;
 	
 	@Shadow
 	public KeyMapping[] keyMappings;
 	
 	@Inject(method = "load()V", at = @At("HEAD"))
-	private void load(final CallbackInfo info){
-		if (hasLoaded){
+	private void load(final CallbackInfo info) {
+		if (hasLoaded) {
 			return;
 		}
 		

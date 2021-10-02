@@ -3,8 +3,8 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 
-public final class Statics{
-	private Statics(){}
+public final class Statics {
+	private Statics() {}
 	
 	public static final Minecraft MINECRAFT = Minecraft.getInstance();
 	public static final Options OPTIONS = MINECRAFT.options;

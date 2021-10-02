@@ -3,8 +3,8 @@ import chylex.bettercontrols.input.KeyBindingWithModifier;
 import chylex.bettercontrols.input.SprintMode;
 import java.nio.file.Path;
 
-public final class BetterControlsConfig{
-	public static BetterControlsConfig load(final Path path){
+public final class BetterControlsConfig {
+	public static BetterControlsConfig load(final Path path) {
 		return ConfigSerializer.deserialize(path).setPath(path);
 	}
 	
@@ -37,14 +37,14 @@ public final class BetterControlsConfig{
 	public final KeyBindingWithModifier keyResetAllToggles = new KeyBindingWithModifier("key.bettercontrols.reset_all_toggles");
 	public final KeyBindingWithModifier keyOpenMenu = new KeyBindingWithModifier("key.bettercontrols.open_menu");
 	
-	BetterControlsConfig(){}
+	BetterControlsConfig() {}
 	
-	private BetterControlsConfig setPath(final Path path){
+	private BetterControlsConfig setPath(final Path path) {
 		this.path = path;
 		return this;
 	}
 	
-	public KeyBindingWithModifier[] getAllKeyBindings(){
+	public KeyBindingWithModifier[] getAllKeyBindings() {
 		return new KeyBindingWithModifier[]{
 			keyToggleSprint,
 			keyToggleSneak,
@@ -56,7 +56,7 @@ public final class BetterControlsConfig{
 		};
 	}
 	
-	public void save(){
+	public void save() {
 		ConfigSerializer.serialize(path, this);
 	}
 }

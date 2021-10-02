@@ -13,10 +13,10 @@ import net.minecraftforge.fmlclient.ConfigGuiHandler.ConfigGuiFactory;
 import net.minecraftforge.fmllegacy.network.FMLNetworkConstants;
 
 @Mod("bettercontrols")
-public final class BetterControlsMod{
+public final class BetterControlsMod {
 	public static final BetterControlsConfig config = DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> ClientLoader::loadConfig);
 	
-	public BetterControlsMod(){
+	public BetterControlsMod() {
 		ModLoadingContext.get().registerExtensionPoint(ConfigGuiFactory.class, () -> new ConfigGuiFactory(ClientLoader::createScreen));
 		ModLoadingContext.get().registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
 	}

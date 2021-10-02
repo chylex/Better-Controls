@@ -9,8 +9,9 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 import static chylex.bettercontrols.util.Statics.MINECRAFT;
 
+@SuppressWarnings("MethodMayBeStatic")
 @Mixin(AbstractClientPlayer.class)
-public abstract class HookClientPlayerFOV{
+public abstract class HookClientPlayerFOV {
 	@Redirect(
 		method = "getFieldOfViewModifier",
 		at = @At(value = "INVOKE", target = "Ljava/lang/Float;isNaN(F)Z"),
@@ -19,7 +20,7 @@ public abstract class HookClientPlayerFOV{
 			to = @At(value = "INVOKE", target = "Ljava/lang/Float;isInfinite(F)Z")
 		)
 	)
-	private boolean resetFOV(float movementSpeed){
+	private boolean resetFOV(final float movementSpeed) {
 		final LocalPlayer player = MINECRAFT.player;
 		return (player != null && PlayerTicker.get(player).shouldResetFOV(player)) || Float.isNaN(movementSpeed);
 	}

@@ -5,36 +5,36 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import javax.annotation.Nullable;
 
-public class KeyBindingWithModifier extends KeyMapping{
+public class KeyBindingWithModifier extends KeyMapping {
 	public static final String CATEGORY = "key.categories.bettercontrols";
 	
-	public static boolean checkCategoryMatches(final Component text){
+	public static boolean checkCategoryMatches(final Component text) {
 		return text instanceof TranslatableComponent && CATEGORY.equals(((TranslatableComponent)text).getKey());
 	}
 	
 	@Nullable
 	private ModifierKey modifier = null;
 	
-	public KeyBindingWithModifier(final String translationKey){
+	public KeyBindingWithModifier(final String translationKey) {
 		super(translationKey, Type.KEYSYM, -1, CATEGORY);
 	}
 	
-	public void setModifier(@Nullable final ModifierKey modifier){
+	public void setModifier(@Nullable final ModifierKey modifier) {
 		this.modifier = modifier;
 	}
 	
 	@Nullable
-	public ModifierKey getModifier(){
+	public ModifierKey getModifier() {
 		return modifier;
 	}
 	
 	@Override
-	public boolean isDown(){
+	public boolean isDown() {
 		return super.isDown() && (modifier == null || modifier.isPressed());
 	}
 	
 	@Override
-	public boolean consumeClick(){
+	public boolean consumeClick() {
 		return super.consumeClick() && (modifier == null || modifier.isPressed());
 	}
 }

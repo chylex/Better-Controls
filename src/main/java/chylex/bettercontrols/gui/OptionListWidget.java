@@ -14,83 +14,83 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import static chylex.bettercontrols.util.Statics.MINECRAFT;
 
-public final class OptionListWidget extends ContainerObjectSelectionList<Entry>{
+public final class OptionListWidget extends ContainerObjectSelectionList<Entry> {
 	public static final int ROW_WIDTH = 408;
 	public static final int ROW_PADDING = 2;
 	
 	public static final int COL2_W = (ROW_WIDTH / 2) - ROW_PADDING;
 	public static final int COL4_W = (ROW_WIDTH / 4) - ROW_PADDING;
 	
-	public static int col2(final int column){
+	public static int col2(final int column) {
 		return (column * ROW_WIDTH) / 2;
 	}
 	
-	public static int col4(final int column){
+	public static int col4(final int column) {
 		return (column * ROW_WIDTH) / 4;
 	}
 	
-	private static Offset getElementOffset(final GuiEventListener element){
-		if (element instanceof OptionWidget){
+	private static Offset getElementOffset(final GuiEventListener element) {
+		if (element instanceof OptionWidget) {
 			return new Offset(((OptionWidget)element).getX(), ((OptionWidget)element).getY());
 		}
-		else if (element instanceof AbstractWidget){
+		else if (element instanceof AbstractWidget) {
 			return new Offset(((AbstractWidget)element).x, ((AbstractWidget)element).y);
 		}
-		else{
+		else {
 			return new Offset(0, 0);
 		}
 	}
 	
-	public interface OptionWidget extends GuiEventListener, Widget{
+	public interface OptionWidget extends GuiEventListener, Widget {
 		int getX();
 		int getY();
 		void setX(int x);
 		void setY(int y);
 	}
 	
-	private static final class Offset{
+	private static final class Offset {
 		public final int x;
 		public final int y;
 		
-		private Offset(final int x, final int y){
+		private Offset(final int x, final int y) {
 			this.x = x;
 			this.y = y;
 		}
 	}
 	
-	public OptionListWidget(final int top, final int bottom, final int width, final int height, final List<GuiEventListener> widgets, final int innerHeight){
+	public OptionListWidget(final int top, final int bottom, final int width, final int height, final List<GuiEventListener> widgets, final int innerHeight) {
 		super(MINECRAFT, width, height, top, bottom, innerHeight);
 		addEntry(new Entry(widgets));
 	}
 	
 	@Override
-	public int getRowLeft(){
+	public int getRowLeft() {
 		return super.getRowLeft() - ROW_PADDING;
 	}
 	
 	@Override
-	public int getRowWidth(){
+	public int getRowWidth() {
 		return ROW_WIDTH;
 	}
 	
 	@Override
-	protected int getScrollbarPosition(){
+	protected int getScrollbarPosition() {
 		return (width + ROW_WIDTH) / 2 + 4;
 	}
 	
-	protected static final class Entry extends ContainerObjectSelectionList.Entry<Entry>{
+	protected static final class Entry extends ContainerObjectSelectionList.Entry<Entry> {
 		private final List<GuiEventListener> elements;
 		private final List<NarratableEntry> narratables;
 		private final Map<GuiEventListener, Offset> offsets;
 		
-		public Entry(final List<GuiEventListener> elements){
+		public Entry(final List<GuiEventListener> elements) {
 			this.elements = new ArrayList<>(elements);
-			this.narratables = elements.stream().filter(e -> e instanceof NarratableEntry).map(e -> (NarratableEntry) e).collect(Collectors.toList());
+			this.narratables = elements.stream().filter(e -> e instanceof NarratableEntry).map(e -> (NarratableEntry)e).collect(Collectors.toList());
 			this.offsets = elements.stream().collect(Collectors.toMap(Function.identity(), OptionListWidget::getElementOffset));
 		}
 		
 		@Override
-		public List<? extends GuiEventListener> children(){
+		public List<? extends GuiEventListener> children() {
 			return Collections.unmodifiableList(elements);
 		}
 		
@@ -100,22 +100,22 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry>{
 		}
 		
 		@Override
-		public void render(final PoseStack matrices, final int index, final int y, final int x, final int entryWidth, final int entryHeight, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta){
-			for(final GuiEventListener element : elements){
+		public void render(final PoseStack matrices, final int index, final int y, final int x, final int entryWidth, final int entryHeight, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta) {
+			for (final GuiEventListener element : elements) {
 				final Offset offset = offsets.get(element);
 				
-				if (element instanceof AbstractWidget){
+				if (element instanceof AbstractWidget) {
 					final AbstractWidget button = (AbstractWidget)element;
 					button.x = x + offset.x;
 					button.y = y + offset.y;
 				}
-				else if (element instanceof OptionWidget){
+				else if (element instanceof OptionWidget) {
 					final OptionWidget widget = (OptionWidget)element;
 					widget.setX(x + offset.x);
 					widget.setY(y + offset.y);
 				}
 				
-				if (element instanceof Widget){
+				if (element instanceof Widget) {
 					((Widget)element).render(matrices, mouseX, mouseY, tickDelta);
 				}
 			}

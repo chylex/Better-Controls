@@ -5,9 +5,9 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import java.util.Map;
 
 @Mixin(KeyMapping.class)
-public interface AccessKeyBindingFields{
+public interface AccessKeyBindingFields {
 	@Accessor("CATEGORY_SORT_ORDER")
-	static Map<String, Integer> getCategoryOrderMap(){
+	static Map<String, Integer> getCategoryOrderMap() {
 		throw new AssertionError();
 	}
 	

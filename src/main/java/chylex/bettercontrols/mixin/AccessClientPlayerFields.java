@@ -4,7 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(LocalPlayer.class)
-public interface AccessClientPlayerFields{
+public interface AccessClientPlayerFields {
 	@Accessor("sprintTriggerTime")
 	void setTicksLeftToDoubleTapSprint(int value);
 }

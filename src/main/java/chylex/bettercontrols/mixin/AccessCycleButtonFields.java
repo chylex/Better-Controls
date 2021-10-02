@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(CycleButton.class)
-public interface AccessCycleButtonFields{
+public interface AccessCycleButtonFields {
 	@Accessor("name")
 	Component getName();
 }

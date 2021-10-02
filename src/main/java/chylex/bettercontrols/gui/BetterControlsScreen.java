@@ -33,7 +33,7 @@ import static chylex.bettercontrols.gui.elements.TextWidget.CENTER;
 import static chylex.bettercontrols.util.LiteralText.text;
 import static chylex.bettercontrols.util.Statics.OPTIONS;
 
-public class BetterControlsScreen extends OptionsSubScreen{
+public class BetterControlsScreen extends OptionsSubScreen {
 	public static final LiteralText TITLE = text("Better Controls");
 	
 	private static final int BOTTOM_PADDING = 3;
@@ -49,7 +49,7 @@ public class BetterControlsScreen extends OptionsSubScreen{
 	
 	// Options
 	
-	private int generateSprintingOptions(int y, final List<GuiEventListener> elements){
+	private int generateSprintingOptions(int y, final List<GuiEventListener> elements) {
 		final BetterControlsConfig cfg = BetterControlsMod.config;
 		
 		generateKeyBindingWithModifierOption(y, elements, text("Toggle Sprint"), cfg.keyToggleSprint);
@@ -73,7 +73,7 @@ public class BetterControlsScreen extends OptionsSubScreen{
 		return y;
 	}
 	
-	private int generateSneakingOptions(int y, final List<GuiEventListener> elements){
+	private int generateSneakingOptions(int y, final List<GuiEventListener> elements) {
 		final BetterControlsConfig cfg = BetterControlsMod.config;
 		
 		generateKeyBindingWithModifierOption(y, elements, text("Toggle Sneak"), cfg.keyToggleSneak);
@@ -88,7 +88,7 @@ public class BetterControlsScreen extends OptionsSubScreen{
 	}
 	
 	@SuppressWarnings({ "AutoBoxing", "AutoUnboxing" })
-	private int generateFlightOptions(int y, final List<GuiEventListener> elements){
+	private int generateFlightOptions(int y, final List<GuiEventListener> elements) {
 		final BetterControlsConfig cfg = BetterControlsMod.config;
 		
 		final List<Option<Float>> flightSpeedOptions = Arrays.asList(
@@ -173,7 +173,7 @@ public class BetterControlsScreen extends OptionsSubScreen{
 		return y;
 	}
 	
-	private int generateMiscellaneousOptions(int y, final List<GuiEventListener> elements){
+	private int generateMiscellaneousOptions(int y, final List<GuiEventListener> elements) {
 		final BetterControlsConfig cfg = BetterControlsMod.config;
 		
 		generateKeyBindingWithModifierOption(y, elements, text("Toggle Walk Forwards"), cfg.keyToggleWalkForward);
@@ -203,7 +203,7 @@ public class BetterControlsScreen extends OptionsSubScreen{
 		new Option<>(ModifierKey.ALT, text("Alt"))
 	);
 	
-	private void generateKeyBindingWithModifierOption(final int y, final List<GuiEventListener> elements, final LiteralText text, final KeyBindingWithModifier binding){
+	private void generateKeyBindingWithModifierOption(final int y, final List<GuiEventListener> elements, final LiteralText text, final KeyBindingWithModifier binding) {
 		final CycleButtonWidget<ModifierKey> modifierButton = new CycleButtonWidget<>(col4(2), y, COL4_W, MODIFIER_OPTIONS, binding.getModifier(), binding::setModifier);
 		final KeyBindingWidget bindingButton = new KeyBindingWidget(col4(3), y, COL4_W, binding, this::startEditingKeyBinding);
 		bindingButton.linkButtonToBoundState(modifierButton);
@@ -214,7 +214,7 @@ public class BetterControlsScreen extends OptionsSubScreen{
 		allKeyBindings.add(bindingButton);
 	}
 	
-	private static void generateLeftSideText(final int y, final List<GuiEventListener> elements, final LiteralText text){
+	private static void generateLeftSideText(final int y, final List<GuiEventListener> elements, final LiteralText text) {
 		elements.add(new TextWidget(col2(0), y, COL2_W - TEXT_PADDING_RIGHT, text));
 	}
 	
@@ -224,12 +224,12 @@ public class BetterControlsScreen extends OptionsSubScreen{
 	private KeyBindingWidget editingKeyBinding;
 	private final List<KeyBindingWidget> allKeyBindings = new ArrayList<>();
 	
-	public BetterControlsScreen(@Nullable final Screen parentScreen){
+	public BetterControlsScreen(@Nullable final Screen parentScreen) {
 		super(parentScreen, OPTIONS, TITLE);
 	}
 	
 	@Override
-	public void init(){
+	public void init() {
 		allKeyBindings.clear();
 		
 		final List<GuiEventListener> elements = new ArrayList<>();
@@ -252,20 +252,20 @@ public class BetterControlsScreen extends OptionsSubScreen{
 	}
 	
 	@Override
-	public void removed(){
+	public void removed() {
 		BetterControlsMod.config.save();
 	}
 	
 	@Override
-	public void render(final PoseStack matrices, final int mouseX, final int mouseY, final float delta){
+	public void render(final PoseStack matrices, final int mouseX, final int mouseY, final float delta) {
 		renderBackground(matrices);
 		optionsWidget.render(matrices, mouseX, mouseY, delta);
 		drawCenteredString(matrices, font, title, width / 2, 8, (255 << 16) | (255 << 8) | 255);
 		super.render(matrices, mouseX, mouseY, delta);
 	}
 	
-	private void startEditingKeyBinding(final KeyBindingWidget widget){
-		if (editingKeyBinding != null){
+	private void startEditingKeyBinding(final KeyBindingWidget widget) {
+		if (editingKeyBinding != null) {
 			editingKeyBinding.stopEditing();
 		}
 		
@@ -273,40 +273,40 @@ public class BetterControlsScreen extends OptionsSubScreen{
 	}
 	
 	@Override
-	public boolean mouseClicked(final double mouseX, final double mouseY, final int button){
-		if (editingKeyBinding != null){
+	public boolean mouseClicked(final double mouseX, final double mouseY, final int button) {
+		if (editingKeyBinding != null) {
 			editingKeyBinding.bindAndStopEditing(Key.inputFromMouse(button));
 			onKeyBindingEditingFinished();
 			return true;
 		}
-		else{
+		else {
 			return super.mouseClicked(mouseX, mouseY, button);
 		}
 	}
 	
 	@Override
-	public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers){
-		if (editingKeyBinding != null){
-			if (keyCode == GLFW.GLFW_KEY_ESCAPE){
+	public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers) {
+		if (editingKeyBinding != null) {
+			if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
 				editingKeyBinding.bindAndStopEditing(Key.INVALID);
 			}
-			else{
+			else {
 				editingKeyBinding.bindAndStopEditing(Key.inputFromKeyboard(keyCode, scanCode));
 			}
 			
 			onKeyBindingEditingFinished();
 			return true;
 		}
-		else{
+		else {
 			return super.keyPressed(keyCode, scanCode, modifiers);
 		}
 	}
 	
-	private void onKeyBindingEditingFinished(){
+	private void onKeyBindingEditingFinished() {
 		editingKeyBinding = null;
 		KeyMapping.resetMapping();
 		
-		for(final KeyBindingWidget widget : allKeyBindings){
+		for (final KeyBindingWidget widget : allKeyBindings) {
 			widget.updateKeyBindingText();
 		}
 	}

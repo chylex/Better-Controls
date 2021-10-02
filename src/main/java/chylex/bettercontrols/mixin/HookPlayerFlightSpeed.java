@@ -8,9 +8,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 
+@SuppressWarnings("MethodMayBeStatic")
 @Mixin(Player.class)
-public abstract class HookPlayerFlightSpeed extends LivingEntity{
-	protected HookPlayerFlightSpeed(final EntityType<? extends LivingEntity> type, final Level world){
+public abstract class HookPlayerFlightSpeed extends LivingEntity {
+	protected HookPlayerFlightSpeed(final EntityType<? extends LivingEntity> type, final Level world) {
 		super(type, world);
 	}
 	
@@ -19,7 +20,7 @@ public abstract class HookPlayerFlightSpeed extends LivingEntity{
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isSprinting()Z"),
 		slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Abilities;getFlyingSpeed()F"))
 	)
-	private boolean disableVanillaSprintBoost(final Player player){
+	private boolean disableVanillaSprintBoost(final Player player) {
 		return false;
 	}
 }

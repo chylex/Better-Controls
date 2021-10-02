@@ -11,25 +11,25 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 
 @Mixin(LocalPlayer.class)
-public abstract class HookClientPlayerTick extends AbstractClientPlayer{
-	protected HookClientPlayerTick(final ClientLevel world, final GameProfile profile){
+public abstract class HookClientPlayerTick extends AbstractClientPlayer {
+	protected HookClientPlayerTick(final ClientLevel world, final GameProfile profile) {
 		super(world, profile);
 	}
 	
 	@Inject(method = "aiStep()V", at = @At("HEAD"))
-	private void atHead(final CallbackInfo info){
+	private void atHead(final CallbackInfo info) {
 		final LocalPlayer player = (LocalPlayer)(Object)this;
 		PlayerTicker.get(player).atHead(player);
 	}
 	
 	@Inject(method = "aiStep()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/Input;tick(Z)V", ordinal = 0, shift = AFTER))
-	private void afterInputTick(final CallbackInfo info){
+	private void afterInputTick(final CallbackInfo info) {
 		final LocalPlayer player = (LocalPlayer)(Object)this;
 		PlayerTicker.get(player).afterInputTick(player);
 	}
 	
 	@Inject(method = "aiStep()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/AbstractClientPlayer;aiStep()V", ordinal = 0, shift = AFTER))
-	private void afterSuperCall(final CallbackInfo info){
+	private void afterSuperCall(final CallbackInfo info) {
 		final LocalPlayer player = (LocalPlayer)(Object)this;
 		PlayerTicker.get(player).afterSuperCall(player);
 	}

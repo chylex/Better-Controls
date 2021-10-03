@@ -3,9 +3,9 @@ Better Controls
 
 ![Logo](https://raw.githubusercontent.com/chylex/Better-Controls/master/logo.png "Depiction of Zero Regrets")
 
-Better Controls is a reimagining of [Better Sprinting](https://www.curseforge.com/minecraft/mc-mods/better-sprinting) with even more customizability. It features several new keybindings and many configurable options for how sprinting, sneaking, and flying should behave.
+[Better Controls](https://www.curseforge.com/minecraft/mc-mods/better-controls) is a reimagining of [Better Sprinting](https://www.curseforge.com/minecraft/mc-mods/better-sprinting) with even more customizability. It features several new keybindings and many configurable options for how sprinting, sneaking, and flying should behave.
 
-Better Controls only focuses on complementing vanilla mechanics rather than adding new mechanics (such as [Better Sprinting](https://www.curseforge.com/minecraft/mc-mods/better-sprinting)'s option to allow sprinting in all directions) that only work on client side and server owners must explicitly opt in to enable them. By not having such features in Better Controls, it significantly reduces complexity by not having a server side version of the mod, and not needing a way to completely disable the mod while the game is running.
+Better Controls only focuses on complementing vanilla mechanics, rather than adding new mechanics (such as [Better Sprinting](https://www.curseforge.com/minecraft/mc-mods/better-sprinting)'s option to allow sprinting in all directions) that only work on client side and server owners must explicitly opt in to enable them. By not having such features in Better Controls, it significantly reduces complexity by not having a server side version of the mod, and not needing a way to completely disable the mod while the game is running.
 
 Another major difference is the amount and granularity of options. Better Controls could be considered an *advanced controls mod* - by default, none of the keybinds are bound, and all options are set to match vanilla behavior. To take full advantage, go into *Options - Controls - Better Controls*, check out all of the available options, and figure out the best configuration for you.
 
@@ -54,7 +54,7 @@ While this is convenient, there is potential for bugs which can affect server pl
 ### Compatibility
 
 * Better Controls is a client-side mod, it will do nothing when installed on a server.
-* If you run into a conflict with another mod that modifies the *Controls* screen, hold Alt while opening *Controls* to prevent Better Controls from adding its button. If another mod prevents the button from appearing, you can install [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu) which adds a mod list with configuration buttons for mods.
+* If you run into a conflict with another mod that modifies the *Controls* screen, hold Alt while opening *Controls* to prevent Better Controls from adding its button. If another mod prevents the button from appearing, a button to open the mod's configuration is available in the Mods menu (for Fabric, install [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu)).
 
 ## Screenshot
 
@@ -63,11 +63,15 @@ While this is convenient, there is potential for bugs which can affect server pl
 Source Code
 ===========
 
-The `main` branch includes the latest version for Fabric. Older versions and their Forge equivalents are in branches named `fabric/<version>` and `forge/<version>`.
+The `main` branch includes both the Fabric and Forge version in a single project. The project uses Mojang mappings. The root project contains common source code and resource files, and the `Fabric` and `Forge` folders are subprojects with loader-specific files.
+
+The `main` branch always has the latest development version. Before updating to a new Minecraft version, a new branch is created from the `main` branch (for example, before the mod is updated to `1.18`, a branch named `1.17` will be created). Further development of older versions may continue in these branches in case backports or version-specific fixes are needed.
+
+Older versions from before the merge of the Fabric and Forge versions can be found in branches named `fabric/<version>` and `forge/<version>`.
 
 ## Contributing
 
-All contributions should target the `main` branch, unless the contribution is specifically made for older versions. Every feature must be portable to Forge to ensure parity, unless the feature adds integration with another mod that is only compatible with one mod loader. Integrations for Forge-only mods should target the most recent `forge/<version>` branch.
+All contributions should target the `main` branch and work in both Fabric and Forge, unless the contribution is specifically targeting older versions or a specific mod loader.
 
 For any larger contributions, please [open an issue](https://github.com/chylex/Better-Controls/issues/new) first before you make a PR.
 

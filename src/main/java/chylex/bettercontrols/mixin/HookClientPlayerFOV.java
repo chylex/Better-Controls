@@ -1,15 +1,14 @@
 package chylex.bettercontrols.mixin;
 
 import chylex.bettercontrols.player.PlayerTicker;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
-import static chylex.bettercontrols.util.Statics.MINECRAFT;
 
-@SuppressWarnings("MethodMayBeStatic")
 @Mixin(AbstractClientPlayer.class)
 public abstract class HookClientPlayerFOV {
 	@Redirect(
@@ -21,7 +20,7 @@ public abstract class HookClientPlayerFOV {
 		)
 	)
 	private boolean resetFOV(final float movementSpeed) {
-		final LocalPlayer player = MINECRAFT.player;
+		final LocalPlayer player = Minecraft.getInstance().player;
 		return (player != null && PlayerTicker.get(player).shouldResetFOV(player)) || Float.isNaN(movementSpeed);
 	}
 }

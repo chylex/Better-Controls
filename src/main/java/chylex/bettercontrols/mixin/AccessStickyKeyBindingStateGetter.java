@@ -7,10 +7,10 @@ import java.util.function.BooleanSupplier;
 
 @Mixin(ToggleKeyMapping.class)
 public interface AccessStickyKeyBindingStateGetter {
-	@Accessor("needsToggle")
-	BooleanSupplier getToggleGetter();
+	@Accessor
+	BooleanSupplier getNeedsToggle();
 	
-	@Accessor("needsToggle")
+	@Accessor
 	@Mutable
-	void setToggleGetter(final BooleanSupplier toggleGetter);
+	void setNeedsToggle(final BooleanSupplier toggleGetter);
 }

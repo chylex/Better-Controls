@@ -9,7 +9,7 @@ public class KeyBindingWithModifier extends KeyMapping {
 	public static final String CATEGORY = "key.categories.bettercontrols";
 	
 	public static boolean checkCategoryMatches(final Component text) {
-		return text instanceof TranslatableComponent && CATEGORY.equals(((TranslatableComponent)text).getKey());
+		return text instanceof final TranslatableComponent t && CATEGORY.equals(t.getKey());
 	}
 	
 	@Nullable

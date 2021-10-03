@@ -23,11 +23,11 @@ public abstract class HookControlsListWidget extends ContainerObjectSelectionLis
 	@Inject(method = "<init>", at = @At("TAIL"))
 	public void init(final ControlsScreen parent, final Minecraft client, final CallbackInfo ci) {
 		children().removeIf(it -> {
-			if (it instanceof CategoryEntry && KeyBindingWithModifier.checkCategoryMatches(((AccessControlsListCategory)it).getText())) {
+			if (it instanceof final CategoryEntry entry && KeyBindingWithModifier.checkCategoryMatches(((AccessControlsListCategory)entry).getName())) {
 				return true;
 			}
 			
-			if (it instanceof KeyEntry && ArrayUtils.contains(BetterControlsCommon.getConfig().getAllKeyBindings(), ((AccessControlsListKeyBinding)it).getBinding())) {
+			if (it instanceof final KeyEntry entry && ArrayUtils.contains(BetterControlsCommon.getConfig().getAllKeyBindings(), ((AccessControlsListKeyBinding)entry).getKey())) {
 				return true;
 			}
 			

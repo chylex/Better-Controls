@@ -2,16 +2,17 @@ package chylex.bettercontrols.gui.elements;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import static chylex.bettercontrols.util.Statics.OPTIONS;
 
 public final class KeyBindingWidget extends Button {
 	private final KeyMapping binding;
@@ -40,7 +41,7 @@ public final class KeyBindingWidget extends Button {
 	}
 	
 	@Override
-	protected MutableComponent createNarrationMessage() {
+	protected @NotNull MutableComponent createNarrationMessage() {
 		return binding.isUnbound() ? new TranslatableComponent("narrator.controls.unbound", bindingName) : new TranslatableComponent("narrator.controls.bound", bindingName, super.createNarrationMessage());
 	}
 	
@@ -69,7 +70,7 @@ public final class KeyBindingWidget extends Button {
 		boolean hasConflict = false;
 		
 		if (!binding.isUnbound()) {
-			for (final KeyMapping other : OPTIONS.keyMappings) {
+			for (final KeyMapping other : Minecraft.getInstance().options.keyMappings) {
 				if (binding != other && binding.same(other)) {
 					hasConflict = true;
 					break;

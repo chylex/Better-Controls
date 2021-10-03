@@ -18,18 +18,21 @@ public abstract class HookClientPlayerTick extends AbstractClientPlayer {
 	
 	@Inject(method = "aiStep()V", at = @At("HEAD"))
 	private void atHead(final CallbackInfo info) {
+		@SuppressWarnings("ConstantConditions")
 		final LocalPlayer player = (LocalPlayer)(Object)this;
 		PlayerTicker.get(player).atHead(player);
 	}
 	
 	@Inject(method = "aiStep()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/Input;tick(Z)V", ordinal = 0, shift = AFTER))
 	private void afterInputTick(final CallbackInfo info) {
+		@SuppressWarnings("ConstantConditions")
 		final LocalPlayer player = (LocalPlayer)(Object)this;
 		PlayerTicker.get(player).afterInputTick(player);
 	}
 	
 	@Inject(method = "aiStep()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/AbstractClientPlayer;aiStep()V", ordinal = 0, shift = AFTER))
 	private void afterSuperCall(final CallbackInfo info) {
+		@SuppressWarnings("ConstantConditions")
 		final LocalPlayer player = (LocalPlayer)(Object)this;
 		PlayerTicker.get(player).afterSuperCall(player);
 	}

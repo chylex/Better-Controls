@@ -13,6 +13,7 @@ import chylex.bettercontrols.input.SprintMode;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.OptionsSubScreen;
@@ -20,6 +21,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import java.util.ArrayList;
@@ -31,7 +33,6 @@ import static chylex.bettercontrols.gui.OptionListWidget.ROW_WIDTH;
 import static chylex.bettercontrols.gui.OptionListWidget.col2;
 import static chylex.bettercontrols.gui.OptionListWidget.col4;
 import static chylex.bettercontrols.gui.elements.TextWidget.CENTER;
-import static chylex.bettercontrols.util.Statics.OPTIONS;
 
 public class BetterControlsScreen extends OptionsSubScreen {
 	private static TextComponent text(final String text) {
@@ -229,7 +230,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	private final List<KeyBindingWidget> allKeyBindings = new ArrayList<>();
 	
 	public BetterControlsScreen(@Nullable final Screen parentScreen) {
-		super(parentScreen, OPTIONS, TITLE);
+		super(parentScreen, Minecraft.getInstance().options, TITLE);
 	}
 	
 	@Override
@@ -261,7 +262,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	}
 	
 	@Override
-	public void render(final PoseStack matrices, final int mouseX, final int mouseY, final float delta) {
+	public void render(final @NotNull PoseStack matrices, final int mouseX, final int mouseY, final float delta) {
 		renderBackground(matrices);
 		optionsWidget.render(matrices, mouseX, mouseY, delta);
 		drawCenteredString(matrices, font, title, width / 2, 8, (255 << 16) | (255 << 8) | 255);

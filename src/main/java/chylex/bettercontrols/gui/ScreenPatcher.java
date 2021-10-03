@@ -2,6 +2,7 @@ package chylex.bettercontrols.gui;
 import chylex.bettercontrols.mixin.AccessCycleButtonFields;
 import chylex.bettercontrols.mixin.AccessOptionFields;
 import chylex.bettercontrols.mixin.AccessScreenButtons;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.Option;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
@@ -12,7 +13,6 @@ import net.minecraft.client.gui.screens.controls.ControlsScreen;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-import static chylex.bettercontrols.util.Statics.MINECRAFT;
 
 public final class ScreenPatcher {
 	private ScreenPatcher() {}
@@ -25,7 +25,7 @@ public final class ScreenPatcher {
 		
 		if (autoJump != null) {
 			final Button widget = new Button(autoJump.x, autoJump.y, autoJump.getWidth(), autoJump.getHeight(), BetterControlsScreen.TITLE.plainCopy().append("..."), btn -> {
-				MINECRAFT.setScreen(new BetterControlsScreen(screen));
+				Minecraft.getInstance().setScreen(new BetterControlsScreen(screen));
 			});
 			
 			accessor.callRemoveWidget(autoJump);
@@ -44,15 +44,15 @@ public final class ScreenPatcher {
 		for (final GuiEventListener element : elements) {
 			callback.accept(element);
 			
-			if (element instanceof ContainerEventHandler) {
-				walkChildren(((ContainerEventHandler)element).children(), callback);
+			if (element instanceof final ContainerEventHandler container) {
+				walkChildren(container.children(), callback);
 			}
 		}
 	}
 	
 	private static Optional<CycleButton<?>> getOptionButton(final GuiEventListener element, final Option option) {
-		if (element instanceof CycleButton<?> && ((AccessOptionFields)option).getCaption().equals(((AccessCycleButtonFields)element).getName())) {
-			return Optional.of((CycleButton<?>)element);
+		if (element instanceof final CycleButton<?> button && ((AccessOptionFields)option).getCaption().equals(((AccessCycleButtonFields)button).getName())) {
+			return Optional.of(button);
 		}
 		else {
 			return Optional.empty();

@@ -10,18 +10,23 @@ import chylex.bettercontrols.mixin.AccessClientPlayerFields;
 import chylex.bettercontrols.mixin.AccessPlayerFields;
 import chylex.bettercontrols.mixin.AccessStickyKeyBindingStateGetter;
 import net.minecraft.client.Camera;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import java.lang.ref.WeakReference;
 import java.util.function.BooleanSupplier;
-import static chylex.bettercontrols.util.Statics.KEY_FORWARD;
-import static chylex.bettercontrols.util.Statics.KEY_JUMP;
-import static chylex.bettercontrols.util.Statics.KEY_SNEAK;
-import static chylex.bettercontrols.util.Statics.KEY_SPRINT;
-import static chylex.bettercontrols.util.Statics.MINECRAFT;
-import static chylex.bettercontrols.util.Statics.OPTIONS;
 
 public final class PlayerTicker {
+	private static final Minecraft MINECRAFT = Minecraft.getInstance();
+	private static final Options OPTIONS = MINECRAFT.options;
+	
+	private static final KeyMapping KEY_SPRINT = OPTIONS.keySprint;
+	private static final KeyMapping KEY_SNEAK = OPTIONS.keyShift;
+	private static final KeyMapping KEY_FORWARD = OPTIONS.keyUp;
+	private static final KeyMapping KEY_JUMP = OPTIONS.keyJump;
+	
 	private static PlayerTicker ticker = new PlayerTicker(null);
 	
 	public static PlayerTicker get(final LocalPlayer player) {
@@ -63,13 +68,13 @@ public final class PlayerTicker {
 	
 	private void setup() {
 		final AccessStickyKeyBindingStateGetter sprint = (AccessStickyKeyBindingStateGetter)KEY_SPRINT;
-		BooleanSupplier getter = sprint.getToggleGetter();
+		BooleanSupplier getter = sprint.getNeedsToggle();
 		
-		if (getter instanceof SprintPressGetter) {
-			getter = ((SprintPressGetter)getter).getWrapped();
+		if (getter instanceof final SprintPressGetter g) {
+			getter = g.wrapped();
 		}
 		
-		sprint.setToggleGetter(new SprintPressGetter(getter, () -> temporarySprintTimer > 0));
+		sprint.setNeedsToggle(new SprintPressGetter(getter, () -> temporarySprintTimer > 0));
 	}
 	
 	public void atHead(final LocalPlayer player) {
@@ -78,11 +83,11 @@ public final class PlayerTicker {
 		}
 		
 		if (!cfg().doubleTapForwardToSprint) {
-			((AccessClientPlayerFields)player).setTicksLeftToDoubleTapSprint(0);
+			((AccessClientPlayerFields)player).setSprintTriggerTime(0);
 		}
 		
 		if (!cfg().doubleTapJumpToToggleFlight) {
-			((AccessPlayerFields)player).setTicksLeftToDoubleTapFlight(0);
+			((AccessPlayerFields)player).setJumpTriggerTime(0);
 		}
 		
 		final SprintMode sprintMode = cfg().sprintMode;
@@ -282,7 +287,7 @@ public final class PlayerTicker {
 			final Camera camera = MINECRAFT.gameRenderer.getMainCamera();
 			
 			if (camera.getEntity() == player) {
-				((AccessCameraFields)camera).setCameraY(player.getEyeHeight());
+				((AccessCameraFields)camera).setEyeHeight(player.getEyeHeight());
 			}
 		}
 		

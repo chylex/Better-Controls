@@ -5,6 +5,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(Player.class)
 public interface AccessPlayerFields {
-	@Accessor("jumpTriggerTime")
-	void setTicksLeftToDoubleTapFlight(int value);
+	@Accessor
+	void setJumpTriggerTime(int value);
 }

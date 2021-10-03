@@ -1,12 +1,13 @@
 package chylex.bettercontrols.gui.elements;
 import chylex.bettercontrols.gui.OptionListWidget.OptionWidget;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
+import org.jetbrains.annotations.NotNull;
 import java.util.List;
-import static chylex.bettercontrols.util.Statics.MINECRAFT;
 
 public final class TextWidget extends GuiComponent implements OptionWidget {
 	public static final int LEFT = 0;
@@ -57,8 +58,8 @@ public final class TextWidget extends GuiComponent implements OptionWidget {
 	}
 	
 	@Override
-	public void render(final PoseStack matrices, final int mouseX, final int mouseY, final float delta) {
-		final Font textRenderer = MINECRAFT.font;
+	public void render(final @NotNull PoseStack matrices, final int mouseX, final int mouseY, final float delta) {
+		final Font textRenderer = Minecraft.getInstance().font;
 		final List<FormattedCharSequence> lines = textRenderer.split(text, width);
 		final int lineHeight = textRenderer.lineHeight + 1;
 		

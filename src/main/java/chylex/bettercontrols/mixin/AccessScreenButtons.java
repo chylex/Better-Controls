@@ -6,6 +6,7 @@ import net.minecraft.client.gui.screens.Screen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
+@SuppressWarnings("UnusedReturnValue")
 @Mixin(Screen.class)
 public interface AccessScreenButtons {
 	@Invoker

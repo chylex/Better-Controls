@@ -10,7 +10,7 @@ public final class DiscreteValueSliderWidget<T> extends AbstractSliderButton {
 	private T selectedValue;
 	
 	public DiscreteValueSliderWidget(final int x, final int y, final int width, final int height, final List<Option<T>> options, final T selectedValue, final Consumer<T> onChanged) {
-		super(x, y, width, height, Option.find(options, selectedValue).getText(), options.indexOf(Option.find(options, selectedValue)) / (options.size() - 1.0));
+		super(x, y, width, height, Option.find(options, selectedValue).text(), options.indexOf(Option.find(options, selectedValue)) / (options.size() - 1.0));
 		this.options = options;
 		this.selectedValue = selectedValue;
 		this.onChanged = onChanged;
@@ -26,12 +26,12 @@ public final class DiscreteValueSliderWidget<T> extends AbstractSliderButton {
 	
 	@Override
 	protected void updateMessage() {
-		setMessage(getSelectedOption().getText());
+		setMessage(getSelectedOption().text());
 	}
 	
 	@Override
 	protected void applyValue() {
-		final T newSelectedValue = getSelectedOption().getValue();
+		final T newSelectedValue = getSelectedOption().value();
 		
 		if (selectedValue != newSelectedValue) {
 			selectedValue = newSelectedValue;

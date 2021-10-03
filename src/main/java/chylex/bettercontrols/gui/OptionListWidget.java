@@ -1,18 +1,19 @@
 package chylex.bettercontrols.gui;
 import chylex.bettercontrols.gui.OptionListWidget.Entry;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import static chylex.bettercontrols.util.Statics.MINECRAFT;
 
 public final class OptionListWidget extends ContainerObjectSelectionList<Entry> {
 	public static final int ROW_WIDTH = 408;
@@ -30,11 +31,11 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 	}
 	
 	private static Offset getElementOffset(final GuiEventListener element) {
-		if (element instanceof OptionWidget) {
-			return new Offset(((OptionWidget)element).getX(), ((OptionWidget)element).getY());
+		if (element instanceof final OptionWidget widget) {
+			return new Offset(widget.getX(), widget.getY());
 		}
-		else if (element instanceof AbstractWidget) {
-			return new Offset(((AbstractWidget)element).x, ((AbstractWidget)element).y);
+		else if (element instanceof final AbstractWidget widget) {
+			return new Offset(widget.x, widget.y);
 		}
 		else {
 			return new Offset(0, 0);
@@ -48,18 +49,10 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 		void setY(int y);
 	}
 	
-	private static final class Offset {
-		public final int x;
-		public final int y;
-		
-		private Offset(final int x, final int y) {
-			this.x = x;
-			this.y = y;
-		}
-	}
+	private record Offset(int x, int y) {}
 	
 	public OptionListWidget(final int top, final int bottom, final int width, final int height, final List<GuiEventListener> widgets, final int innerHeight) {
-		super(MINECRAFT, width, height, top, bottom, innerHeight);
+		super(Minecraft.getInstance(), width, height, top, bottom, innerHeight);
 		addEntry(new Entry(widgets));
 	}
 	
@@ -90,33 +83,31 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 		}
 		
 		@Override
-		public List<? extends GuiEventListener> children() {
+		public @NotNull List<? extends GuiEventListener> children() {
 			return Collections.unmodifiableList(elements);
 		}
 		
 		@Override
-		public List<? extends NarratableEntry> narratables() {
+		public @NotNull List<? extends NarratableEntry> narratables() {
 			return Collections.unmodifiableList(narratables);
 		}
 		
 		@Override
-		public void render(final PoseStack matrices, final int index, final int y, final int x, final int entryWidth, final int entryHeight, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta) {
+		public void render(final @NotNull PoseStack matrices, final int index, final int y, final int x, final int entryWidth, final int entryHeight, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta) {
 			for (final GuiEventListener element : elements) {
 				final Offset offset = offsets.get(element);
 				
-				if (element instanceof AbstractWidget) {
-					final AbstractWidget button = (AbstractWidget)element;
-					button.x = x + offset.x;
-					button.y = y + offset.y;
+				if (element instanceof final AbstractWidget widget) {
+					widget.x = x + offset.x;
+					widget.y = y + offset.y;
 				}
-				else if (element instanceof OptionWidget) {
-					final OptionWidget widget = (OptionWidget)element;
+				else if (element instanceof final OptionWidget widget) {
 					widget.setX(x + offset.x);
 					widget.setY(y + offset.y);
 				}
 				
-				if (element instanceof Widget) {
-					((Widget)element).render(matrices, mouseX, mouseY, tickDelta);
+				if (element instanceof final Widget widget) {
+					widget.render(matrices, mouseX, mouseY, tickDelta);
 				}
 			}
 		}

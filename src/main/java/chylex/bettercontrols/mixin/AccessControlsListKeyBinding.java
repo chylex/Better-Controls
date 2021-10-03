@@ -6,6 +6,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(KeyEntry.class)
 public interface AccessControlsListKeyBinding {
-	@Accessor("key")
-	KeyMapping getBinding();
+	@Accessor
+	KeyMapping getKey();
 }

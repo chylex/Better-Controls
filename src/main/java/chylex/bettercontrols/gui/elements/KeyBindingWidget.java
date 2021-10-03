@@ -70,7 +70,7 @@ public final class KeyBindingWidget extends Button {
 		
 		if (!binding.isUnbound()) {
 			for (final KeyMapping other : OPTIONS.keyMappings) {
-				if (binding != other && binding.equals(other)) {
+				if (binding != other && binding.same(other)) {
 					hasConflict = true;
 					break;
 				}

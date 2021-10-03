@@ -1,5 +1,5 @@
 package chylex.bettercontrols.mixin;
-import chylex.bettercontrols.BetterControlsMod;
+import chylex.bettercontrols.BetterControlsCommon;
 import chylex.bettercontrols.input.KeyBindingWithModifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
@@ -27,7 +27,7 @@ public abstract class HookControlsListWidget extends ContainerObjectSelectionLis
 				return true;
 			}
 			
-			if (it instanceof KeyEntry && ArrayUtils.contains(BetterControlsMod.config.getAllKeyBindings(), ((AccessControlsListKeyBinding)it).getBinding())) {
+			if (it instanceof KeyEntry && ArrayUtils.contains(BetterControlsCommon.getConfig().getAllKeyBindings(), ((AccessControlsListKeyBinding)it).getBinding())) {
 				return true;
 			}
 			

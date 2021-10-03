@@ -1,5 +1,5 @@
 package chylex.bettercontrols.player;
-import chylex.bettercontrols.BetterControlsMod;
+import chylex.bettercontrols.BetterControlsCommon;
 import chylex.bettercontrols.config.BetterControlsConfig;
 import net.minecraft.client.player.LocalPlayer;
 
@@ -10,7 +10,7 @@ final class FlightHelper {
 	private static final float BASE_VERTICAL_VELOCITY = 3F;
 	
 	private static BetterControlsConfig cfg() {
-		return BetterControlsMod.config;
+		return BetterControlsCommon.getConfig();
 	}
 	
 	static boolean isFlyingCreativeOrSpectator(final LocalPlayer player) {

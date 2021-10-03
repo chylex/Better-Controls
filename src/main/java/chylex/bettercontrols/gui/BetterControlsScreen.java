@@ -1,5 +1,5 @@
 package chylex.bettercontrols.gui;
-import chylex.bettercontrols.BetterControlsMod;
+import chylex.bettercontrols.BetterControlsCommon;
 import chylex.bettercontrols.config.BetterControlsConfig;
 import chylex.bettercontrols.gui.elements.BooleanValueWidget;
 import chylex.bettercontrols.gui.elements.CycleButtonWidget;
@@ -20,8 +20,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -54,7 +54,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	// Options
 	
 	private int generateSprintingOptions(int y, final List<GuiEventListener> elements) {
-		final BetterControlsConfig cfg = BetterControlsMod.config;
+		final BetterControlsConfig cfg = BetterControlsCommon.getConfig();
 		
 		generateKeyBindingWithModifierOption(y, elements, text("Toggle Sprint"), cfg.keyToggleSprint);
 		
@@ -78,7 +78,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	}
 	
 	private int generateSneakingOptions(int y, final List<GuiEventListener> elements) {
-		final BetterControlsConfig cfg = BetterControlsMod.config;
+		final BetterControlsConfig cfg = BetterControlsCommon.getConfig();
 		
 		generateKeyBindingWithModifierOption(y, elements, text("Toggle Sneak"), cfg.keyToggleSneak);
 		
@@ -93,7 +93,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	
 	@SuppressWarnings({ "AutoBoxing", "AutoUnboxing" })
 	private int generateFlightOptions(int y, final List<GuiEventListener> elements) {
-		final BetterControlsConfig cfg = BetterControlsMod.config;
+		final BetterControlsConfig cfg = BetterControlsCommon.getConfig();
 		
 		final List<Option<Float>> flightSpeedOptions = Arrays.asList(
 			new Option<>(Float.valueOf(0.25F), text("0.25x")),
@@ -178,7 +178,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	}
 	
 	private int generateMiscellaneousOptions(int y, final List<GuiEventListener> elements) {
-		final BetterControlsConfig cfg = BetterControlsMod.config;
+		final BetterControlsConfig cfg = BetterControlsCommon.getConfig();
 		
 		generateKeyBindingWithModifierOption(y, elements, text("Toggle Walk Forwards"), cfg.keyToggleWalkForward);
 		
@@ -257,7 +257,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	
 	@Override
 	public void removed() {
-		BetterControlsMod.config.save();
+		BetterControlsCommon.getConfig().save();
 	}
 	
 	@Override

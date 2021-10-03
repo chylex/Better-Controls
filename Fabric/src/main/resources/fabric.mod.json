@@ -3,7 +3,7 @@
   "id": "bettercontrols",
   "version": "${version}",
   
-  "name": "Better Controls",
+  "name": "${name}",
   "description": "Adds many powerful key bindings and options to control your movement.\nThe features complement vanilla mechanics without giving unfair advantages, so server use should be fine.",
   "icon": "assets/bettercontrols/icon.png",
   "license": "MPL-2.0",

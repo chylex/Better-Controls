@@ -1,5 +1,6 @@
 package chylex.bettercontrols.mixin;
-import chylex.bettercontrols.BetterControlsMod;
+import chylex.bettercontrols.BetterControlsCommon;
+import chylex.bettercontrols.config.BetterControlsConfig;
 import chylex.bettercontrols.input.KeyBindingWithModifier;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Options;
@@ -27,8 +28,13 @@ public abstract class HookLoadGameOptions {
 			return;
 		}
 		
+		final BetterControlsConfig config = BetterControlsCommon.getConfig();
+		if (config == null) {
+			return;
+		}
+		
 		hasLoaded = true;
-		keyMappings = ArrayUtils.addAll(keyMappings, BetterControlsMod.config.getAllKeyBindings());
+		keyMappings = ArrayUtils.addAll(keyMappings, config.getAllKeyBindings());
 		AccessKeyBindingFields.getCategoryOrderMap().put(KeyBindingWithModifier.CATEGORY, Integer.valueOf(Integer.MAX_VALUE));
 	}
 }

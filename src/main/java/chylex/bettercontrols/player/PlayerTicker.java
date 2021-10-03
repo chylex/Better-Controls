@@ -1,5 +1,5 @@
 package chylex.bettercontrols.player;
-import chylex.bettercontrols.BetterControlsMod;
+import chylex.bettercontrols.BetterControlsCommon;
 import chylex.bettercontrols.config.BetterControlsConfig;
 import chylex.bettercontrols.gui.BetterControlsScreen;
 import chylex.bettercontrols.input.SprintMode;
@@ -33,7 +33,7 @@ public final class PlayerTicker {
 	}
 	
 	private static BetterControlsConfig cfg() {
-		return BetterControlsMod.config;
+		return BetterControlsCommon.getConfig();
 	}
 	
 	private final WeakReference<LocalPlayer> ref;

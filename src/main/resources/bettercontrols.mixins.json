@@ -2,6 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "chylex.bettercontrols.mixin",
+  "refmap": "bettercontrols.refmap.json",
   "compatibilityLevel": "JAVA_16",
   "client": [
     "AccessCameraFields",

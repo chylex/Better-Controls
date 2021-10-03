@@ -95,14 +95,14 @@ subprojects {
 		
 		manifest {
 			attributes(
-				"Specification-Title" to modName,
+				"Specification-Title" to modId,
 				"Specification-Vendor" to modAuthor,
 				"Specification-Version" to "1",
-				"Implementation-Title" to "$modName-${project.name}",
-				"Implementation-Version" to modVersion,
+				"Implementation-Title" to "${modName.replace(" ", "")}-${project.name}",
 				"Implementation-Vendor" to modAuthor,
+				"Implementation-Version" to modVersion,
 				"Implementation-Timestamp" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(Date()),
-				"MixinConfigs" to "$modId.mixin.json"
+				"MixinConfigs" to "$modId.mixins.json"
 			)
 		}
 	}

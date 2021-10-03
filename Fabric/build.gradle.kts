@@ -3,6 +3,7 @@ plugins {
 	id("fabric-loom") version "0.9-SNAPSHOT"
 }
 
+val modId: String by project
 val minecraftVersion: String by project
 val fabricVersion: String by project
 
@@ -27,6 +28,10 @@ loom {
 			runDir("run")
 			ideConfigGenerated(true)
 		}
+	}
+	
+	mixin {
+		add(sourceSets.main.get(), "$modId.refmap.json")
 	}
 }
 

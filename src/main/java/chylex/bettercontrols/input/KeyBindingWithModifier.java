@@ -1,16 +1,10 @@
 package chylex.bettercontrols.input;
 import com.mojang.blaze3d.platform.InputConstants.Type;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import org.jetbrains.annotations.Nullable;
 
 public class KeyBindingWithModifier extends KeyMapping {
 	public static final String CATEGORY = "key.categories.bettercontrols";
-	
-	public static boolean checkCategoryMatches(final Component text) {
-		return text instanceof final TranslatableComponent t && CATEGORY.equals(t.getKey());
-	}
 	
 	@Nullable
 	private ModifierKey modifier = null;

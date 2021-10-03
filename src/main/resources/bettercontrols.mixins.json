@@ -6,22 +6,18 @@
   "client": [
     "AccessCameraFields",
     "AccessClientPlayerFields",
-    "AccessControlsListCategory",
-    "AccessControlsListKeyBinding",
-    "AccessCycleButtonFields",
     "AccessKeyBindingFields",
-    "AccessOptionFields",
     "AccessPlayerFields",
-    "AccessScreenButtons",
     "AccessStickyKeyBindingStateGetter",
     "HookClientPlayerFOV",
     "HookClientPlayerInputTick",
     "HookClientPlayerTick",
     "HookControlsListWidget",
+    "HookControlsScreen",
     "HookLoadGameOptions",
-    "HookOpenScreen",
     "HookPlayerFlightSpeed",
-    "HookStickyKeyBindingState"
+    "HookStickyKeyBindingState",
+    "HookToggleOptionButtons"
   ],
   "injectors": {
     "defaultRequire": 1

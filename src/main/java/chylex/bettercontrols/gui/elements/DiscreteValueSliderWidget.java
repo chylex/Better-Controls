@@ -1,23 +1,29 @@
 package chylex.bettercontrols.gui.elements;
 import net.minecraft.client.gui.components.AbstractSliderButton;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.function.Consumer;
 
 public final class DiscreteValueSliderWidget<T> extends AbstractSliderButton {
+	private final Component narration;
 	private final List<Option<T>> options;
 	private final Consumer<T> onChanged;
 	private T selectedValue;
 	
-	public DiscreteValueSliderWidget(final int x, final int y, final int width, final int height, final List<Option<T>> options, final T selectedValue, final Consumer<T> onChanged) {
+	public DiscreteValueSliderWidget(final int x, final int y, final int width, final int height, final Component narration, final List<Option<T>> options, final T selectedValue, final Consumer<T> onChanged) {
 		super(x, y, width, height, Option.find(options, selectedValue).text(), options.indexOf(Option.find(options, selectedValue)) / (options.size() - 1.0));
+		this.narration = narration;
 		this.options = options;
 		this.selectedValue = selectedValue;
 		this.onChanged = onChanged;
 	}
 	
-	public DiscreteValueSliderWidget(final int x, final int y, final int width, final List<Option<T>> options, final T selectedValue, final Consumer<T> onChanged) {
-		this(x, y, width, 20, options, selectedValue, onChanged);
+	public DiscreteValueSliderWidget(final int x, final int y, final int width, final Component narration, final List<Option<T>> options, final T selectedValue, final Consumer<T> onChanged) {
+		this(x, y, width, 20, narration, options, selectedValue, onChanged);
 	}
 	
 	public Option<T> getSelectedOption() {
@@ -37,5 +43,10 @@ public final class DiscreteValueSliderWidget<T> extends AbstractSliderButton {
 			selectedValue = newSelectedValue;
 			onChanged.accept(newSelectedValue);
 		}
+	}
+	
+	@Override
+	protected @NotNull MutableComponent createNarrationMessage() {
+		return new TranslatableComponent("gui.narrate.slider", narration.plainCopy().append(" ").append(getMessage()));
 	}
 }

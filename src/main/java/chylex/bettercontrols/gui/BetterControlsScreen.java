@@ -1,8 +1,6 @@
 package chylex.bettercontrols.gui;
 import chylex.bettercontrols.BetterControlsCommon;
 import chylex.bettercontrols.config.BetterControlsConfig;
-import chylex.bettercontrols.gui.elements.BooleanValueWidget;
-import chylex.bettercontrols.gui.elements.CycleButtonWidget;
 import chylex.bettercontrols.gui.elements.DiscreteValueSliderWidget;
 import chylex.bettercontrols.gui.elements.KeyBindingWidget;
 import chylex.bettercontrols.gui.elements.Option;
@@ -12,9 +10,11 @@ import chylex.bettercontrols.input.ModifierKey;
 import chylex.bettercontrols.input.SprintMode;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
+import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.OptionsSubScreen;
 import net.minecraft.client.gui.screens.Screen;
@@ -27,6 +27,7 @@ import org.lwjgl.glfw.GLFW;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 import static chylex.bettercontrols.gui.OptionListWidget.COL2_W;
 import static chylex.bettercontrols.gui.OptionListWidget.COL4_W;
 import static chylex.bettercontrols.gui.OptionListWidget.ROW_WIDTH;
@@ -57,38 +58,30 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	private int generateSprintingOptions(int y, final List<GuiEventListener> elements) {
 		final BetterControlsConfig cfg = BetterControlsCommon.getConfig();
 		
-		generateKeyBindingWithModifierOption(y, elements, text("Toggle Sprint"), cfg.keyToggleSprint);
-		
+		generateKeyBindingWithModifierRow(y, elements, text("Toggle Sprint"), cfg.keyToggleSprint);
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, text("Sprint Key Mode"));
-		elements.add(new CycleButtonWidget<>(col2(1), y, COL2_W, SPRINT_MODE_OPTIONS, cfg.sprintMode, value -> cfg.sprintMode = value));
-		
+		generateCycleOptionRow(y, elements, text("Sprint Key Mode"), SPRINT_MODE_OPTIONS, cfg.sprintMode, value -> cfg.sprintMode = value);
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, text("Double Tap 'Walk Forwards' To Sprint"));
-		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.doubleTapForwardToSprint, value -> cfg.doubleTapForwardToSprint = value));
-		
+		generateBooleanOptionRow(y, elements, text("Double Tap 'Walk Forwards' To Sprint"), cfg.doubleTapForwardToSprint, value -> cfg.doubleTapForwardToSprint = value);
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, text("Resume Sprinting After Hitting Obstacle"));
-		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.resumeSprintingAfterHittingObstacle, value -> cfg.resumeSprintingAfterHittingObstacle = value));
-		
+		generateBooleanOptionRow(y, elements, text("Resume Sprinting After Hitting Obstacle"), cfg.resumeSprintingAfterHittingObstacle, value -> cfg.resumeSprintingAfterHittingObstacle = value);
 		y += ROW_HEIGHT;
+		
 		return y;
 	}
 	
 	private int generateSneakingOptions(int y, final List<GuiEventListener> elements) {
 		final BetterControlsConfig cfg = BetterControlsCommon.getConfig();
 		
-		generateKeyBindingWithModifierOption(y, elements, text("Toggle Sneak"), cfg.keyToggleSneak);
-		
+		generateKeyBindingWithModifierRow(y, elements, text("Toggle Sneak"), cfg.keyToggleSneak);
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, text("Move Camera Smoothly"));
-		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.sneakingMovesCameraSmoothly, value -> cfg.sneakingMovesCameraSmoothly = value));
-		
+		generateBooleanOptionRow(y, elements, text("Move Camera Smoothly"), cfg.sneakingMovesCameraSmoothly, value -> cfg.sneakingMovesCameraSmoothly = value);
 		y += ROW_HEIGHT;
+		
 		return y;
 	}
 	
@@ -123,79 +116,64 @@ public class BetterControlsScreen extends OptionsSubScreen {
 			new Option<>(Float.valueOf(3.00F), text("+300%"))
 		);
 		
-		generateKeyBindingWithModifierOption(y, elements, text("Toggle Flight (Creative)"), cfg.keyToggleFlight);
-		
+		generateKeyBindingWithModifierRow(y, elements, text("Toggle Flight (Creative)"), cfg.keyToggleFlight);
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, text("Double Tap 'Jump' To Fly (Creative)"));
-		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.doubleTapJumpToToggleFlight, value -> cfg.doubleTapJumpToToggleFlight = value));
-		
+		generateBooleanOptionRow(y, elements, text("Double Tap 'Jump' To Fly (Creative)"), cfg.doubleTapJumpToToggleFlight, value -> cfg.doubleTapJumpToToggleFlight = value);
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, text("Disable Flight Inertia"));
-		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.disableFlightInertia, value -> cfg.disableFlightInertia = value));
-		
+		generateBooleanOptionRow(y, elements, text("Disable Flight Inertia"), cfg.disableFlightInertia, value -> cfg.disableFlightInertia = value);
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, text("Disable Field Of View Changing"));
-		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.disableChangingFovWhileFlying, value -> cfg.disableChangingFovWhileFlying = value));
-		
+		generateBooleanOptionRow(y, elements, text("Disable Field Of View Changing"), cfg.disableChangingFovWhileFlying, value -> cfg.disableChangingFovWhileFlying = value);
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, text("Fly On Ground (Creative Mode)"));
-		elements.add(new BooleanValueWidget(col2(1), y, COL2_W, cfg.flyOnGroundInCreative, value -> cfg.flyOnGroundInCreative = value));
+		generateBooleanOptionRow(y, elements, text("Fly On Ground (Creative Mode)"), cfg.flyOnGroundInCreative, value -> cfg.flyOnGroundInCreative = value);
+		y += ROW_HEIGHT;
 		
-		y += ROW_HEIGHT * 4 / 3;
-		
+		y += ROW_HEIGHT / 3;
 		elements.add(new TextWidget(col4(2), y, COL4_W - TEXT_PADDING_RIGHT, text("Creative"), CENTER));
 		elements.add(new TextWidget(col4(3), y, COL4_W - TEXT_PADDING_RIGHT, text("Spectator"), CENTER));
-		
 		y += ROW_HEIGHT * 7 / 8;
 		
 		generateLeftSideText(y, elements, text("Speed Multiplier (Default)"));
-		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, flightSpeedOptions, cfg.flightSpeedMpCreativeDefault, value -> cfg.flightSpeedMpCreativeDefault = value));
-		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, flightSpeedOptions, cfg.flightSpeedMpSpectatorDefault, value -> cfg.flightSpeedMpSpectatorDefault = value));
-		
+		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, text("Speed Multiplier in Creative Mode"), flightSpeedOptions, cfg.flightSpeedMpCreativeDefault, value -> cfg.flightSpeedMpCreativeDefault = value));
+		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, text("Speed Multiplier in Spectator Mode"), flightSpeedOptions, cfg.flightSpeedMpSpectatorDefault, value -> cfg.flightSpeedMpSpectatorDefault = value));
 		y += ROW_HEIGHT;
 		
 		generateLeftSideText(y, elements, text("Speed Multiplier (Sprinting)"));
-		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, flightSpeedOptions, cfg.flightSpeedMpCreativeSprinting, value -> cfg.flightSpeedMpCreativeSprinting = value));
-		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, flightSpeedOptions, cfg.flightSpeedMpSpectatorSprinting, value -> cfg.flightSpeedMpSpectatorSprinting = value));
-		
+		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, text("Speed Multiplier when Sprinting in Creative Mode"), flightSpeedOptions, cfg.flightSpeedMpCreativeSprinting, value -> cfg.flightSpeedMpCreativeSprinting = value));
+		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, text("Speed Multiplier when Sprinting in Spectator Mode"), flightSpeedOptions, cfg.flightSpeedMpSpectatorSprinting, value -> cfg.flightSpeedMpSpectatorSprinting = value));
 		y += ROW_HEIGHT;
 		
 		generateLeftSideText(y, elements, text("Vertical Speed Boost (Default)"));
-		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, flightVerticalBoostOptions, cfg.flightVerticalBoostCreativeDefault, value -> cfg.flightVerticalBoostCreativeDefault = value));
-		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, flightVerticalBoostOptions, cfg.flightVerticalBoostSpectatorDefault, value -> cfg.flightVerticalBoostSpectatorDefault = value));
-		
+		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, text("Vertical Speed Boost in Creative Mode"), flightVerticalBoostOptions, cfg.flightVerticalBoostCreativeDefault, value -> cfg.flightVerticalBoostCreativeDefault = value));
+		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, text("Vertical Speed Boost in Spectator Mode"), flightVerticalBoostOptions, cfg.flightVerticalBoostSpectatorDefault, value -> cfg.flightVerticalBoostSpectatorDefault = value));
 		y += ROW_HEIGHT;
 		
 		generateLeftSideText(y, elements, text("Vertical Speed Boost (Sprinting)"));
-		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, flightVerticalBoostOptions, cfg.flightVerticalBoostCreativeSprinting, value -> cfg.flightVerticalBoostCreativeSprinting = value));
-		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, flightVerticalBoostOptions, cfg.flightVerticalBoostSpectatorSprinting, value -> cfg.flightVerticalBoostSpectatorSprinting = value));
-		
+		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, text("Vertical Speed Boost when Sprinting in Creative Mode"), flightVerticalBoostOptions, cfg.flightVerticalBoostCreativeSprinting, value -> cfg.flightVerticalBoostCreativeSprinting = value));
+		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, text("Vertical Speed Boost when Sprinting in Spectator Mode"), flightVerticalBoostOptions, cfg.flightVerticalBoostSpectatorSprinting, value -> cfg.flightVerticalBoostSpectatorSprinting = value));
 		y += ROW_HEIGHT;
+		
 		return y;
 	}
 	
 	private int generateMiscellaneousOptions(int y, final List<GuiEventListener> elements) {
 		final BetterControlsConfig cfg = BetterControlsCommon.getConfig();
 		
-		generateKeyBindingWithModifierOption(y, elements, text("Toggle Walk Forwards"), cfg.keyToggleWalkForward);
-		
+		generateKeyBindingWithModifierRow(y, elements, text("Toggle Walk Forwards"), cfg.keyToggleWalkForward);
 		y += ROW_HEIGHT;
 		
-		generateKeyBindingWithModifierOption(y, elements, text("Toggle Jump"), cfg.keyToggleJump);
-		
+		generateKeyBindingWithModifierRow(y, elements, text("Toggle Jump"), cfg.keyToggleJump);
 		y += ROW_HEIGHT;
 		
-		generateKeyBindingWithModifierOption(y, elements, text("Reset All Toggles"), cfg.keyResetAllToggles);
-		
+		generateKeyBindingWithModifierRow(y, elements, text("Reset All Toggles"), cfg.keyResetAllToggles);
 		y += ROW_HEIGHT * 4 / 3;
 		
-		generateKeyBindingWithModifierOption(y, elements, text("Open Better Controls Menu"), cfg.keyOpenMenu);
-		
+		generateKeyBindingWithModifierRow(y, elements, text("Open Better Controls Menu"), cfg.keyOpenMenu);
 		y += ROW_HEIGHT;
+		
 		return y;
 	}
 	
@@ -208,15 +186,28 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		new Option<>(ModifierKey.ALT, text("Alt"))
 	);
 	
-	private void generateKeyBindingWithModifierOption(final int y, final List<GuiEventListener> elements, final Component text, final KeyBindingWithModifier binding) {
-		final CycleButtonWidget<ModifierKey> modifierButton = new CycleButtonWidget<>(col4(2), y, COL4_W, MODIFIER_OPTIONS, binding.getModifier(), binding::setModifier);
-		final KeyBindingWidget bindingButton = new KeyBindingWidget(col4(3), y, COL4_W, text, binding, this::startEditingKeyBinding);
+	private void generateKeyBindingWithModifierRow(final int y, final List<GuiEventListener> elements, final Component text, final KeyBindingWithModifier binding) {
+		final var modifierButton = Option.button(col4(2), y, COL4_W, text.plainCopy().append(" Modifier"), MODIFIER_OPTIONS, binding.getModifier(), binding::setModifier);
+		final var bindingButton = new KeyBindingWidget(col4(3), y, COL4_W, text, binding, this::startEditingKeyBinding);
 		bindingButton.linkButtonToBoundState(modifierButton);
 		
 		generateLeftSideText(y, elements, text);
 		elements.add(modifierButton);
 		elements.add(bindingButton);
 		allKeyBindings.add(bindingButton);
+	}
+	
+	private static <T> void generateCycleOptionRow(final int y, final List<GuiEventListener> elements, final Component text, final List<Option<T>> options, final T initialValue, final Consumer<T> onValueChanged) {
+		generateLeftSideText(y, elements, text);
+		elements.add(Option.button(col2(1), y, COL2_W, text, options, initialValue, onValueChanged));
+	}
+	
+	private static void generateBooleanOptionRow(final int y, final List<GuiEventListener> elements, final Component text, final boolean initialValue, final BooleanConsumer onValueChanged) {
+		generateLeftSideText(y, elements, text);
+		elements.add(CycleButton.onOffBuilder()
+			.displayOnlyValue()
+			.withInitialValue(Boolean.valueOf(initialValue))
+			.create(col2(1), y, COL2_W, 20, text, (btn, newValue) -> onValueChanged.accept(newValue.booleanValue())));
 	}
 	
 	private static void generateLeftSideText(final int y, final List<GuiEventListener> elements, final Component text) {

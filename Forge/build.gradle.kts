@@ -2,6 +2,11 @@ import net.minecraftforge.gradle.userdev.UserDevExtension
 import org.gradle.api.file.DuplicatesStrategy.INCLUDE
 import org.spongepowered.asm.gradle.plugins.MixinExtension
 
+val modId: String by project
+val minecraftVersion: String by project
+val forgeVersion: String by project
+val mixinVersion: String by project
+
 buildscript {
 	repositories {
 		maven("https://maven.minecraftforge.net")
@@ -24,11 +29,6 @@ apply {
 	plugin("net.minecraftforge.gradle")
 	plugin("org.spongepowered.mixin")
 }
-
-val modId: String by project
-val minecraftVersion: String by project
-val forgeVersion: String by project
-val mixinVersion: String by project
 
 dependencies {
 	"minecraft"("net.minecraftforge:forge:$minecraftVersion-$forgeVersion")

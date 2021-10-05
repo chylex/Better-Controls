@@ -1,11 +1,11 @@
+val modId: String by project
+val minecraftVersion: String by project
+val fabricVersion: String by project
+
 plugins {
 	idea
 	id("fabric-loom") version "0.9-SNAPSHOT"
 }
-
-val modId: String by project
-val minecraftVersion: String by project
-val fabricVersion: String by project
 
 dependencies {
 	minecraft("com.mojang:minecraft:$minecraftVersion")
@@ -43,4 +43,8 @@ tasks.processResources {
 
 tasks.jar {
 	exclude("io/github/prospector/")
+}
+
+tasks.remapJar {
+	archiveVersion.set(tasks.jar.get().archiveVersion)
 }

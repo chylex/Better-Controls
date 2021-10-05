@@ -2,6 +2,16 @@ import org.gradle.api.file.DuplicatesStrategy.EXCLUDE
 import java.text.SimpleDateFormat
 import java.util.Date
 
+val modId: String by project
+val modName: String by project
+val modAuthor: String by project
+val modVersion: String by project
+val minecraftVersion: String by project
+val mixinVersion: String by project
+
+val modNameStripped = modName.replace(" ", "")
+val jarVersion = "$minecraftVersion+v$modVersion"
+
 buildscript {
 	repositories {
 		maven("https://repo.spongepowered.org/maven")
@@ -20,13 +30,6 @@ idea {
 	}
 }
 
-val modId: String by project
-val modName: String by project
-val modAuthor: String by project
-val modVersion: String by project
-val minecraftVersion: String by project
-val mixinVersion: String by project
-
 repositories {
 	maven("https://repo.spongepowered.org/maven")
 	mavenCentral()
@@ -38,7 +41,7 @@ dependencies {
 }
 
 base {
-	archivesName.set("${modName.replace(" ", "")}-Common-$minecraftVersion")
+	archivesName.set("$modNameStripped-Common")
 }
 
 minecraft {
@@ -76,7 +79,7 @@ subprojects {
 	}
 	
 	base {
-		archivesName.set("${modName.replace(" ", "")}-${project.name}-$minecraftVersion")
+		archivesName.set("$modNameStripped-${project.name}")
 	}
 	
 	tasks.withType<JavaCompile> {
@@ -91,6 +94,8 @@ subprojects {
 	}
 	
 	tasks.jar {
+		archiveVersion.set(jarVersion)
+		
 		from(rootProject.file("LICENSE"))
 		
 		manifest {
@@ -98,7 +103,7 @@ subprojects {
 				"Specification-Title" to modId,
 				"Specification-Vendor" to modAuthor,
 				"Specification-Version" to "1",
-				"Implementation-Title" to "${modName.replace(" ", "")}-${project.name}",
+				"Implementation-Title" to "$modNameStripped-${project.name}",
 				"Implementation-Vendor" to modAuthor,
 				"Implementation-Version" to modVersion,
 				"Implementation-Timestamp" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(Date()),
@@ -113,7 +118,7 @@ val copyJars = tasks.register<Copy>("copyJars") {
 	
 	for (subproject in subprojects) {
 		dependsOn(subproject.tasks.build)
-		from(subproject.base.libsDirectory.file("${subproject.base.archivesName.get()}-$modVersion.jar"))
+		from(subproject.base.libsDirectory.file("${subproject.base.archivesName.get()}-$jarVersion.jar"))
 	}
 	
 	into(file("${project.buildDir}/dist"))

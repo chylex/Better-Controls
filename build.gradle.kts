@@ -4,8 +4,13 @@ import java.util.Date
 
 val modId: String by project
 val modName: String by project
+val modDescription: String by project
 val modAuthor: String by project
 val modVersion: String by project
+val modLicense: String by project
+val modSourcesURL: String by project
+val modIssuesURL: String by project
+
 val minecraftVersion: String by project
 val mixinVersion: String by project
 
@@ -26,7 +31,16 @@ plugins {
 
 idea {
 	module {
-		excludeDirs.add(project.file("run"))
+		excludeDirs.add(file("gradle"))
+		excludeDirs.add(file("run"))
+		
+		if (findProject(":Forge") == null) {
+			excludeDirs.add(file("Forge"))
+		}
+		
+		if (findProject(":Fabric") == null) {
+			excludeDirs.add(file("Fabric"))
+		}
 	}
 }
 
@@ -90,7 +104,12 @@ subprojects {
 		from(rootProject.sourceSets.main.get().resources)
 		
 		inputs.property("name", modName)
+		inputs.property("description", modDescription)
 		inputs.property("version", modVersion)
+		inputs.property("author", modAuthor)
+		inputs.property("license", modLicense)
+		inputs.property("sourcesURL", modSourcesURL)
+		inputs.property("issuesURL", modIssuesURL)
 	}
 	
 	tasks.jar {
@@ -113,17 +132,34 @@ subprojects {
 	}
 }
 
+tasks.register("setupIdea") {
+	group = "mod"
+	
+	dependsOn(tasks.findByName("decompile"))
+	
+	val forge = findProject(":Forge")
+	if (forge != null) {
+		dependsOn(forge.tasks.getByName("genIntellijRuns"))
+	}
+	
+	val fabric = findProject(":Fabric")
+	if (fabric != null) {
+		dependsOn(fabric.tasks.getByName("genSources"))
+	}
+}
+
 val copyJars = tasks.register<Copy>("copyJars") {
+	group = "build"
 	duplicatesStrategy = EXCLUDE
 	
 	for (subproject in subprojects) {
-		dependsOn(subproject.tasks.build)
+		dependsOn(subproject.tasks.assemble)
 		from(subproject.base.libsDirectory.file("${subproject.base.archivesName.get()}-$jarVersion.jar"))
 	}
 	
 	into(file("${project.buildDir}/dist"))
 }
 
-tasks.build {
+tasks.assemble {
 	finalizedBy(copyJars)
 }

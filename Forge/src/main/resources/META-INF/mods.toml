@@ -1,19 +1,16 @@
 modLoader = "javafml"
 loaderVersion = "[37,)"
 
-authors = "chylex"
-license = "MPL-2.0"
-issueTrackerURL = "https://github.com/chylex/Better-Controls/issues"
+authors = "${author}"
+license = "${license}"
+issueTrackerURL = "${issuesURL}"
 
 [[mods]]
 modId = "bettercontrols"
 version = "${version}"
 displayName = "${name}"
+description = "${description}"
 logoFile = "icon.png"
-description = '''
-Adds many powerful key bindings and options to control your movement.
-The features complement vanilla mechanics without giving unfair advantages, so server use should be fine.
-'''
 
 [[dependencies.bettercontrols]]
 modId = "minecraft"

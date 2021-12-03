@@ -130,6 +130,10 @@ subprojects {
 			)
 		}
 	}
+	
+	tasks.test {
+		onlyIf { false }
+	}
 }
 
 tasks.register("setupIdea") {

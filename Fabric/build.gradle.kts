@@ -42,7 +42,7 @@ tasks.processResources {
 }
 
 tasks.jar {
-	exclude("io/github/prospector/")
+	exclude("com/terraformersmc/modmenu/")
 }
 
 tasks.remapJar {

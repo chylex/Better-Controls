@@ -33,6 +33,7 @@ idea {
 	module {
 		excludeDirs.add(file("gradle"))
 		excludeDirs.add(file("run"))
+		excludeDirs.add(file("Fabric/run"))
 		
 		if (findProject(":Forge") == null) {
 			excludeDirs.add(file("Forge"))
@@ -101,8 +102,7 @@ subprojects {
 	}
 	
 	tasks.processResources {
-		from(rootProject.sourceSets.main.get().resources)
-		
+		inputs.property("id", modId)
 		inputs.property("name", modName)
 		inputs.property("description", modDescription)
 		inputs.property("version", modVersion)
@@ -110,6 +110,10 @@ subprojects {
 		inputs.property("license", modLicense)
 		inputs.property("sourcesURL", modSourcesURL)
 		inputs.property("issuesURL", modIssuesURL)
+		
+		from(rootProject.sourceSets.main.get().resources) {
+			expand(inputs.properties)
+		}
 	}
 	
 	tasks.jar {

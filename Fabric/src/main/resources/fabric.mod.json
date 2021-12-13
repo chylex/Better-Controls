@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "bettercontrols",
+  "id": "${id}",
   "name": "${name}",
   "description": "${description}",
   "version": "${version}",
@@ -24,7 +24,7 @@
   },
   
   "mixins": [{
-    "config": "bettercontrols.mixins.json",
+    "config": "${id}.mixins.json",
     "environment": "client"
   }],
   

@@ -6,20 +6,20 @@ license = "${license}"
 issueTrackerURL = "${issuesURL}"
 
 [[mods]]
-modId = "bettercontrols"
+modId = "${id}"
 version = "${version}"
 displayName = "${name}"
 description = "${description}"
 logoFile = "icon.png"
 
-[[dependencies.bettercontrols]]
+[[dependencies.${id}]]
 modId = "minecraft"
 mandatory = true
 versionRange = "[1.17.1,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.bettercontrols]]
+[[dependencies.${id}]]
 modId = "forge"
 mandatory = true
 versionRange = "[37,)"

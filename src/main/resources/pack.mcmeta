@@ -1,6 +1,6 @@
 {
     "pack": {
-        "description": "Better Controls",
+        "description": "${name}",
         "pack_format": 7,
         "_comment": ""
     }

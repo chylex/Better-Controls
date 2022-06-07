@@ -12,7 +12,7 @@ import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 
 @Mixin(KeyboardInput.class)
 public abstract class HookClientPlayerInputTick {
-	@Inject(method = "tick(Z)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/player/KeyboardInput;up:Z", ordinal = 0, shift = AFTER))
+	@Inject(method = "tick(ZF)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/player/KeyboardInput;up:Z", ordinal = 0, shift = AFTER))
 	private void afterInputTick(final CallbackInfo info) {
 		@SuppressWarnings("ConstantConditions")
 		final Input input = (Input)(Object)this;

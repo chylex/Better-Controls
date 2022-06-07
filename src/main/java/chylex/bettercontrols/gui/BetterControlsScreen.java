@@ -20,7 +20,6 @@ import net.minecraft.client.gui.screens.OptionsSubScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -34,10 +33,11 @@ import static chylex.bettercontrols.gui.OptionListWidget.ROW_WIDTH;
 import static chylex.bettercontrols.gui.OptionListWidget.col2;
 import static chylex.bettercontrols.gui.OptionListWidget.col4;
 import static chylex.bettercontrols.gui.elements.TextWidget.CENTER;
+import static net.minecraft.network.chat.Component.literal;
 
 public class BetterControlsScreen extends OptionsSubScreen {
-	private static TextComponent text(final String text) {
-		return new TextComponent(text);
+	private static Component text(final String text) {
+		return literal(text);
 	}
 	
 	public static final Component TITLE = text("Better Controls");
@@ -85,7 +85,6 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		return y;
 	}
 	
-	@SuppressWarnings({ "AutoBoxing", "AutoUnboxing" })
 	private int generateFlightOptions(int y, final List<GuiEventListener> elements) {
 		final BetterControlsConfig cfg = BetterControlsCommon.getConfig();
 		

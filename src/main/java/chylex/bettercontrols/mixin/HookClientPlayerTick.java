@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.entity.player.ProfilePublicKey;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -12,8 +13,8 @@ import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 
 @Mixin(LocalPlayer.class)
 public abstract class HookClientPlayerTick extends AbstractClientPlayer {
-	protected HookClientPlayerTick(final ClientLevel world, final GameProfile profile) {
-		super(world, profile);
+	protected HookClientPlayerTick(final ClientLevel world, final GameProfile profile, final ProfilePublicKey profilePublicKey) {
+		super(world, profile, profilePublicKey);
 	}
 	
 	@Inject(method = "aiStep()V", at = @At("HEAD"))
@@ -23,7 +24,7 @@ public abstract class HookClientPlayerTick extends AbstractClientPlayer {
 		PlayerTicker.get(player).atHead(player);
 	}
 	
-	@Inject(method = "aiStep()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/Input;tick(Z)V", ordinal = 0, shift = AFTER))
+	@Inject(method = "aiStep()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/Input;tick(ZF)V", ordinal = 0, shift = AFTER))
 	private void afterInputTick(final CallbackInfo info) {
 		@SuppressWarnings("ConstantConditions")
 		final LocalPlayer player = (LocalPlayer)(Object)this;

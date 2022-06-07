@@ -2,7 +2,6 @@ package chylex.bettercontrols.gui.elements;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
@@ -47,6 +46,6 @@ public final class DiscreteValueSliderWidget<T> extends AbstractSliderButton {
 	
 	@Override
 	protected @NotNull MutableComponent createNarrationMessage() {
-		return new TranslatableComponent("gui.narrate.slider", narration.plainCopy().append(" ").append(getMessage()));
+		return Component.translatable("gui.narrate.slider", narration.plainCopy().append(" ").append(getMessage()));
 	}
 }

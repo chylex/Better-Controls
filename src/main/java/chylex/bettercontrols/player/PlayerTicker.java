@@ -50,8 +50,8 @@ public final class PlayerTicker {
 	
 	// Logic
 	
-	private final ToggleTracker toggleSprint = new ToggleTrackerForStickyKey(cfg().keyToggleSprint, KEY_SPRINT, toggled -> OPTIONS.toggleSprint = toggled);
-	private final ToggleTracker toggleSneak = new ToggleTrackerForStickyKey(cfg().keyToggleSneak, KEY_SNEAK, toggled -> OPTIONS.toggleCrouch = toggled);
+	private final ToggleTracker toggleSprint = new ToggleTrackerForStickyKey(cfg().keyToggleSprint, KEY_SPRINT, OPTIONS.toggleSprint()::set);
+	private final ToggleTracker toggleSneak = new ToggleTrackerForStickyKey(cfg().keyToggleSneak, KEY_SNEAK, OPTIONS.toggleCrouch()::set);
 	private final ToggleTracker toggleWalkForward = new ToggleTracker(cfg().keyToggleWalkForward, KEY_FORWARD);
 	private final ToggleTracker toggleJump = new ToggleTracker(cfg().keyToggleJump, KEY_JUMP);
 	
@@ -91,7 +91,7 @@ public final class PlayerTicker {
 		}
 		
 		final SprintMode sprintMode = cfg().sprintMode;
-		final boolean wasSprintToggled = OPTIONS.toggleSprint;
+		final boolean wasSprintToggled = Boolean.TRUE.equals(OPTIONS.toggleSprint().get());
 		final boolean isSprintToggled = toggleSprint.tick();
 		
 		if (temporarySprintTimer > 0) {

@@ -7,8 +7,6 @@ import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +22,7 @@ public final class KeyBindingWidget extends Button {
 	private boolean isEditing;
 	
 	public KeyBindingWidget(final int x, final int y, final int width, final int height, final Component bindingName, final KeyMapping binding, final Consumer<KeyBindingWidget> onEditingStarted) {
-		super(x, y, width, height, TextComponent.EMPTY, btn -> {});
+		super(x, y, width, height, Component.empty(), btn -> {});
 		this.binding = binding;
 		this.bindingName = bindingName;
 		this.onEditingStarted = onEditingStarted;
@@ -42,7 +40,7 @@ public final class KeyBindingWidget extends Button {
 	
 	@Override
 	protected @NotNull MutableComponent createNarrationMessage() {
-		return binding.isUnbound() ? new TranslatableComponent("narrator.controls.unbound", bindingName) : new TranslatableComponent("narrator.controls.bound", bindingName, super.createNarrationMessage());
+		return binding.isUnbound() ? Component.translatable("narrator.controls.unbound", bindingName) : Component.translatable("narrator.controls.bound", bindingName, super.createNarrationMessage());
 	}
 	
 	@Override
@@ -79,13 +77,13 @@ public final class KeyBindingWidget extends Button {
 		}
 		
 		if (isEditing) {
-			setMessage((new TextComponent("> ")).append(binding.getTranslatedKeyMessage().copy().withStyle(ChatFormatting.YELLOW)).append(" <").withStyle(ChatFormatting.YELLOW));
+			setMessage(Component.literal("> ").append(binding.getTranslatedKeyMessage().copy().withStyle(ChatFormatting.YELLOW)).append(" <").withStyle(ChatFormatting.YELLOW));
 		}
 		else if (hasConflict) {
 			setMessage(binding.getTranslatedKeyMessage().copy().withStyle(ChatFormatting.RED));
 		}
 		else {
-			setMessage(binding.isUnbound() ? new TextComponent("(No Binding)") : binding.getTranslatedKeyMessage());
+			setMessage(binding.isUnbound() ? Component.literal("(No Binding)") : binding.getTranslatedKeyMessage());
 		}
 	}
 }

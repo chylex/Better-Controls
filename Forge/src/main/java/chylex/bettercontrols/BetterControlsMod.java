@@ -4,7 +4,7 @@ import chylex.bettercontrols.gui.BetterControlsScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory;
+import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.IExtensionPoint.DisplayTest;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -16,7 +16,7 @@ import net.minecraftforge.network.NetworkConstants;
 public final class BetterControlsMod {
 	public BetterControlsMod() {
 		BetterControlsCommon.setConfig(DistExecutor.safeCallWhenOn(Dist.CLIENT, () -> ClientLoader::loadConfig));
-		ModLoadingContext.get().registerExtensionPoint(ConfigGuiFactory.class, () -> new ConfigGuiFactory(ClientLoader::createScreen));
+		ModLoadingContext.get().registerExtensionPoint(ConfigScreenFactory.class, () -> new ConfigScreenFactory(ClientLoader::createScreen));
 		ModLoadingContext.get().registerExtensionPoint(DisplayTest.class, () -> new DisplayTest(() -> NetworkConstants.IGNORESERVERONLY, (a, b) -> true));
 	}
 	

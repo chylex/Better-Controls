@@ -4,7 +4,6 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.world.entity.player.ProfilePublicKey;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -13,8 +12,8 @@ import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 
 @Mixin(LocalPlayer.class)
 public abstract class HookClientPlayerTick extends AbstractClientPlayer {
-	protected HookClientPlayerTick(final ClientLevel world, final GameProfile profile, final ProfilePublicKey profilePublicKey) {
-		super(world, profile, profilePublicKey);
+	protected HookClientPlayerTick(final ClientLevel world, final GameProfile profile) {
+		super(world, profile);
 	}
 	
 	@Inject(method = "aiStep()V", at = @At("HEAD"))

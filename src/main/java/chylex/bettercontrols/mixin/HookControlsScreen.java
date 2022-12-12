@@ -9,6 +9,7 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.OptionsSubScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.controls.ControlsScreen;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,9 +31,15 @@ public abstract class HookControlsScreen extends OptionsSubScreen {
 		
 		int leftBottomY = 0;
 		int rightBottomY = 0;
+		AbstractWidget doneButton = null;
 		
 		for (final GuiEventListener child : children()) {
 			if (!(child instanceof AbstractWidget widget)) {
+				continue;
+			}
+			
+			if (widget instanceof Button button && button.getMessage() == CommonComponents.GUI_DONE) {
+				doneButton = widget;
 				continue;
 			}
 			
@@ -48,7 +55,7 @@ public abstract class HookControlsScreen extends OptionsSubScreen {
 		
 		final int x, y;
 		
-		if (leftBottomY < rightBottomY) {
+		if (leftBottomY <= rightBottomY) {
 			x = center - 155;
 			y = leftBottomY + 4;
 		}
@@ -59,5 +66,9 @@ public abstract class HookControlsScreen extends OptionsSubScreen {
 		
 		final MutableComponent buttonTitle = BetterControlsScreen.TITLE.plainCopy().append("...");
 		addRenderableWidget(Button.builder(buttonTitle, btn -> Minecraft.getInstance().setScreen(new BetterControlsScreen(screen))).pos(x, y).size(150, 20).build());
+		
+		if (doneButton != null) {
+			doneButton.setY(y + 24);
+		}
 	}
 }

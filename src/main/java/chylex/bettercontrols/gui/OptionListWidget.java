@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import org.jetbrains.annotations.NotNull;
@@ -35,14 +35,14 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 			return new Offset(widget.getX(), widget.getY());
 		}
 		else if (element instanceof final AbstractWidget widget) {
-			return new Offset(widget.x, widget.y);
+			return new Offset(widget.getX(), widget.getY());
 		}
 		else {
 			return new Offset(0, 0);
 		}
 	}
 	
-	public interface OptionWidget extends GuiEventListener, Widget {
+	public interface OptionWidget extends GuiEventListener, Renderable {
 		int getX();
 		int getY();
 		void setX(int x);
@@ -82,13 +82,15 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 			this.offsets = elements.stream().collect(Collectors.toMap(Function.identity(), OptionListWidget::getElementOffset));
 		}
 		
+		@NotNull
 		@Override
-		public @NotNull List<? extends GuiEventListener> children() {
+		public List<? extends GuiEventListener> children() {
 			return Collections.unmodifiableList(elements);
 		}
 		
+		@NotNull
 		@Override
-		public @NotNull List<? extends NarratableEntry> narratables() {
+		public List<? extends NarratableEntry> narratables() {
 			return Collections.unmodifiableList(narratables);
 		}
 		
@@ -98,16 +100,16 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 				final Offset offset = offsets.get(element);
 				
 				if (element instanceof final AbstractWidget widget) {
-					widget.x = x + offset.x;
-					widget.y = y + offset.y;
+					widget.setX(x + offset.x);
+					widget.setY(y + offset.y);
 				}
 				else if (element instanceof final OptionWidget widget) {
 					widget.setX(x + offset.x);
 					widget.setY(y + offset.y);
 				}
 				
-				if (element instanceof final Widget widget) {
-					widget.render(matrices, mouseX, mouseY, tickDelta);
+				if (element instanceof final Renderable renderable) {
+					renderable.render(matrices, mouseX, mouseY, tickDelta);
 				}
 			}
 		}

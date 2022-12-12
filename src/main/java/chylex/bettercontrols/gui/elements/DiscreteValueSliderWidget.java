@@ -44,8 +44,9 @@ public final class DiscreteValueSliderWidget<T> extends AbstractSliderButton {
 		}
 	}
 	
+	@NotNull
 	@Override
-	protected @NotNull MutableComponent createNarrationMessage() {
+	protected MutableComponent createNarrationMessage() {
 		return Component.translatable("gui.narrate.slider", narration.plainCopy().append(" ").append(getMessage()));
 	}
 }

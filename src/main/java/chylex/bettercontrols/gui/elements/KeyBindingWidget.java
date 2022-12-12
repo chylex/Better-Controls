@@ -22,7 +22,7 @@ public final class KeyBindingWidget extends Button {
 	private boolean isEditing;
 	
 	public KeyBindingWidget(final int x, final int y, final int width, final int height, final Component bindingName, final KeyMapping binding, final Consumer<KeyBindingWidget> onEditingStarted) {
-		super(x, y, width, height, Component.empty(), btn -> {});
+		super(x, y, width, height, Component.empty(), btn -> {}, DEFAULT_NARRATION);
 		this.binding = binding;
 		this.bindingName = bindingName;
 		this.onEditingStarted = onEditingStarted;
@@ -38,8 +38,9 @@ public final class KeyBindingWidget extends Button {
 		button.active = !binding.isUnbound();
 	}
 	
+	@NotNull
 	@Override
-	protected @NotNull MutableComponent createNarrationMessage() {
+	protected MutableComponent createNarrationMessage() {
 		return binding.isUnbound() ? Component.translatable("narrator.controls.unbound", bindingName) : Component.translatable("narrator.controls.bound", bindingName, super.createNarrationMessage());
 	}
 	

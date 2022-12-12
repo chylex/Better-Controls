@@ -10,6 +10,7 @@ import net.minecraft.client.gui.screens.OptionsSubScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.controls.ControlsScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -35,12 +36,12 @@ public abstract class HookControlsScreen extends OptionsSubScreen {
 				continue;
 			}
 			
-			final int bottomY = widget.y + widget.getHeight();
+			final int bottomY = widget.getY() + widget.getHeight();
 			
-			if (widget.x + widget.getWidth() < center) {
+			if (widget.getX() + widget.getWidth() < center) {
 				leftBottomY = Math.max(leftBottomY, bottomY);
 			}
-			if (widget.x >= center) {
+			if (widget.getX() >= center) {
 				rightBottomY = Math.max(rightBottomY, bottomY);
 			}
 		}
@@ -56,6 +57,7 @@ public abstract class HookControlsScreen extends OptionsSubScreen {
 			y = rightBottomY + 4;
 		}
 		
-		addRenderableWidget(new Button(x, y, 150, 20, BetterControlsScreen.TITLE.plainCopy().append("..."), btn -> Minecraft.getInstance().setScreen(new BetterControlsScreen(screen))));
+		final MutableComponent buttonTitle = BetterControlsScreen.TITLE.plainCopy().append("...");
+		addRenderableWidget(Button.builder(buttonTitle, btn -> Minecraft.getInstance().setScreen(new BetterControlsScreen(screen))).pos(x, y).size(150, 20).build());
 	}
 }

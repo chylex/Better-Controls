@@ -242,7 +242,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, text("Miscellaneous"), CENTER));
 		y = generateMiscellaneousOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;
 		
-		addRenderableWidget(new Button(width / 2 - 99, height - 29, 200, 20, CommonComponents.GUI_DONE, btn -> minecraft.setScreen(lastScreen)));
+		addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, btn -> minecraft.setScreen(lastScreen)).pos(width / 2 - 99, height - 29).size(200, 20).build());
 		addWidget(optionsWidget = new OptionListWidget(21, height - 32, width, height, elements, y - TITLE_MARGIN_TOP + BOTTOM_PADDING));
 	}
 	

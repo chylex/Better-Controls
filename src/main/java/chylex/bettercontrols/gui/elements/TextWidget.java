@@ -58,6 +58,14 @@ public final class TextWidget extends GuiComponent implements OptionWidget {
 	}
 	
 	@Override
+	public void setFocused(final boolean focused) {}
+	
+	@Override
+	public boolean isFocused() {
+		return false;
+	}
+	
+	@Override
 	public void render(final @NotNull PoseStack matrices, final int mouseX, final int mouseY, final float delta) {
 		final Font textRenderer = Minecraft.getInstance().font;
 		final List<FormattedCharSequence> lines = textRenderer.split(text, width);

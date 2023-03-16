@@ -16,9 +16,12 @@ public abstract class HookPlayerFlightSpeed extends LivingEntity {
 	}
 	
 	@Redirect(
-		method = "travel",
+		method = "getFlyingSpeed",
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isSprinting()Z"),
-		slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Abilities;getFlyingSpeed()F"))
+		slice = @Slice(
+			from = @At(value = "FIELD", target = "Lnet/minecraft/world/entity/player/Abilities;flying:Z"),
+			to = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Abilities;getFlyingSpeed()F")
+		)
 	)
 	private boolean disableVanillaSprintBoost(final Player player) {
 		return false;

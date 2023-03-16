@@ -24,10 +24,12 @@ final class Json {
 		return obj.has(key) ? obj.get(key).getAsBoolean() : defaultValue;
 	}
 	
+	@SuppressWarnings("SameParameterValue")
 	static <T extends Enum<T>> void setEnum(final JsonObject obj, final String key, final T value) {
 		obj.addProperty(key, value.name());
 	}
 	
+	@SuppressWarnings("SameParameterValue")
 	static <T extends Enum<T>> T getEnum(final JsonObject obj, final String key, final T defaultValue, final Class<T> enumClass) {
 		if (!obj.has(key)) {
 			return defaultValue;

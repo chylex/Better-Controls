@@ -1,15 +1,15 @@
 modLoader = "javafml"
 loaderVersion = "[0,)"
 
-authors = "${author}"
 license = "${license}"
 issueTrackerURL = "${issuesURL}"
 
 [[mods]]
 modId = "${id}"
-version = "${version}"
 displayName = "${name}"
 description = "${description}"
+authors = "${author}"
+version = "${version}"
 logoFile = "icon.png"
 
 [[dependencies.${id}]]

@@ -8,6 +8,7 @@ import chylex.bettercontrols.gui.elements.TextWidget;
 import chylex.bettercontrols.input.KeyBindingWithModifier;
 import chylex.bettercontrols.input.ModifierKey;
 import chylex.bettercontrols.input.SprintMode;
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
@@ -88,7 +89,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	private int generateFlightOptions(int y, final List<GuiEventListener> elements) {
 		final BetterControlsConfig cfg = BetterControlsCommon.getConfig();
 		
-		final List<Option<Float>> flightSpeedOptions = Arrays.asList(
+		final ImmutableList<Option<Float>> flightSpeedOptions = ImmutableList.of(
 			new Option<>(Float.valueOf(0.25F), text("0.25x")),
 			new Option<>(Float.valueOf(0.50F), text("0.5x")),
 			new Option<>(Float.valueOf(0.75F), text("0.75x")),
@@ -103,7 +104,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 			new Option<>(Float.valueOf(8.00F), text("8x"))
 		);
 		
-		final List<Option<Float>> flightVerticalBoostOptions = Arrays.asList(
+		final ImmutableList<Option<Float>> flightVerticalBoostOptions = ImmutableList.of(
 			new Option<>(Float.valueOf(0.00F), text("None")),
 			new Option<>(Float.valueOf(0.25F), text("+25%")),
 			new Option<>(Float.valueOf(0.50F), text("+50%")),
@@ -219,6 +220,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	private KeyBindingWidget editingKeyBinding;
 	private final List<KeyBindingWidget> allKeyBindings = new ArrayList<>();
 	
+	@SuppressWarnings("DataFlowIssue")
 	public BetterControlsScreen(@Nullable final Screen parentScreen) {
 		super(parentScreen, Minecraft.getInstance().options, TITLE);
 	}
@@ -242,7 +244,9 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, text("Miscellaneous"), CENTER));
 		y = generateMiscellaneousOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;
 		
+		//noinspection DataFlowIssue
 		addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, btn -> minecraft.setScreen(lastScreen)).pos(width / 2 - 99, height - 29).size(200, 20).build());
+		
 		addWidget(optionsWidget = new OptionListWidget(21, height - 32, width, height, elements, y - TITLE_MARGIN_TOP + BOTTOM_PADDING));
 	}
 	

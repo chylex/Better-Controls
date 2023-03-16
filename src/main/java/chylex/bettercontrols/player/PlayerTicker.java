@@ -149,6 +149,7 @@ public final class PlayerTicker {
 	
 	public void afterInputAssignsPressingForward(final Input input) {
 		if (MINECRAFT.screen == null) {
+			//noinspection NonShortCircuitBooleanExpression
 			input.up |= toggleWalkForward.tick();
 		}
 	}
@@ -157,6 +158,7 @@ public final class PlayerTicker {
 		final Input input = player.input;
 		
 		if (MINECRAFT.screen == null && !player.getAbilities().flying) {
+			//noinspection NonShortCircuitBooleanExpression
 			input.jumping |= toggleJump.tick();
 		}
 		

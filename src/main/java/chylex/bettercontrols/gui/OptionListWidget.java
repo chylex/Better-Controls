@@ -18,10 +18,12 @@ import java.util.stream.Collectors;
 
 public final class OptionListWidget extends ContainerObjectSelectionList<Entry> {
 	public static final int ROW_WIDTH = 408;
-	public static final int ROW_PADDING = 2;
 	
-	public static final int COL2_W = (ROW_WIDTH / 2) - ROW_PADDING;
-	public static final int COL4_W = (ROW_WIDTH / 4) - ROW_PADDING;
+	private static final int ROW_HORIZONTAL_PADDING = 2;
+	private static final int SCROLL_MULTIPLIER = 18;
+	
+	public static final int COL2_W = (ROW_WIDTH / 2) - ROW_HORIZONTAL_PADDING;
+	public static final int COL4_W = (ROW_WIDTH / 4) - ROW_HORIZONTAL_PADDING;
 	
 	public static int col2(final int column) {
 		return (column * ROW_WIDTH) / 2;
@@ -59,7 +61,7 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 	
 	@Override
 	public int getRowLeft() {
-		return super.getRowLeft() - ROW_PADDING;
+		return super.getRowLeft() - ROW_HORIZONTAL_PADDING;
 	}
 	
 	@Override
@@ -70,6 +72,12 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 	@Override
 	protected int getScrollbarPosition() {
 		return (width + ROW_WIDTH) / 2 + 4;
+	}
+	
+	@Override
+	public boolean mouseScrolled(final double x, final double y, final double amount) {
+		setScrollAmount(getScrollAmount() - amount * SCROLL_MULTIPLIER);
+		return true;
 	}
 	
 	protected static final class Entry extends ContainerObjectSelectionList.Entry<Entry> {

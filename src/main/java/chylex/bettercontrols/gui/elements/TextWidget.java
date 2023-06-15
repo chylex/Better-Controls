@@ -1,18 +1,19 @@
 package chylex.bettercontrols.gui.elements;
 
 import chylex.bettercontrols.gui.OptionListWidget.OptionWidget;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
-public final class TextWidget extends GuiComponent implements OptionWidget {
+public final class TextWidget implements OptionWidget {
 	public static final int LEFT = 0;
 	public static final int CENTER = 1;
+	
+	public static final int WHITE = 0xFF_FF_FF;
 	
 	private final Component text;
 	private int x;
@@ -67,7 +68,7 @@ public final class TextWidget extends GuiComponent implements OptionWidget {
 	}
 	
 	@Override
-	public void render(final @NotNull PoseStack matrices, final int mouseX, final int mouseY, final float delta) {
+	public void render(final @NotNull GuiGraphics graphics, final int mouseX, final int mouseY, final float delta) {
 		final Font textRenderer = Minecraft.getInstance().font;
 		final List<FormattedCharSequence> lines = textRenderer.split(text, width);
 		final int lineHeight = textRenderer.lineHeight + 1;
@@ -76,8 +77,7 @@ public final class TextWidget extends GuiComponent implements OptionWidget {
 		final int finalY = y + (height / 2) - (lineHeight * lines.size() / 2) + 1;
 		
 		for (int i = 0; i < lines.size(); i++) {
-			final FormattedCharSequence line = lines.get(i);
-			textRenderer.drawShadow(matrices, line, finalX, finalY + (i * lineHeight), (255 << 16) | (255 << 8) | 255);
+			graphics.drawString(textRenderer, lines.get(i), finalX, finalY + (i * lineHeight), WHITE);
 		}
 	}
 }

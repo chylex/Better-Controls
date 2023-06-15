@@ -11,10 +11,10 @@ import chylex.bettercontrols.input.ModifierKey;
 import chylex.bettercontrols.input.SprintMode;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -257,11 +257,11 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	}
 	
 	@Override
-	public void render(final @NotNull PoseStack matrices, final int mouseX, final int mouseY, final float delta) {
-		renderBackground(matrices);
-		optionsWidget.render(matrices, mouseX, mouseY, delta);
-		drawCenteredString(matrices, font, title, width / 2, 8, (255 << 16) | (255 << 8) | 255);
-		super.render(matrices, mouseX, mouseY, delta);
+	public void render(final @NotNull GuiGraphics graphics, final int mouseX, final int mouseY, final float delta) {
+		renderBackground(graphics);
+		optionsWidget.render(graphics, mouseX, mouseY, delta);
+		graphics.drawCenteredString(font, title, width / 2, 8, TextWidget.WHITE);
+		super.render(graphics, mouseX, mouseY, delta);
 	}
 	
 	private void startEditingKeyBinding(final KeyBindingWidget widget) {

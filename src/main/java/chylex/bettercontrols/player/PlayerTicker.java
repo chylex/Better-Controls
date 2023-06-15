@@ -212,7 +212,7 @@ public final class PlayerTicker {
 	public void afterSuperCall(final LocalPlayer player) {
 		if (FlightHelper.shouldFlyOnGround(player)) {
 			final boolean isSneaking = player.isShiftKeyDown();
-			final boolean isOnGround = player.isOnGround();
+			final boolean isOnGround = player.onGround();
 			
 			if (!isSneaking) {
 				wasSneakingBeforeTouchingGround = false;

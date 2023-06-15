@@ -1,8 +1,8 @@
 package chylex.bettercontrols.gui;
 
 import chylex.bettercontrols.gui.OptionListWidget.Entry;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.ContainerObjectSelectionList;
 import net.minecraft.client.gui.components.Renderable;
@@ -96,7 +96,7 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 		}
 		
 		@Override
-		public void render(final @NotNull PoseStack matrices, final int index, final int y, final int x, final int entryWidth, final int entryHeight, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta) {
+		public void render(final @NotNull GuiGraphics graphics, final int index, final int y, final int x, final int entryWidth, final int entryHeight, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta) {
 			for (final GuiEventListener element : elements) {
 				final Offset offset = offsets.get(element);
 				
@@ -110,7 +110,7 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 				}
 				
 				if (element instanceof final Renderable renderable) {
-					renderable.render(matrices, mouseX, mouseY, tickDelta);
+					renderable.render(graphics, mouseX, mouseY, tickDelta);
 				}
 			}
 		}

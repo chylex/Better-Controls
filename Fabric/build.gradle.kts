@@ -18,14 +18,14 @@ loom {
 		named("client") {
 			configName = "Fabric Client"
 			client()
-			runDir("run")
+			runDir("../run")
 			ideConfigGenerated(true)
 		}
 		
 		named("server") {
 			configName = "Fabric Server"
 			server()
-			runDir("run")
+			runDir("../run")
 			ideConfigGenerated(true)
 		}
 	}

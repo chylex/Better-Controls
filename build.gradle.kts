@@ -37,7 +37,6 @@ idea {
 	module {
 		excludeDirs.add(file("gradle"))
 		excludeDirs.add(file("run"))
-		excludeDirs.add(file("Fabric/run"))
 		
 		if (findProject(":Forge") == null) {
 			excludeDirs.add(file("Forge"))

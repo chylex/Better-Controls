@@ -13,6 +13,7 @@
   ],
   
   "contact": {
+    "homepage": "https://chylex.com",
     "issues": "${issuesURL}",
     "sources": "${sourcesURL}"
   },

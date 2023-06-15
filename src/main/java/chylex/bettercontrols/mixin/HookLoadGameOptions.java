@@ -1,4 +1,5 @@
 package chylex.bettercontrols.mixin;
+
 import chylex.bettercontrols.BetterControlsCommon;
 import chylex.bettercontrols.config.BetterControlsConfig;
 import chylex.bettercontrols.input.KeyBindingWithModifier;

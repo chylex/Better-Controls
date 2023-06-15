@@ -1,4 +1,5 @@
 package chylex.bettercontrols.gui;
+
 import chylex.bettercontrols.BetterControlsCommon;
 import chylex.bettercontrols.config.BetterControlsConfig;
 import chylex.bettercontrols.gui.elements.DiscreteValueSliderWidget;

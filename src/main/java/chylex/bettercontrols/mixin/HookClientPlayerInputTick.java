@@ -1,4 +1,5 @@
 package chylex.bettercontrols.mixin;
+
 import chylex.bettercontrols.player.PlayerTicker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;

@@ -1,4 +1,5 @@
 package chylex.bettercontrols.gui.elements;
+
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;

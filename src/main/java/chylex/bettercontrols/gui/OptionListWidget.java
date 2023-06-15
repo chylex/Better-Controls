@@ -1,4 +1,5 @@
 package chylex.bettercontrols.gui;
+
 import chylex.bettercontrols.gui.OptionListWidget.Entry;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;

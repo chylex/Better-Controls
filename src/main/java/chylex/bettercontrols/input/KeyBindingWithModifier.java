@@ -1,4 +1,5 @@
 package chylex.bettercontrols.input;
+
 import com.mojang.blaze3d.platform.InputConstants.Type;
 import net.minecraft.client.KeyMapping;
 import org.jetbrains.annotations.Nullable;

@@ -1,4 +1,5 @@
 package chylex.bettercontrols.config;
+
 import chylex.bettercontrols.input.SprintMode;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

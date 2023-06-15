@@ -1,4 +1,5 @@
 package chylex.bettercontrols.gui.elements;
+
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.network.chat.Component;
 import java.util.List;

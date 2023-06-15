@@ -1,4 +1,5 @@
 package chylex.bettercontrols.mixin;
+
 import chylex.bettercontrols.player.PlayerTicker;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.multiplayer.ClientLevel;

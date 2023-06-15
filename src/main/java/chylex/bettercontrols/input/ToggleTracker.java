@@ -1,4 +1,5 @@
 package chylex.bettercontrols.input;
+
 import net.minecraft.client.KeyMapping;
 
 public class ToggleTracker {

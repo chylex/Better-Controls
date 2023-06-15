@@ -1,4 +1,5 @@
 package chylex.bettercontrols.mixin;
+
 import net.minecraft.client.ToggleKeyMapping;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;

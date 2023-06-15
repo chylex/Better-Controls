@@ -1,4 +1,5 @@
 package chylex.bettercontrols.gui.elements;
+
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;

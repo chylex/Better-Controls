@@ -1,4 +1,5 @@
 package chylex.bettercontrols.input;
+
 import chylex.bettercontrols.mixin.AccessKeyBindingFields;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import net.minecraft.client.KeyMapping;

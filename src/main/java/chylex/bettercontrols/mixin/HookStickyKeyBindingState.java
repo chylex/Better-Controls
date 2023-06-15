@@ -1,4 +1,5 @@
 package chylex.bettercontrols.mixin;
+
 import chylex.bettercontrols.input.ToggleTrackerForStickyKey;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.ToggleKeyMapping;

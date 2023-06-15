@@ -1,4 +1,5 @@
 package chylex.bettercontrols.config;
+
 import chylex.bettercontrols.input.KeyBindingWithModifier;
 import chylex.bettercontrols.input.ModifierKey;
 import com.google.gson.JsonObject;

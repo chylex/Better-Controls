@@ -1,4 +1,5 @@
 package chylex.bettercontrols.config;
+
 import chylex.bettercontrols.input.KeyBindingWithModifier;
 import chylex.bettercontrols.input.SprintMode;
 import java.nio.file.Path;

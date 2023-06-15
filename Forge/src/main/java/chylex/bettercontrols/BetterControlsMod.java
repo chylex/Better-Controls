@@ -1,4 +1,5 @@
 package chylex.bettercontrols;
+
 import chylex.bettercontrols.config.BetterControlsConfig;
 import chylex.bettercontrols.gui.BetterControlsScreen;
 import net.minecraft.client.Minecraft;

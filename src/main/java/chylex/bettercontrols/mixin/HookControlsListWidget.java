@@ -1,4 +1,5 @@
 package chylex.bettercontrols.mixin;
+
 import chylex.bettercontrols.BetterControlsCommon;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;

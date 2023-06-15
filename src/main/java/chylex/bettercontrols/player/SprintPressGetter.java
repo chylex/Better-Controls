@@ -1,4 +1,5 @@
 package chylex.bettercontrols.player;
+
 import java.util.function.BooleanSupplier;
 
 record SprintPressGetter(BooleanSupplier wrapped, BooleanSupplier or) implements BooleanSupplier {

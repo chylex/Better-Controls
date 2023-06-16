@@ -12,6 +12,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import net.minecraft.util.Mth;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.FileNotFoundException;
@@ -45,14 +46,14 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		Json.setBool(obj, "Flight.DisableInertia", cfg.disableFlightInertia);
 		Json.setBool(obj, "Flight.DisableChangingFOV", cfg.disableChangingFovWhileFlying);
 		Json.setBool(obj, "Flight.FlyOnGround.Creative", cfg.flyOnGroundInCreative);
-		Json.setFloat(obj, "Flight.SpeedMp.Creative.Default", cfg.flightSpeedMpCreativeDefault);
-		Json.setFloat(obj, "Flight.SpeedMp.Creative.Sprinting", cfg.flightSpeedMpCreativeSprinting);
-		Json.setFloat(obj, "Flight.SpeedMp.Spectator.Default", cfg.flightSpeedMpSpectatorDefault);
-		Json.setFloat(obj, "Flight.SpeedMp.Spectator.Sprinting", cfg.flightSpeedMpSpectatorSprinting);
-		Json.setFloat(obj, "Flight.VerticalBoost.Creative.Default", cfg.flightVerticalBoostCreativeDefault);
-		Json.setFloat(obj, "Flight.VerticalBoost.Creative.Sprinting", cfg.flightVerticalBoostCreativeSprinting);
-		Json.setFloat(obj, "Flight.VerticalBoost.Spectator.Default", cfg.flightVerticalBoostSpectatorDefault);
-		Json.setFloat(obj, "Flight.VerticalBoost.Spectator.Sprinting", cfg.flightVerticalBoostSpectatorSprinting);
+		Json.setFloat(obj, "Flight.SpeedMp.Creative.Default", cfg.flightHorizontalSpeedMpCreativeDefault);
+		Json.setFloat(obj, "Flight.SpeedMp.Creative.Sprinting", cfg.flightHorizontalSpeedMpCreativeSprinting);
+		Json.setFloat(obj, "Flight.SpeedMp.Spectator.Default", cfg.flightHorizontalSpeedMpSpectatorDefault);
+		Json.setFloat(obj, "Flight.SpeedMp.Spectator.Sprinting", cfg.flightHorizontalSpeedMpSpectatorSprinting);
+		Json.setFloat(obj, "Flight.VerticalSpeedMp.Creative.Default", cfg.flightVerticalSpeedMpCreativeDefault);
+		Json.setFloat(obj, "Flight.VerticalSpeedMp.Creative.Sprinting", cfg.flightVerticalSpeedMpCreativeSprinting);
+		Json.setFloat(obj, "Flight.VerticalSpeedMp.Spectator.Default", cfg.flightVerticalSpeedMpSpectatorDefault);
+		Json.setFloat(obj, "Flight.VerticalSpeedMp.Spectator.Sprinting", cfg.flightVerticalSpeedMpSpectatorSprinting);
 		
 		Json.writeKeyBinding(obj, "Misc.KeyToggleWalkForward", cfg.keyToggleWalkForward);
 		Json.writeKeyBinding(obj, "Misc.KeyToggleJump", cfg.keyToggleJump);
@@ -84,14 +85,14 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		cfg.disableFlightInertia = Json.getBool(obj, "Flight.DisableInertia", cfg.disableFlightInertia);
 		cfg.disableChangingFovWhileFlying = Json.getBool(obj, "Flight.DisableChangingFOV", cfg.disableChangingFovWhileFlying);
 		cfg.flyOnGroundInCreative = Json.getBool(obj, "Flight.FlyOnGround.Creative", cfg.flyOnGroundInCreative);
-		cfg.flightSpeedMpCreativeDefault = Json.getFloat(obj, "Flight.SpeedMp.Creative.Default", cfg.flightSpeedMpCreativeDefault, 0.25F, 8F);
-		cfg.flightSpeedMpCreativeSprinting = Json.getFloat(obj, "Flight.SpeedMp.Creative.Sprinting", cfg.flightSpeedMpCreativeSprinting, 0.25F, 8F);
-		cfg.flightSpeedMpSpectatorDefault = Json.getFloat(obj, "Flight.SpeedMp.Spectator.Default", cfg.flightSpeedMpSpectatorDefault, 0.25F, 8F);
-		cfg.flightSpeedMpSpectatorSprinting = Json.getFloat(obj, "Flight.SpeedMp.Spectator.Sprinting", cfg.flightSpeedMpSpectatorSprinting, 0.25F, 8F);
-		cfg.flightVerticalBoostCreativeDefault = Json.getFloat(obj, "Flight.VerticalBoost.Creative.Default", cfg.flightVerticalBoostCreativeDefault, 0F, 3F);
-		cfg.flightVerticalBoostCreativeSprinting = Json.getFloat(obj, "Flight.VerticalBoost.Creative.Sprinting", cfg.flightVerticalBoostCreativeSprinting, 0F, 3F);
-		cfg.flightVerticalBoostSpectatorDefault = Json.getFloat(obj, "Flight.VerticalBoost.Spectator.Default", cfg.flightVerticalBoostSpectatorDefault, 0F, 3F);
-		cfg.flightVerticalBoostSpectatorSprinting = Json.getFloat(obj, "Flight.VerticalBoost.Spectator.Sprinting", cfg.flightVerticalBoostSpectatorSprinting, 0F, 3F);
+		cfg.flightHorizontalSpeedMpCreativeDefault = readHorizontalSpeedMultiplier(obj, "Flight.SpeedMp.Creative.Default", cfg.flightHorizontalSpeedMpCreativeDefault);
+		cfg.flightHorizontalSpeedMpCreativeSprinting = readHorizontalSpeedMultiplier(obj, "Flight.SpeedMp.Creative.Sprinting", cfg.flightHorizontalSpeedMpCreativeSprinting);
+		cfg.flightHorizontalSpeedMpSpectatorDefault = readHorizontalSpeedMultiplier(obj, "Flight.SpeedMp.Spectator.Default", cfg.flightHorizontalSpeedMpSpectatorDefault);
+		cfg.flightHorizontalSpeedMpSpectatorSprinting = readHorizontalSpeedMultiplier(obj, "Flight.SpeedMp.Spectator.Sprinting", cfg.flightHorizontalSpeedMpSpectatorSprinting);
+		cfg.flightVerticalSpeedMpCreativeDefault = readVerticalSpeedMultiplier(obj, "Flight.VerticalSpeedMp.Creative.Default", "Flight.VerticalBoost.Creative.Default", cfg.flightVerticalSpeedMpCreativeDefault);
+		cfg.flightVerticalSpeedMpCreativeSprinting = readVerticalSpeedMultiplier(obj, "Flight.VerticalSpeedMp.Creative.Sprinting", "Flight.VerticalBoost.Creative.Sprinting", cfg.flightVerticalSpeedMpCreativeSprinting);
+		cfg.flightVerticalSpeedMpSpectatorDefault = readVerticalSpeedMultiplier(obj, "Flight.VerticalSpeedMp.Spectator.Default", "Flight.VerticalBoost.Spectator.Default", cfg.flightVerticalSpeedMpSpectatorDefault);
+		cfg.flightVerticalSpeedMpSpectatorSprinting = readVerticalSpeedMultiplier(obj, "Flight.VerticalSpeedMp.Spectator.Sprinting", "Flight.VerticalBoost.Spectator.Sprinting", cfg.flightVerticalSpeedMpSpectatorSprinting);
 		
 		Json.readKeyBinding(obj, "Misc.KeyToggleWalkForward", cfg.keyToggleWalkForward);
 		Json.readKeyBinding(obj, "Misc.KeyToggleJump", cfg.keyToggleJump);
@@ -99,6 +100,35 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		Json.readKeyBinding(obj, "Misc.KeyOpenMenu", cfg.keyOpenMenu);
 		
 		return cfg;
+	}
+	
+	private static float readHorizontalSpeedMultiplier(final JsonObject obj, final String key, final float defaultValue) {
+		return Json.getFloat(obj, key, defaultValue, 0.25F, 8F);
+	}
+	
+	private static float readVerticalSpeedMultiplier(final JsonObject obj, final String newKey, final String legacyBoostKey, final float defaultValue) {
+		if (obj.has(newKey)) {
+			return Json.getFloat(obj, newKey, defaultValue, 0.25F, 8F);
+		}
+		else if (obj.has(legacyBoostKey)) {
+			final float value = 1F + Json.getFloat(obj, legacyBoostKey, 0F, 0F, 3F);
+			// 1.25x, 1.75x, 2.5x, and 3.5x are not supported
+			if (Mth.equal(value, 1.25F) || Mth.equal(value, 1.75F)) {
+				return 1.5F;
+			}
+			else if (Mth.equal(value, 2.5F)) {
+				return 2F;
+			}
+			else if (Mth.equal(value, 3.5F)) {
+				return 3F;
+			}
+			else {
+				return value;
+			}
+		}
+		else {
+			return defaultValue;
+		}
 	}
 	
 	static void serialize(final Path path, final BetterControlsConfig config) {

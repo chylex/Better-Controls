@@ -24,14 +24,14 @@ public final class BetterControlsConfig {
 	public boolean disableFlightInertia = false;
 	public boolean disableChangingFovWhileFlying = false;
 	public boolean flyOnGroundInCreative = false;
-	public float flightSpeedMpCreativeDefault = 1F;
-	public float flightSpeedMpCreativeSprinting = 2F;
-	public float flightSpeedMpSpectatorDefault = 1F;
-	public float flightSpeedMpSpectatorSprinting = 2F;
-	public float flightVerticalBoostCreativeDefault = 0F;
-	public float flightVerticalBoostCreativeSprinting = 0F;
-	public float flightVerticalBoostSpectatorDefault = 0F;
-	public float flightVerticalBoostSpectatorSprinting = 0F;
+	public float flightHorizontalSpeedMpCreativeDefault = 1F;
+	public float flightHorizontalSpeedMpCreativeSprinting = 2F;
+	public float flightHorizontalSpeedMpSpectatorDefault = 1F;
+	public float flightHorizontalSpeedMpSpectatorSprinting = 2F;
+	public float flightVerticalSpeedMpCreativeDefault = 1F;
+	public float flightVerticalSpeedMpCreativeSprinting = 2F;
+	public float flightVerticalSpeedMpSpectatorDefault = 1F;
+	public float flightVerticalSpeedMpSpectatorSprinting = 2F;
 	
 	public final KeyBindingWithModifier keyToggleWalkForward = new KeyBindingWithModifier("key.bettercontrols.toggle_forward");
 	public final KeyBindingWithModifier keyToggleJump = new KeyBindingWithModifier("key.bettercontrols.toggle_jump");

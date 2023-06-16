@@ -29,8 +29,6 @@ public abstract class HookClientPlayerVerticalFlightSpeed extends LivingEntity {
 	private float modifyVerticalFlightSpeed(final Abilities abilities) {
 		@SuppressWarnings("ConstantConditions")
 		final LocalPlayer me = (LocalPlayer)(Object)this;
-		
-		final float multiplier = 1F + FlightHelper.getVerticalSpeedBoost(me);
-		return abilities.getFlyingSpeed() * multiplier;
+		return abilities.getFlyingSpeed() * FlightHelper.getVerticalSpeedMultiplier(me);
 	}
 }

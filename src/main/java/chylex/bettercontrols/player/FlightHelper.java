@@ -29,25 +29,25 @@ public final class FlightHelper {
 	
 	public static float getHorizontalSpeedMultiplier(final LocalPlayer player) {
 		if (player.isCreative()) {
-			return isSprinting() ? cfg().flightSpeedMpCreativeSprinting : cfg().flightSpeedMpCreativeDefault;
+			return isSprinting() ? cfg().flightHorizontalSpeedMpCreativeSprinting : cfg().flightHorizontalSpeedMpCreativeDefault;
 		}
 		else if (player.isSpectator()) {
-			return isSprinting() ? cfg().flightSpeedMpSpectatorSprinting : cfg().flightSpeedMpSpectatorDefault;
+			return isSprinting() ? cfg().flightHorizontalSpeedMpSpectatorSprinting : cfg().flightHorizontalSpeedMpSpectatorDefault;
 		}
 		else {
 			return 1F;
 		}
 	}
 	
-	public static float getVerticalSpeedBoost(final LocalPlayer player) {
+	public static float getVerticalSpeedMultiplier(final LocalPlayer player) {
 		if (player.isCreative()) {
-			return isSprinting() ? cfg().flightVerticalBoostCreativeSprinting : cfg().flightVerticalBoostCreativeDefault;
+			return isSprinting() ? cfg().flightVerticalSpeedMpCreativeSprinting : cfg().flightVerticalSpeedMpCreativeDefault;
 		}
 		else if (player.isSpectator()) {
-			return isSprinting() ? cfg().flightVerticalBoostSpectatorSprinting : cfg().flightVerticalBoostSpectatorDefault;
+			return isSprinting() ? cfg().flightVerticalSpeedMpSpectatorSprinting : cfg().flightVerticalSpeedMpSpectatorDefault;
 		}
 		else {
-			return 0F;
+			return 1F;
 		}
 	}
 }

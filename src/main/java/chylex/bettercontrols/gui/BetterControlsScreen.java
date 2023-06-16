@@ -105,18 +105,6 @@ public class BetterControlsScreen extends OptionsSubScreen {
 			new Option<>(Float.valueOf(8.00F), text("8x"))
 		);
 		
-		final ImmutableList<Option<Float>> flightVerticalBoostOptions = ImmutableList.of(
-			new Option<>(Float.valueOf(0.00F), text("None")),
-			new Option<>(Float.valueOf(0.25F), text("+25%")),
-			new Option<>(Float.valueOf(0.50F), text("+50%")),
-			new Option<>(Float.valueOf(0.75F), text("+75%")),
-			new Option<>(Float.valueOf(1.00F), text("+100%")),
-			new Option<>(Float.valueOf(1.50F), text("+150%")),
-			new Option<>(Float.valueOf(2.00F), text("+200%")),
-			new Option<>(Float.valueOf(2.50F), text("+250%")),
-			new Option<>(Float.valueOf(3.00F), text("+300%"))
-		);
-		
 		generateKeyBindingWithModifierRow(y, elements, text("Toggle Flight (Creative)"), cfg.keyToggleFlight);
 		y += ROW_HEIGHT;
 		
@@ -137,24 +125,24 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		elements.add(new TextWidget(col4(3), y, COL4_W - TEXT_PADDING_RIGHT, text("Spectator"), CENTER));
 		y += ROW_HEIGHT * 7 / 8;
 		
-		generateLeftSideText(y, elements, text("Speed Multiplier (Default)"));
-		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, text("Speed Multiplier in Creative Mode"), flightSpeedOptions, cfg.flightSpeedMpCreativeDefault, value -> cfg.flightSpeedMpCreativeDefault = value));
-		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, text("Speed Multiplier in Spectator Mode"), flightSpeedOptions, cfg.flightSpeedMpSpectatorDefault, value -> cfg.flightSpeedMpSpectatorDefault = value));
+		generateLeftSideText(y, elements, text("Horizontal Speed Multiplier (Default)"));
+		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, text("Horizontal Speed Multiplier in Creative Mode"), flightSpeedOptions, cfg.flightHorizontalSpeedMpCreativeDefault, value -> cfg.flightHorizontalSpeedMpCreativeDefault = value));
+		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, text("Horizontal Speed Multiplier in Spectator Mode"), flightSpeedOptions, cfg.flightHorizontalSpeedMpSpectatorDefault, value -> cfg.flightHorizontalSpeedMpSpectatorDefault = value));
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, text("Speed Multiplier (Sprinting)"));
-		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, text("Speed Multiplier when Sprinting in Creative Mode"), flightSpeedOptions, cfg.flightSpeedMpCreativeSprinting, value -> cfg.flightSpeedMpCreativeSprinting = value));
-		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, text("Speed Multiplier when Sprinting in Spectator Mode"), flightSpeedOptions, cfg.flightSpeedMpSpectatorSprinting, value -> cfg.flightSpeedMpSpectatorSprinting = value));
+		generateLeftSideText(y, elements, text("Horizontal Speed Multiplier (Sprinting)"));
+		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, text("Horizontal Speed Multiplier when Sprinting in Creative Mode"), flightSpeedOptions, cfg.flightHorizontalSpeedMpCreativeSprinting, value -> cfg.flightHorizontalSpeedMpCreativeSprinting = value));
+		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, text("Horizontal Speed Multiplier when Sprinting in Spectator Mode"), flightSpeedOptions, cfg.flightHorizontalSpeedMpSpectatorSprinting, value -> cfg.flightHorizontalSpeedMpSpectatorSprinting = value));
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, text("Vertical Speed Boost (Default)"));
-		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, text("Vertical Speed Boost in Creative Mode"), flightVerticalBoostOptions, cfg.flightVerticalBoostCreativeDefault, value -> cfg.flightVerticalBoostCreativeDefault = value));
-		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, text("Vertical Speed Boost in Spectator Mode"), flightVerticalBoostOptions, cfg.flightVerticalBoostSpectatorDefault, value -> cfg.flightVerticalBoostSpectatorDefault = value));
+		generateLeftSideText(y, elements, text("Vertical Speed Multiplier (Default)"));
+		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, text("Vertical Speed Multiplier in Creative Mode"), flightSpeedOptions, cfg.flightVerticalSpeedMpCreativeDefault, value -> cfg.flightVerticalSpeedMpCreativeDefault = value));
+		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, text("Vertical Speed Multiplier in Spectator Mode"), flightSpeedOptions, cfg.flightVerticalSpeedMpSpectatorDefault, value -> cfg.flightVerticalSpeedMpSpectatorDefault = value));
 		y += ROW_HEIGHT;
 		
-		generateLeftSideText(y, elements, text("Vertical Speed Boost (Sprinting)"));
-		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, text("Vertical Speed Boost when Sprinting in Creative Mode"), flightVerticalBoostOptions, cfg.flightVerticalBoostCreativeSprinting, value -> cfg.flightVerticalBoostCreativeSprinting = value));
-		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, text("Vertical Speed Boost when Sprinting in Spectator Mode"), flightVerticalBoostOptions, cfg.flightVerticalBoostSpectatorSprinting, value -> cfg.flightVerticalBoostSpectatorSprinting = value));
+		generateLeftSideText(y, elements, text("Vertical Speed Multiplier (Sprinting)"));
+		elements.add(new DiscreteValueSliderWidget<>(col4(2), y, COL4_W, text("Vertical Speed Multiplier when Sprinting in Creative Mode"), flightSpeedOptions, cfg.flightVerticalSpeedMpCreativeSprinting, value -> cfg.flightVerticalSpeedMpCreativeSprinting = value));
+		elements.add(new DiscreteValueSliderWidget<>(col4(3), y, COL4_W, text("Vertical Speed Multiplier when Sprinting in Spectator Mode"), flightSpeedOptions, cfg.flightVerticalSpeedMpSpectatorSprinting, value -> cfg.flightVerticalSpeedMpSpectatorSprinting = value));
 		y += ROW_HEIGHT;
 		
 		return y;

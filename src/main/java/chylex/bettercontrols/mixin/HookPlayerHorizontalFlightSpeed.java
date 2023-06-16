@@ -43,7 +43,7 @@ public abstract class HookPlayerHorizontalFlightSpeed extends LivingEntity {
 		@SuppressWarnings("ConstantConditions")
 		final Player me = (Player)(Object)this;
 		
-		if (me instanceof final LocalPlayer localPlayer) {
+		if (me instanceof final LocalPlayer localPlayer && localPlayer.getAbilities().flying) {
 			final float multiplier = FlightHelper.getHorizontalSpeedMultiplier(localPlayer);
 			cir.setReturnValue(Float.valueOf(cir.getReturnValueF() * multiplier));
 		}

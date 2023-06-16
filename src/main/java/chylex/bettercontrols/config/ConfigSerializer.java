@@ -89,10 +89,10 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		cfg.flightHorizontalSpeedMpCreativeSprinting = readHorizontalSpeedMultiplier(obj, "Flight.SpeedMp.Creative.Sprinting", cfg.flightHorizontalSpeedMpCreativeSprinting);
 		cfg.flightHorizontalSpeedMpSpectatorDefault = readHorizontalSpeedMultiplier(obj, "Flight.SpeedMp.Spectator.Default", cfg.flightHorizontalSpeedMpSpectatorDefault);
 		cfg.flightHorizontalSpeedMpSpectatorSprinting = readHorizontalSpeedMultiplier(obj, "Flight.SpeedMp.Spectator.Sprinting", cfg.flightHorizontalSpeedMpSpectatorSprinting);
-		cfg.flightVerticalSpeedMpCreativeDefault = readVerticalSpeedMultiplier(obj, "Flight.VerticalSpeedMp.Creative.Default", "Flight.VerticalBoost.Creative.Default", cfg.flightVerticalSpeedMpCreativeDefault);
-		cfg.flightVerticalSpeedMpCreativeSprinting = readVerticalSpeedMultiplier(obj, "Flight.VerticalSpeedMp.Creative.Sprinting", "Flight.VerticalBoost.Creative.Sprinting", cfg.flightVerticalSpeedMpCreativeSprinting);
-		cfg.flightVerticalSpeedMpSpectatorDefault = readVerticalSpeedMultiplier(obj, "Flight.VerticalSpeedMp.Spectator.Default", "Flight.VerticalBoost.Spectator.Default", cfg.flightVerticalSpeedMpSpectatorDefault);
-		cfg.flightVerticalSpeedMpSpectatorSprinting = readVerticalSpeedMultiplier(obj, "Flight.VerticalSpeedMp.Spectator.Sprinting", "Flight.VerticalBoost.Spectator.Sprinting", cfg.flightVerticalSpeedMpSpectatorSprinting);
+		cfg.flightVerticalSpeedMpCreativeDefault = readVerticalSpeedMultiplier(obj, cfg, "Flight.VerticalSpeedMp.Creative.Default", "Flight.VerticalBoost.Creative.Default", cfg.flightVerticalSpeedMpCreativeDefault);
+		cfg.flightVerticalSpeedMpCreativeSprinting = readVerticalSpeedMultiplier(obj, cfg, "Flight.VerticalSpeedMp.Creative.Sprinting", "Flight.VerticalBoost.Creative.Sprinting", cfg.flightVerticalSpeedMpCreativeSprinting);
+		cfg.flightVerticalSpeedMpSpectatorDefault = readVerticalSpeedMultiplier(obj, cfg, "Flight.VerticalSpeedMp.Spectator.Default", "Flight.VerticalBoost.Spectator.Default", cfg.flightVerticalSpeedMpSpectatorDefault);
+		cfg.flightVerticalSpeedMpSpectatorSprinting = readVerticalSpeedMultiplier(obj, cfg, "Flight.VerticalSpeedMp.Spectator.Sprinting", "Flight.VerticalBoost.Spectator.Sprinting", cfg.flightVerticalSpeedMpSpectatorSprinting);
 		
 		Json.readKeyBinding(obj, "Misc.KeyToggleWalkForward", cfg.keyToggleWalkForward);
 		Json.readKeyBinding(obj, "Misc.KeyToggleJump", cfg.keyToggleJump);
@@ -106,11 +106,13 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		return Json.getFloat(obj, key, defaultValue, 0.25F, 8F);
 	}
 	
-	private static float readVerticalSpeedMultiplier(final JsonObject obj, final String newKey, final String legacyBoostKey, final float defaultValue) {
+	private static float readVerticalSpeedMultiplier(final JsonObject obj, final BetterControlsConfig cfg, final String newKey, final String legacyBoostKey, final float defaultValue) {
 		if (obj.has(newKey)) {
 			return Json.getFloat(obj, newKey, defaultValue, 0.25F, 8F);
 		}
 		else if (obj.has(legacyBoostKey)) {
+			cfg.wasMigrated = true;
+			
 			final float value = 1F + Json.getFloat(obj, legacyBoostKey, 0F, 0F, 3F);
 			// 1.25x, 1.75x, 2.5x, and 3.5x are not supported
 			if (Mth.equal(value, 1.25F) || Mth.equal(value, 1.75F)) {
@@ -131,7 +133,7 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		}
 	}
 	
-	static void serialize(final Path path, final BetterControlsConfig config) {
+	static void write(final Path path, final BetterControlsConfig config) {
 		try (final JsonWriter writer = gson.newJsonWriter(Files.newBufferedWriter(path, StandardCharsets.UTF_8))) {
 			gson.getAdapter(BetterControlsConfig.class).write(writer, config);
 		} catch (final IOException e) {
@@ -139,7 +141,7 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		}
 	}
 	
-	static BetterControlsConfig deserialize(final Path path) {
+	static BetterControlsConfig read(final Path path) {
 		try (final JsonReader jsonReader = new JsonReader(Files.newBufferedReader(path, StandardCharsets.UTF_8))) {
 			return gson.getAdapter(BetterControlsConfig.class).read(jsonReader);
 		} catch (final FileNotFoundException | NoSuchFileException ignored) {

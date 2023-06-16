@@ -6,10 +6,18 @@ import java.nio.file.Path;
 
 public final class BetterControlsConfig {
 	public static BetterControlsConfig load(final Path path) {
-		return ConfigSerializer.deserialize(path).setPath(path);
+		final BetterControlsConfig cfg = ConfigSerializer.read(path);
+		cfg.path = path;
+		
+		if (cfg.wasMigrated) {
+			cfg.save();
+		}
+		
+		return cfg;
 	}
 	
 	private Path path;
+	boolean wasMigrated = false;
 	
 	public final KeyBindingWithModifier keyToggleSprint = new KeyBindingWithModifier("key.bettercontrols.toggle_sprint");
 	public SprintMode sprintMode = SprintMode.TAP_TO_START;
@@ -40,11 +48,6 @@ public final class BetterControlsConfig {
 	
 	BetterControlsConfig() {}
 	
-	private BetterControlsConfig setPath(final Path path) {
-		this.path = path;
-		return this;
-	}
-	
 	public KeyBindingWithModifier[] getAllKeyBindings() {
 		return new KeyBindingWithModifier[] {
 			keyToggleSprint,
@@ -58,6 +61,6 @@ public final class BetterControlsConfig {
 	}
 	
 	public void save() {
-		ConfigSerializer.serialize(path, this);
+		ConfigSerializer.write(path, this);
 	}
 }

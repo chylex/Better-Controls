@@ -13,10 +13,11 @@
     "HookClientPlayerFOV",
     "HookClientPlayerInputTick",
     "HookClientPlayerTick",
+    "HookClientPlayerVerticalFlightSpeed",
     "HookControlsListWidget",
     "HookControlsScreen",
     "HookLoadGameOptions",
-    "HookPlayerFlightSpeed",
+    "HookPlayerHorizontalFlightSpeed",
     "HookStickyKeyBindingState",
     "HookToggleOptionButtons"
   ],

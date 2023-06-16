@@ -163,32 +163,6 @@ public final class PlayerTicker {
 			input.jumping |= toggleJump.tick();
 		}
 		
-		if (FlightHelper.isFlyingCreativeOrSpectator(player)) {
-			final boolean boost = KEY_SPRINT.isDown();
-			final float flightSpeed = FlightHelper.getFlightSpeed(player, boost);
-			final float verticalVelocity = FlightHelper.getExtraVerticalVelocity(player, boost);
-			
-			if (flightSpeed > 0F) {
-				player.getAbilities().setFlyingSpeed(flightSpeed);
-			}
-			
-			if (Math.abs(verticalVelocity) > 1E-5F && player == MINECRAFT.getCameraEntity()) {
-				int direction = 0;
-				
-				if (input.shiftKeyDown) {
-					--direction;
-				}
-				
-				if (input.jumping) {
-					++direction;
-				}
-				
-				if (direction != 0) {
-					player.setDeltaMovement(player.getDeltaMovement().add(0D, flightSpeed * verticalVelocity * direction, 0D));
-				}
-			}
-		}
-		
 		if (cfg().resumeSprintingAfterHittingObstacle) {
 			if (wasHittingObstacle != player.horizontalCollision) {
 				if (!wasHittingObstacle) {

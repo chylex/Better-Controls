@@ -2,13 +2,18 @@ package chylex.bettercontrols.player;
 
 import chylex.bettercontrols.BetterControlsCommon;
 import chylex.bettercontrols.config.BetterControlsConfig;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 
-final class FlightHelper {
+public final class FlightHelper {
 	private FlightHelper() {}
 	
-	private static final float BASE_FLIGHT_SPEED = 0.05F;
-	private static final float BASE_VERTICAL_VELOCITY = 3F;
+	private static final KeyMapping KEY_SPRINT = Minecraft.getInstance().options.keySprint;
+	
+	private static boolean isSprinting() {
+		return KEY_SPRINT.isDown();
+	}
 	
 	private static BetterControlsConfig cfg() {
 		return BetterControlsCommon.getConfig();
@@ -22,44 +27,24 @@ final class FlightHelper {
 		return cfg().flyOnGroundInCreative && player.isCreative() && player.getAbilities().flying;
 	}
 	
-	static float getFlightSpeed(final LocalPlayer player, final boolean boost) {
+	public static float getHorizontalSpeedMultiplier(final LocalPlayer player) {
 		if (player.isCreative()) {
-			if (boost) {
-				return BASE_FLIGHT_SPEED * cfg().flightSpeedMpCreativeSprinting;
-			}
-			else {
-				return BASE_FLIGHT_SPEED * cfg().flightSpeedMpCreativeDefault;
-			}
+			return isSprinting() ? cfg().flightSpeedMpCreativeSprinting : cfg().flightSpeedMpCreativeDefault;
 		}
 		else if (player.isSpectator()) {
-			if (boost) {
-				return BASE_FLIGHT_SPEED * cfg().flightSpeedMpSpectatorSprinting;
-			}
-			else {
-				return BASE_FLIGHT_SPEED * cfg().flightSpeedMpSpectatorDefault;
-			}
+			return isSprinting() ? cfg().flightSpeedMpSpectatorSprinting : cfg().flightSpeedMpSpectatorDefault;
 		}
 		else {
-			return 0F;
+			return 1F;
 		}
 	}
 	
-	static float getExtraVerticalVelocity(final LocalPlayer player, final boolean isSprinting) {
+	public static float getVerticalSpeedBoost(final LocalPlayer player) {
 		if (player.isCreative()) {
-			if (isSprinting) {
-				return BASE_VERTICAL_VELOCITY * cfg().flightVerticalBoostCreativeSprinting;
-			}
-			else {
-				return BASE_VERTICAL_VELOCITY * cfg().flightVerticalBoostCreativeDefault;
-			}
+			return isSprinting() ? cfg().flightVerticalBoostCreativeSprinting : cfg().flightVerticalBoostCreativeDefault;
 		}
 		else if (player.isSpectator()) {
-			if (isSprinting) {
-				return BASE_VERTICAL_VELOCITY * cfg().flightVerticalBoostSpectatorSprinting;
-			}
-			else {
-				return BASE_VERTICAL_VELOCITY * cfg().flightVerticalBoostSpectatorDefault;
-			}
+			return isSprinting() ? cfg().flightVerticalBoostSpectatorSprinting : cfg().flightVerticalBoostSpectatorDefault;
 		}
 		else {
 			return 0F;

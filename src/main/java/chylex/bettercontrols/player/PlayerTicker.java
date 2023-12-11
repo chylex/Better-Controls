@@ -276,7 +276,7 @@ public final class PlayerTicker {
 		}
 		
 		if (cfg().keyOpenMenu.isDown()) {
-			MINECRAFT.setScreen(new BetterControlsScreen(null));
+			MINECRAFT.setScreen(new BetterControlsScreen(MINECRAFT, null));
 		}
 	}
 	

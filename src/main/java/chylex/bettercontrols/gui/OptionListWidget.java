@@ -75,8 +75,8 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 	}
 	
 	@Override
-	public boolean mouseScrolled(final double x, final double y, final double amount) {
-		setScrollAmount(getScrollAmount() - amount * SCROLL_MULTIPLIER);
+	public boolean mouseScrolled(final double x, final double y, final double xAmount, final double yAmount) {
+		setScrollAmount(getScrollAmount() - yAmount * SCROLL_MULTIPLIER);
 		return true;
 	}
 	

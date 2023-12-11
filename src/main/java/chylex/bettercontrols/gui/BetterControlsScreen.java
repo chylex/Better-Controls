@@ -210,8 +210,8 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	private final List<KeyBindingWidget> allKeyBindings = new ArrayList<>();
 	
 	@SuppressWarnings("DataFlowIssue")
-	public BetterControlsScreen(@Nullable final Screen parentScreen) {
-		super(parentScreen, Minecraft.getInstance().options, TITLE);
+	public BetterControlsScreen(final Minecraft mc, @Nullable final Screen parentScreen) {
+		super(parentScreen, mc.options, TITLE);
 	}
 	
 	@Override
@@ -236,7 +236,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		//noinspection DataFlowIssue
 		addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, btn -> minecraft.setScreen(lastScreen)).pos(width / 2 - 99, height - 29).size(200, 20).build());
 		
-		addWidget(optionsWidget = new OptionListWidget(21, height - 32, width, height, elements, y - TITLE_MARGIN_TOP + BOTTOM_PADDING));
+		addRenderableWidget(optionsWidget = new OptionListWidget(21, height - 32, width, height, elements, y - TITLE_MARGIN_TOP + BOTTOM_PADDING));
 	}
 	
 	@Override
@@ -246,7 +246,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	
 	@Override
 	public void render(final @NotNull GuiGraphics graphics, final int mouseX, final int mouseY, final float delta) {
-		renderBackground(graphics);
+		renderBackground(graphics, mouseX, mouseY, delta);
 		optionsWidget.render(graphics, mouseX, mouseY, delta);
 		graphics.drawCenteredString(font, title, width / 2, 8, TextWidget.WHITE);
 		super.render(graphics, mouseX, mouseY, delta);

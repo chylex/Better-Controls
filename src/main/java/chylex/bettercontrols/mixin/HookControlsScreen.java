@@ -34,11 +34,11 @@ public abstract class HookControlsScreen extends OptionsSubScreen {
 		AbstractWidget doneButton = null;
 		
 		for (final GuiEventListener child : children()) {
-			if (!(child instanceof AbstractWidget widget)) {
+			if (!(child instanceof final AbstractWidget widget)) {
 				continue;
 			}
 			
-			if (widget instanceof Button button && button.getMessage() == CommonComponents.GUI_DONE) {
+			if (widget instanceof final Button button && button.getMessage() == CommonComponents.GUI_DONE) {
 				doneButton = widget;
 				continue;
 			}
@@ -65,10 +65,15 @@ public abstract class HookControlsScreen extends OptionsSubScreen {
 		}
 		
 		final MutableComponent buttonTitle = BetterControlsScreen.TITLE.plainCopy().append("...");
-		addRenderableWidget(Button.builder(buttonTitle, btn -> Minecraft.getInstance().setScreen(new BetterControlsScreen(screen))).pos(x, y).size(150, 20).build());
+		addRenderableWidget(Button.builder(buttonTitle, btn -> showOptionsScreen(screen)).pos(x, y).size(150, 20).build());
 		
 		if (doneButton != null) {
 			doneButton.setY(y + 24);
 		}
+	}
+	
+	private static void showOptionsScreen(final ControlsScreen screen) {
+		final Minecraft mc = Minecraft.getInstance();
+		mc.setScreen(new BetterControlsScreen(mc, screen));
 	}
 }

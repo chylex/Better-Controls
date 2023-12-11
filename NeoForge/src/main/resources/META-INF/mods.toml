@@ -13,16 +13,19 @@ authors = "${author}"
 version = "${version}"
 logoFile = "icon.png"
 
+[[mixins]]
+config = "${id}.mixins.json"
+
 [[dependencies.${id}]]
 modId = "minecraft"
 mandatory = true
 versionRange = "[${minimumMinecraftVersion},)"
 ordering = "NONE"
-side = "BOTH"
+side = "CLIENT"
 
 [[dependencies.${id}]]
-modId = "forge"
+modId = "neoforge"
 mandatory = true
-versionRange = "[${minimumForgeVersion},)"
+versionRange = "[${minimumNeoForgeVersion},)"
 ordering = "NONE"
-side = "BOTH"
+side = "CLIENT"

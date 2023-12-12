@@ -234,9 +234,9 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		y = generateMiscellaneousOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;
 		
 		//noinspection DataFlowIssue
-		addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, btn -> minecraft.setScreen(lastScreen)).pos(width / 2 - 99, height - 29).size(200, 20).build());
+		addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, btn -> minecraft.setScreen(lastScreen)).pos(width / 2 - 99, height - 25).size(200, 20).build());
 		
-		addRenderableWidget(optionsWidget = new OptionListWidget(21, height - 32, width, height, elements, y - TITLE_MARGIN_TOP + BOTTOM_PADDING));
+		addRenderableWidget(optionsWidget = new OptionListWidget(width, height - 50, 21, y - TITLE_MARGIN_TOP + BOTTOM_PADDING, elements));
 	}
 	
 	@Override
@@ -245,11 +245,14 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	}
 	
 	@Override
+	public void renderBackground(final @NotNull GuiGraphics graphics, final int mouseX, final int mouseY, final float delta) {
+		renderDirtBackground(graphics);
+	}
+	
+	@Override
 	public void render(final @NotNull GuiGraphics graphics, final int mouseX, final int mouseY, final float delta) {
-		renderBackground(graphics, mouseX, mouseY, delta);
-		optionsWidget.render(graphics, mouseX, mouseY, delta);
-		graphics.drawCenteredString(font, title, width / 2, 8, TextWidget.WHITE);
 		super.render(graphics, mouseX, mouseY, delta);
+		graphics.drawCenteredString(font, title, width / 2, 8, TextWidget.WHITE);
 	}
 	
 	private void startEditingKeyBinding(final KeyBindingWidget widget) {

@@ -10,9 +10,9 @@ pluginManagement {
 	
 	plugins {
 		if (settings.extra.has("neoForgeVersion")) {
-			id("net.neoforged.gradle.vanilla") version "7.0.41"
-			id("net.neoforged.gradle.userdev") version "7.0.41"
-			id("net.neoforged.gradle.mixin") version "7.0.41"
+			id("net.neoforged.gradle.vanilla") version "7.0.61"
+			id("net.neoforged.gradle.userdev") version "7.0.61"
+			id("net.neoforged.gradle.mixin") version "7.0.61"
 		}
 		
 		if (settings.extra.has("loomVersion")) {

@@ -54,8 +54,8 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 	
 	private record Offset(int x, int y) {}
 	
-	public OptionListWidget(final int top, final int bottom, final int width, final int height, final List<GuiEventListener> widgets, final int innerHeight) {
-		super(Minecraft.getInstance(), width, height, top, bottom, innerHeight);
+	public OptionListWidget(final int width, final int height, final int top, final int innerHeight, final List<GuiEventListener> widgets) {
+		super(Minecraft.getInstance(), width, height, top, innerHeight);
 		addEntry(new Entry(widgets));
 	}
 	

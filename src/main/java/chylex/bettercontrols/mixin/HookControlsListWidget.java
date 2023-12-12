@@ -14,8 +14,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(KeyBindsList.class)
 public abstract class HookControlsListWidget extends ContainerObjectSelectionList<Entry> {
-	public HookControlsListWidget(final Minecraft client, final int width, final int height, final int top, final int bottom, final int itemHeight) {
-		super(client, width, height, top, bottom, itemHeight);
+	public HookControlsListWidget(final Minecraft client, final int width, final int height, final int top, final int itemHeight) {
+		super(client, width, height, top, itemHeight);
 	}
 	
 	@Redirect(method = "<init>", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Options;keyMappings:[Lnet/minecraft/client/KeyMapping;"))

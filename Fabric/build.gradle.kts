@@ -6,10 +6,6 @@ plugins {
 	id("fabric-loom")
 }
 
-repositories {
-	maven("https://repo.spongepowered.org/maven")
-}
-
 dependencies {
 	minecraft("com.mojang:minecraft:$minecraftVersion")
 	modImplementation("net.fabricmc:fabric-loader:$fabricVersion")
@@ -18,8 +14,11 @@ dependencies {
 
 loom {
 	runs {
+		val runJvmArgs: Set<String> by project
+		
 		configureEach {
 			runDir("../run")
+			vmArgs(runJvmArgs)
 			ideConfigGenerated(true)
 		}
 		
@@ -32,7 +31,7 @@ loom {
 	}
 	
 	mixin {
-		add(sourceSets.main.get(), "$modId.refmap.json")
+		defaultRefmapName.set("$modId.refmap.json")
 	}
 }
 

@@ -43,13 +43,12 @@ idea {
 }
 
 repositories {
-	maven("https://repo.spongepowered.org/maven")
 	mavenCentral()
 }
 
 dependencies {
-	implementation("org.spongepowered:mixin:$mixinVersion")
 	implementation("net.minecraft:client:$minecraftVersion")
+	compileOnly("net.fabricmc:sponge-mixin:$mixinVersion")
 	api("com.google.code.findbugs:jsr305:3.0.2")
 }
 
@@ -68,16 +67,24 @@ allprojects {
 	apply(plugin = "java-library")
 	
 	dependencies {
-		implementation("org.jetbrains:annotations:22.0.0")
+		implementation("org.jetbrains:annotations:24.1.0")
 	}
 	
 	extensions.getByType<JavaPluginExtension>().apply {
-		toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+		toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 	}
 	
 	tasks.withType<JavaCompile> {
 		options.encoding = "UTF-8"
-		options.release.set(17)
+		options.release.set(21)
+	}
+	
+	val runJvmArgs = mutableSetOf<String>().also {
+		extra["runJvmArgs"] = it
+	}
+	
+	if (project.javaToolchains.launcherFor(java.toolchain).map { it.metadata.vendor }.orNull == "JetBrains") {
+		runJvmArgs.add("-XX:+AllowEnhancedClassRedefinition")
 	}
 }
 
@@ -145,7 +152,7 @@ val copyJars = tasks.register<Copy>("copyJars") {
 		from(subproject.base.libsDirectory.file("${subproject.base.archivesName.get()}-$jarVersion.jar"))
 	}
 	
-	into(file("${project.buildDir}/dist"))
+	into(project.layout.buildDirectory.dir("dist"))
 }
 
 tasks.assemble {

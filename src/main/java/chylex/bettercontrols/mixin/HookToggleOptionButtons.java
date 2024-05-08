@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.function.Consumer;
 
 @Mixin(OptionInstance.class)
+@SuppressWarnings("UnreachableCode")
 public abstract class HookToggleOptionButtons {
 	@Inject(method = "createButton(Lnet/minecraft/client/Options;IIILjava/util/function/Consumer;)Lnet/minecraft/client/gui/components/AbstractWidget;", at = @At("RETURN"))
 	private <T> void disableToggleOptions(final Options options, final int x, final int y, final int width, final Consumer<T> callback, final CallbackInfoReturnable<AbstractWidget> cir) {

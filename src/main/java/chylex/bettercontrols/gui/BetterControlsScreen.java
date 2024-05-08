@@ -14,15 +14,11 @@ import com.mojang.blaze3d.platform.InputConstants;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.OptionsSubScreen;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import java.util.ArrayList;
@@ -216,6 +212,8 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	
 	@Override
 	public void init() {
+		super.init();
+		
 		allKeyBindings.clear();
 		
 		final List<GuiEventListener> elements = new ArrayList<>();
@@ -233,26 +231,21 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, text("Miscellaneous"), CENTER));
 		y = generateMiscellaneousOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;
 		
-		//noinspection DataFlowIssue
-		addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, btn -> minecraft.setScreen(lastScreen)).pos(width / 2 - 99, height - 25).size(200, 20).build());
+		optionsWidget = addRenderableWidget(new OptionListWidget(width, layout.getContentHeight(), layout.getHeaderHeight(), y - TITLE_MARGIN_TOP + BOTTOM_PADDING, elements));
+	}
+	
+	@Override
+	protected void repositionElements() {
+		super.repositionElements();
 		
-		addRenderableWidget(optionsWidget = new OptionListWidget(width, height - 50, 21, y - TITLE_MARGIN_TOP + BOTTOM_PADDING, elements));
+		if (optionsWidget != null) {
+			optionsWidget.updateSize(width, layout);
+		}
 	}
 	
 	@Override
 	public void removed() {
 		BetterControlsCommon.getConfig().save();
-	}
-	
-	@Override
-	public void renderBackground(final @NotNull GuiGraphics graphics, final int mouseX, final int mouseY, final float delta) {
-		renderDirtBackground(graphics);
-	}
-	
-	@Override
-	public void render(final @NotNull GuiGraphics graphics, final int mouseX, final int mouseY, final float delta) {
-		super.render(graphics, mouseX, mouseY, delta);
-		graphics.drawCenteredString(font, title, width / 2, 8, TextWidget.WHITE);
 	}
 	
 	private void startEditingKeyBinding(final KeyBindingWidget widget) {

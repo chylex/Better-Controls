@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@SuppressWarnings("SameReturnValue")
 @Mixin(Player.class)
+@SuppressWarnings({ "SameReturnValue", "UnreachableCode" })
 public abstract class HookPlayerHorizontalFlightSpeed extends LivingEntity {
 	protected HookPlayerHorizontalFlightSpeed(final EntityType<? extends LivingEntity> type, final Level world) {
 		super(type, world);

@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 
 @Mixin(LocalPlayer.class)
+@SuppressWarnings("UnreachableCode")
 public abstract class HookClientPlayerTick extends AbstractClientPlayer {
 	protected HookClientPlayerTick(final ClientLevel world, final GameProfile profile) {
 		super(world, profile);

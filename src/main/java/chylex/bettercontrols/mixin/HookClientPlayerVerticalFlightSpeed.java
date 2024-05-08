@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 
-@SuppressWarnings("SameReturnValue")
 @Mixin(LocalPlayer.class)
+@SuppressWarnings({ "SameReturnValue", "UnreachableCode" })
 public abstract class HookClientPlayerVerticalFlightSpeed extends LivingEntity {
 	protected HookClientPlayerVerticalFlightSpeed(final EntityType<? extends LivingEntity> type, final Level world) {
 		super(type, world);

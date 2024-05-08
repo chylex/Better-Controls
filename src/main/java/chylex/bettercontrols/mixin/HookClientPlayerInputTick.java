@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 
 @Mixin(KeyboardInput.class)
+@SuppressWarnings("UnreachableCode")
 public abstract class HookClientPlayerInputTick {
 	@Inject(method = "tick(ZF)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/player/KeyboardInput;up:Z", ordinal = 0, shift = AFTER))
 	private void afterInputTick(final CallbackInfo info) {

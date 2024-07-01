@@ -24,7 +24,7 @@ val jarVersion = "$minecraftVersion+v$modVersion"
 plugins {
 	idea
 	`java-library`
-	id("net.neoforged.gradle.vanilla")
+	id("fabric-loom")
 }
 
 idea {
@@ -46,18 +46,16 @@ repositories {
 	mavenCentral()
 }
 
-dependencies {
-	implementation("net.minecraft:client:$minecraftVersion")
-	compileOnly("net.fabricmc:sponge-mixin:$mixinVersion")
-	api("com.google.code.findbugs:jsr305:3.0.2")
-}
-
 base {
 	archivesName.set("$modNameStripped-Common")
 }
 
-runs {
-	clear()
+dependencies {
+	minecraft("com.mojang:minecraft:$minecraftVersion")
+	mappings(loom.officialMojangMappings())
+	
+	compileOnly("net.fabricmc:sponge-mixin:$mixinVersion")
+	api("com.google.code.findbugs:jsr305:3.0.2")
 }
 
 allprojects {
@@ -65,10 +63,6 @@ allprojects {
 	version = modVersion
 	
 	apply(plugin = "java-library")
-	
-	dependencies {
-		implementation("org.jetbrains:annotations:24.1.0")
-	}
 	
 	extensions.getByType<JavaPluginExtension>().apply {
 		toolchain.languageVersion.set(JavaLanguageVersion.of(21))
@@ -86,11 +80,15 @@ allprojects {
 	if (project.javaToolchains.launcherFor(java.toolchain).map { it.metadata.vendor }.orNull == "JetBrains") {
 		runJvmArgs.add("-XX:+AllowEnhancedClassRedefinition")
 	}
+	
+	dependencies {
+		implementation("org.jetbrains:annotations:24.1.0")
+	}
 }
 
 subprojects {
 	dependencies {
-		implementation(rootProject)
+		implementation(project(rootProject.path, configuration = "namedElements"))
 	}
 	
 	base {
@@ -140,6 +138,25 @@ subprojects {
 	
 	tasks.test {
 		onlyIf { false }
+	}
+}
+
+loom {
+	runs {
+		val runJvmArgs: Set<String> by project
+		
+		configureEach {
+			runDir("../run")
+			vmArgs(runJvmArgs)
+			ideConfigGenerated(true)
+		}
+		
+		named("client") {
+			configName = "Vanilla Client"
+			client()
+		}
+		
+		findByName("server")?.let(::remove)
 	}
 }
 

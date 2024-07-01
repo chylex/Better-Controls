@@ -18,7 +18,7 @@ runs {
 		jvmArguments(runJvmArgs)
 	}
 	
-	create("client")
+	removeIf { it.name != "client" }
 }
 
 tasks.processResources {

@@ -16,8 +16,8 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.screens.OptionsSubScreen;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.options.OptionsSubScreen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
@@ -211,9 +211,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	}
 	
 	@Override
-	public void init() {
-		super.init();
-		
+	protected void addContents() {
 		allKeyBindings.clear();
 		
 		final List<GuiEventListener> elements = new ArrayList<>();
@@ -233,6 +231,9 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		
 		optionsWidget = addRenderableWidget(new OptionListWidget(width, layout.getContentHeight(), layout.getHeaderHeight(), y - TITLE_MARGIN_TOP + BOTTOM_PADDING, elements));
 	}
+	
+	@Override
+	protected void addOptions() {}
 	
 	@Override
 	protected void repositionElements() {

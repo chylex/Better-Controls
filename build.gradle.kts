@@ -50,6 +50,11 @@ base {
 	archivesName.set("$modNameStripped-Common")
 }
 
+loom {
+	runs.clear()
+	serverOnlyMinecraftJar() // Prevents generating client run tasks and failing because there are no runs.
+}
+
 dependencies {
 	minecraft("com.mojang:minecraft:$minecraftVersion")
 	mappings(loom.officialMojangMappings())
@@ -138,25 +143,6 @@ subprojects {
 	
 	tasks.test {
 		onlyIf { false }
-	}
-}
-
-loom {
-	runs {
-		val runJvmArgs: Set<String> by project
-		
-		configureEach {
-			runDir("../run")
-			vmArgs(runJvmArgs)
-			ideConfigGenerated(true)
-		}
-		
-		named("client") {
-			configName = "Vanilla Client"
-			client()
-		}
-		
-		findByName("server")?.let(::remove)
 	}
 }
 

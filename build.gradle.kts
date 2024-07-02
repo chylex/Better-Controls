@@ -1,6 +1,6 @@
 @file:Suppress("ConvertLambdaToReference")
 
-import org.gradle.api.file.DuplicatesStrategy.EXCLUDE
+import org.gradle.jvm.tasks.Jar
 
 val modId: String by project
 val modName: String by project
@@ -10,6 +10,7 @@ val modVersion: String by project
 val modLicense: String by project
 val modSourcesURL: String by project
 val modIssuesURL: String by project
+val modSides: String by project
 
 val minecraftVersion: String by project
 val mixinVersion: String by project
@@ -19,7 +20,6 @@ val minimumNeoForgeVersion: String by project
 val minimumFabricVersion: String by project
 
 val modNameStripped = modName.replace(" ", "")
-val jarVersion = "$minecraftVersion+v$modVersion"
 
 plugins {
 	idea
@@ -95,6 +95,33 @@ allprojects {
 		implementation("org.jetbrains:annotations:24.1.0")
 	}
 	
+	tasks.withType<ProcessResources> {
+		val (sidesForNeoForge, sidesForFabric) = when (modSides) {
+			"both"   -> Pair("BOTH", "*")
+			"client" -> Pair("CLIENT", "client")
+			"server" -> Pair("SERVER", "server")
+			else     -> error("Invalid modSides value: $modSides")
+		}
+		
+		inputs.property("id", modId)
+		inputs.property("name", modName)
+		inputs.property("description", modDescription)
+		inputs.property("version", modVersion)
+		inputs.property("author", modAuthor)
+		inputs.property("license", modLicense)
+		inputs.property("sourcesURL", modSourcesURL)
+		inputs.property("issuesURL", modIssuesURL)
+		inputs.property("sidesForNeoForge", sidesForNeoForge)
+		inputs.property("sidesForFabric", sidesForFabric)
+		inputs.property("minimumMinecraftVersion", minimumMinecraftVersion)
+		inputs.property("minimumNeoForgeVersion", minimumNeoForgeVersion)
+		inputs.property("minimumFabricVersion", minimumFabricVersion)
+		
+		from(rootProject.file("logo.png")) {
+			into("assets/$modId")
+		}
+	}
+	
 	tasks.withType<AbstractArchiveTask>().configureEach {
 		isPreserveFileTimestamps = false
 		isReproducibleFileOrder = true
@@ -117,37 +144,16 @@ subprojects {
 	}
 	
 	tasks.processResources {
-		inputs.property("id", modId)
-		inputs.property("name", modName)
-		inputs.property("description", modDescription)
-		inputs.property("version", modVersion)
-		inputs.property("author", modAuthor)
-		inputs.property("license", modLicense)
-		inputs.property("sourcesURL", modSourcesURL)
-		inputs.property("issuesURL", modIssuesURL)
-		inputs.property("minimumMinecraftVersion", minimumMinecraftVersion)
-		inputs.property("minimumNeoForgeVersion", minimumNeoForgeVersion)
-		inputs.property("minimumFabricVersion", minimumFabricVersion)
-		
 		from(rootProject.sourceSets.main.get().resources) {
 			expand(inputs.properties)
 		}
 	}
 	
 	tasks.jar {
-		archiveVersion.set(jarVersion)
-		
-		from(rootProject.file("LICENSE"))
+		entryCompression = ZipEntryCompression.STORED // Reduces size of multiloader jar.
 		
 		manifest {
-			attributes(
-				"Specification-Title" to modId,
-				"Specification-Vendor" to modAuthor,
-				"Specification-Version" to "1",
-				"Implementation-Title" to "$modNameStripped-${project.name}",
-				"Implementation-Vendor" to modAuthor,
-				"Implementation-Version" to modVersion,
-			)
+			packageInformation(modId, "$modNameStripped-${project.name}")
 		}
 	}
 	
@@ -156,18 +162,55 @@ subprojects {
 	}
 }
 
-val copyJars = tasks.register<Copy>("copyJars") {
+fun Manifest.packageInformation(specificationTitle: String, implementationTitle: String) {
+	attributes(
+		"Specification-Title" to specificationTitle,
+		"Specification-Vendor" to modAuthor,
+		"Specification-Version" to "1",
+		"Implementation-Title" to implementationTitle,
+		"Implementation-Vendor" to modAuthor,
+		"Implementation-Version" to modVersion,
+	)
+}
+
+val multiloaderSources = sourceSets.register("multiloader")
+
+val multiloaderJar = tasks.register<Jar>("multiloaderJar") {
 	group = "build"
-	duplicatesStrategy = EXCLUDE
 	
-	for (subproject in subprojects) {
-		dependsOn(subproject.tasks.assemble)
-		from(subproject.base.libsDirectory.file("${subproject.base.archivesName.get()}-$jarVersion.jar"))
+	archiveBaseName.set(modNameStripped)
+	archiveVersion.set("$minecraftVersion+v$modVersion")
+	
+	destinationDirectory = layout.buildDirectory.dir("dist")
+	
+	fun includeJar(project: Project, jarTaskName: String) {
+		from(project.tasks.named(jarTaskName).map { it.outputs }) {
+			into("jars")
+			rename { "$modNameStripped-${project.name}.jar" }
+		}
 	}
 	
-	into(project.layout.buildDirectory.dir("dist"))
+	findProject(":NeoForge")?.let { includeJar(it, "jar") }
+	findProject(":Fabric")?.let { includeJar(it, "uncompressedRemapJar") }
+	
+	from(rootProject.file("LICENSE"))
+	from(multiloaderSources.map { it.output })
+	
+	manifest {
+		packageInformation("$modId-multiloader", modNameStripped)
+		attributes("FMLModType" to "GAMELIBRARY")
+	}
+}
+
+tasks.named<ProcessResources>("processMultiloaderResources").configure {
+	inputs.property("group", project.group)
+	inputs.property("jarPrefix", modNameStripped)
+	
+	filesMatching(listOf("fabric.mod.json", "META-INF/jarjar/metadata.json")) {
+		expand(inputs.properties)
+	}
 }
 
 tasks.assemble {
-	finalizedBy(copyJars)
+	finalizedBy(multiloaderJar)
 }

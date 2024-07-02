@@ -11,7 +11,7 @@ displayURL = "${sourcesURL}"
 description = "${description}"
 authors = "${author}"
 version = "${version}"
-logoFile = "icon.png"
+logoFile = "assets/${id}/logo.png"
 
 [[mixins]]
 config = "${id}.mixins.json"
@@ -21,11 +21,11 @@ modId = "minecraft"
 type = "required"
 versionRange = "[${minimumMinecraftVersion},)"
 ordering = "NONE"
-side = "CLIENT"
+side = "${sidesForNeoForge}"
 
 [[dependencies.${id}]]
 modId = "neoforge"
 type = "required"
 versionRange = "[${minimumNeoForgeVersion},)"
 ordering = "NONE"
-side = "CLIENT"
+side = "${sidesForNeoForge}"

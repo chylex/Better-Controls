@@ -6,7 +6,7 @@
   "version": "${version}",
   "license": "${license}",
   
-  "icon": "assets/bettercontrols/icon.png",
+  "icon": "assets/${id}/logo.png",
   
   "authors": [
     "${author}"
@@ -18,7 +18,7 @@
     "sources": "${sourcesURL}"
   },
   
-  "environment": "client",
+  "environment": "${sidesForFabric}",
   "entrypoints": {
     "client": [ "chylex.bettercontrols.BetterControlsMod" ],
     "modmenu": [ "chylex.bettercontrols.compatibility.ModMenuSupport" ]
@@ -26,7 +26,7 @@
   
   "mixins": [{
     "config": "${id}.mixins.json",
-    "environment": "client"
+    "environment": "${sidesForFabric}"
   }],
   
   "depends": {

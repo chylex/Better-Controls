@@ -50,6 +50,16 @@ base {
 	archivesName.set("$modNameStripped-Common")
 }
 
+loom {
+	runs {
+		named("client") {
+			ideConfigGenerated(false)
+		}
+		
+		findByName("server")?.let(::remove)
+	}
+}
+
 dependencies {
 	minecraft("com.mojang:minecraft:$minecraftVersion")
 	mappings(loom.officialMojangMappings())
@@ -138,25 +148,6 @@ subprojects {
 	
 	tasks.test {
 		onlyIf { false }
-	}
-}
-
-loom {
-	runs {
-		val runJvmArgs: Set<String> by project
-		
-		configureEach {
-			runDir("../run")
-			vmArgs(runJvmArgs)
-			ideConfigGenerated(true)
-		}
-		
-		named("client") {
-			configName = "Vanilla Client"
-			client()
-		}
-		
-		findByName("server")?.let(::remove)
 	}
 }
 

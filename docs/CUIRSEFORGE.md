@@ -1,9 +1,4 @@
-Better Controls
-===============
-
-![Logo](https://raw.githubusercontent.com/chylex/Better-Controls/master/logo.png "Depiction of Zero Regrets")
-
-[Better Controls](https://www.curseforge.com/minecraft/mc-mods/better-controls) is a reimagining of [Better Sprinting](https://www.curseforge.com/minecraft/mc-mods/better-sprinting) with even more customizability. It features several new keybindings and many configurable options for how sprinting, sneaking, and flying should behave.
+**Better Controls** is a reimagining of [Better Sprinting](https://www.curseforge.com/minecraft/mc-mods/better-sprinting) with even more customizability. It features several new keybindings and many configurable options for how sprinting, sneaking, and flying should behave.
 
 Better Controls only focuses on complementing vanilla mechanics, rather than adding new mechanics (such as [Better Sprinting](https://www.curseforge.com/minecraft/mc-mods/better-sprinting)'s option to allow sprinting in all directions) that only work on client side and server owners must explicitly opt in to enable them. By not having such features in Better Controls, it significantly reduces complexity by not having a server side version of the mod, and not needing a way to completely disable the mod while the game is running.
 
@@ -43,7 +38,7 @@ The following mod loaders are supported:
 * **[Fabric](https://fabricmc.net/use/)** (note: this mod does not require Fabric API)
 * **[NeoForge](https://neoforged.net/)**
 
-After you install the mod loader of your choice, download the mod from [CurseForge](https://www.curseforge.com/minecraft/mc-mods/better-controls/files) or [Modrinth](https://modrinth.com/mod/better-controls/versions) and place the `.jar` file into `.minecraft/mods`.
+After you install the mod loader of your choice, [download the mod](https://www.curseforge.com/minecraft/mc-mods/better-controls/files) and place the `.jar` file into `.minecraft/mods`.
 
 ### Minecraft Updates
 
@@ -59,27 +54,3 @@ While this is convenient, there is potential for bugs which can affect server pl
 ## Screenshot
 
 ![Options Menu Screenshot](https://repo.chylex.com/better-controls.png)
-
-Source Code
-===========
-
-The `main` branch includes both the Fabric and NeoForge version in a single project. The project uses Mojang mappings. The root project contains common source code and resource files, and the `Fabric` and `NeoForge` folders are subprojects with loader-specific files.
-
-The `main` branch always has the latest development version. Before updating to a new Minecraft version, a new branch is created from the `main` branch (for example, before the mod is updated to `1.18`, a branch named `1.17` will be created). Further development of older versions may continue in these branches in case backports or version-specific fixes are needed.
-
-Older versions from before the merge of the Fabric and Forge versions can be found in branches named `fabric/<version>` and `forge/<version>`.
-
-## Contributing
-
-All contributions should target the `main` branch and work in both Fabric and NeoForge, unless the contribution is specifically targeting older versions or a specific mod loader.
-
-For any larger contributions, please [open an issue](https://github.com/chylex/Better-Controls/issues/new) first before you make a PR.
-
-Please keep in mind that this mod is designed to be very simple and easy to test. Over the years, [Better Sprinting](https://github.com/chylex/Better-Sprinting) has gained a fair amount of bloat that requires extensive testing before every release, and it is the reason why I will not be accepting PRs which add:
-
-* **Translations**
-  * If you want to translate the mod, you are welcome to create a separate version of it. Unfortunately, I've always ran into enough problems with maintaining and testing community mod translations that I will not be adding official support for localization.
-* **Server-side code**
-  * Better Controls will always be exclusively client-side. The server-side support in Better Sprinting is a major time sink which requires testing 3 separate client/server configurations per mod loader, and is the main reason I decided to drop support in favor of this mod.
-* **Singleplayer-only features**
-  * Better Controls intends to add accessibility options that can be used on servers, so features that only work in singleplayer or anything that could be used for cheating on servers will not be accepted.

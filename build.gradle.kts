@@ -94,6 +94,11 @@ allprojects {
 	dependencies {
 		implementation("org.jetbrains:annotations:24.1.0")
 	}
+	
+	tasks.withType<AbstractArchiveTask>().configureEach {
+		isPreserveFileTimestamps = false
+		isReproducibleFileOrder = true
+	}
 }
 
 subprojects {

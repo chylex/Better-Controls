@@ -41,7 +41,7 @@ Both speed boosts can be configured separately for sprinting, which will be acti
 The following mod loaders are supported:
 
 * **[Fabric](https://fabricmc.net/use/)** (note: this mod does not require Fabric API)
-* **[Forge](https://files.minecraftforge.net/)**
+* **[NeoForge](https://neoforged.net/)**
 
 After you install the mod loader of your choice, [download the mod](https://www.curseforge.com/minecraft/mc-mods/better-controls/files) and place the `.jar` file into `.minecraft/mods`.
 
@@ -63,7 +63,7 @@ While this is convenient, there is potential for bugs which can affect server pl
 Source Code
 ===========
 
-The `main` branch includes both the Fabric and Forge version in a single project. The project uses Mojang mappings. The root project contains common source code and resource files, and the `Fabric` and `Forge` folders are subprojects with loader-specific files.
+The `main` branch includes both the Fabric and NeoForge version in a single project. The project uses Mojang mappings. The root project contains common source code and resource files, and the `Fabric` and `NeoForge` folders are subprojects with loader-specific files.
 
 The `main` branch always has the latest development version. Before updating to a new Minecraft version, a new branch is created from the `main` branch (for example, before the mod is updated to `1.18`, a branch named `1.17` will be created). Further development of older versions may continue in these branches in case backports or version-specific fixes are needed.
 
@@ -71,7 +71,7 @@ Older versions from before the merge of the Fabric and Forge versions can be fou
 
 ## Contributing
 
-All contributions should target the `main` branch and work in both Fabric and Forge, unless the contribution is specifically targeting older versions or a specific mod loader.
+All contributions should target the `main` branch and work in both Fabric and NeoForge, unless the contribution is specifically targeting older versions or a specific mod loader.
 
 For any larger contributions, please [open an issue](https://github.com/chylex/Better-Controls/issues/new) first before you make a PR.
 

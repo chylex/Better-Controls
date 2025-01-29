@@ -14,6 +14,7 @@ val modSides: String by project
 
 val minecraftVersion: String by project
 val mixinVersion: String by project
+val mixinExtrasVersion: String by project
 
 val minimumMinecraftVersion: String by project
 val minimumNeoForgeVersion: String by project
@@ -65,6 +66,8 @@ dependencies {
 	mappings(loom.officialMojangMappings())
 	
 	compileOnly("net.fabricmc:sponge-mixin:$mixinVersion")
+	compileOnly("io.github.llamalad7:mixinextras-common:$mixinExtrasVersion")
+	
 	api("com.google.code.findbugs:jsr305:3.0.2")
 }
 

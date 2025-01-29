@@ -13,9 +13,9 @@ import java.util.function.Consumer;
 @SuppressWarnings("UnreachableCode")
 public abstract class HookToggleOptionButtons {
 	@Inject(method = "createButton(Lnet/minecraft/client/Options;IIILjava/util/function/Consumer;)Lnet/minecraft/client/gui/components/AbstractWidget;", at = @At("RETURN"))
-	private <T> void disableToggleOptions(final Options options, final int x, final int y, final int width, final Consumer<T> callback, final CallbackInfoReturnable<AbstractWidget> cir) {
+	private <T> void disableToggleOptions(Options options, int x, int y, int width, Consumer<T> callback, CallbackInfoReturnable<AbstractWidget> cir) {
 		@SuppressWarnings("ConstantConditions")
-		final OptionInstance<?> me = (OptionInstance<?>)(Object)this;
+		OptionInstance<?> me = (OptionInstance<?>)(Object)this;
 		
 		if (me == options.toggleCrouch() || me == options.toggleSprint()) {
 			cir.getReturnValue().active = false;

@@ -26,12 +26,12 @@ public abstract class HookLoadGameOptions {
 	public KeyMapping[] keyMappings;
 	
 	@Inject(method = "load()V", at = @At("HEAD"))
-	private void load(final CallbackInfo info) {
+	private void load(CallbackInfo info) {
 		if (hasLoaded) {
 			return;
 		}
 		
-		final BetterControlsConfig config = BetterControlsCommon.getConfig();
+		BetterControlsConfig config = BetterControlsCommon.getConfig();
 		if (config == null) {
 			return;
 		}

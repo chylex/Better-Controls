@@ -16,12 +16,12 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(KeyBindsList.class)
 @SuppressWarnings("MethodMayBeStatic")
 public abstract class HookControlsListWidget extends ContainerObjectSelectionList<Entry> {
-	public HookControlsListWidget(final Minecraft client, final int width, final int height, final int top, final int itemHeight) {
+	public HookControlsListWidget(Minecraft client, int width, int height, int top, int itemHeight) {
 		super(client, width, height, top, itemHeight);
 	}
 	
 	@WrapOperation(method = "<init>", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Options;keyMappings:[Lnet/minecraft/client/KeyMapping;"))
-	private KeyMapping[] excludeOwnKeyBindings(final Options options, final Operation<KeyMapping[]> operation) {
+	private KeyMapping[] excludeOwnKeyBindings(Options options, Operation<KeyMapping[]> operation) {
 		return ArrayUtils.removeElements(operation.call(options), BetterControlsCommon.getConfig().getAllKeyBindings());
 	}
 }

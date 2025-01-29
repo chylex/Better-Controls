@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Slice;
 @Mixin(Player.class)
 @SuppressWarnings({ "SameReturnValue", "UnreachableCode" })
 public abstract class HookPlayerHorizontalFlightSpeed extends LivingEntity {
-	protected HookPlayerHorizontalFlightSpeed(final EntityType<? extends LivingEntity> type, final Level world) {
+	protected HookPlayerHorizontalFlightSpeed(EntityType<? extends LivingEntity> type, Level world) {
 		super(type, world);
 	}
 	
@@ -28,9 +28,9 @@ public abstract class HookPlayerHorizontalFlightSpeed extends LivingEntity {
 			to = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Abilities;getFlyingSpeed()F")
 		)
 	)
-	private boolean disableVanillaSprintBoost(final boolean isSprinting) {
+	private boolean disableVanillaSprintBoost(boolean isSprinting) {
 		@SuppressWarnings("ConstantConditions")
-		final Player me = (Player)(Object)this;
+		Player me = (Player)(Object)this;
 		
 		if (me instanceof LocalPlayer) {
 			return false;
@@ -41,11 +41,11 @@ public abstract class HookPlayerHorizontalFlightSpeed extends LivingEntity {
 	}
 	
 	@ModifyReturnValue(method = "getFlyingSpeed", at = @At("RETURN"))
-	private float modifyHorizontalFlyingSpeed(final float flyingSpeed) {
+	private float modifyHorizontalFlyingSpeed(float flyingSpeed) {
 		@SuppressWarnings("ConstantConditions")
-		final Player me = (Player)(Object)this;
+		Player me = (Player)(Object)this;
 		
-		if (me instanceof final LocalPlayer localPlayer && localPlayer.getAbilities().flying) {
+		if (me instanceof LocalPlayer localPlayer && localPlayer.getAbilities().flying) {
 			return flyingSpeed * FlightHelper.getHorizontalSpeedMultiplier(localPlayer);
 		}
 		else {

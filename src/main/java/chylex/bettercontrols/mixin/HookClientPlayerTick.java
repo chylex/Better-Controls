@@ -14,28 +14,28 @@ import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 @Mixin(LocalPlayer.class)
 @SuppressWarnings("UnreachableCode")
 public abstract class HookClientPlayerTick extends AbstractClientPlayer {
-	protected HookClientPlayerTick(final ClientLevel world, final GameProfile profile) {
+	protected HookClientPlayerTick(ClientLevel world, GameProfile profile) {
 		super(world, profile);
 	}
 	
 	@Inject(method = "aiStep()V", at = @At("HEAD"))
-	private void atHead(final CallbackInfo info) {
+	private void atHead(CallbackInfo info) {
 		@SuppressWarnings("ConstantConditions")
-		final LocalPlayer player = (LocalPlayer)(Object)this;
+		LocalPlayer player = (LocalPlayer)(Object)this;
 		PlayerTicker.get(player).atHead(player);
 	}
 	
 	@Inject(method = "aiStep()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/ClientInput;tick()V", ordinal = 0, shift = AFTER))
-	private void afterInputTick(final CallbackInfo info) {
+	private void afterInputTick(CallbackInfo info) {
 		@SuppressWarnings("ConstantConditions")
-		final LocalPlayer player = (LocalPlayer)(Object)this;
+		LocalPlayer player = (LocalPlayer)(Object)this;
 		PlayerTicker.get(player).afterInputTick(player);
 	}
 	
 	@Inject(method = "aiStep()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/AbstractClientPlayer;aiStep()V", ordinal = 0, shift = AFTER))
-	private void afterSuperCall(final CallbackInfo info) {
+	private void afterSuperCall(CallbackInfo info) {
 		@SuppressWarnings("ConstantConditions")
-		final LocalPlayer player = (LocalPlayer)(Object)this;
+		LocalPlayer player = (LocalPlayer)(Object)this;
 		PlayerTicker.get(player).afterSuperCall(player);
 	}
 }

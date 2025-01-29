@@ -30,8 +30,8 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 	private ConfigSerializer() {}
 	
 	@Override
-	public JsonElement serialize(final BetterControlsConfig cfg, final Type typeOfSrc, final JsonSerializationContext context) {
-		final JsonObject obj = new JsonObject();
+	public JsonElement serialize(BetterControlsConfig cfg, Type typeOfSrc, JsonSerializationContext context) {
+		JsonObject obj = new JsonObject();
 		
 		Json.writeKeyBinding(obj, "Sprint.KeyToggle", cfg.keyToggleSprint);
 		Json.setEnum(obj, "Sprint.Mode", cfg.sprintMode);
@@ -64,9 +64,9 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 	}
 	
 	@Override
-	public BetterControlsConfig deserialize(final JsonElement json, final Type typeOfT, final JsonDeserializationContext context) throws JsonParseException {
-		final BetterControlsConfig cfg = new BetterControlsConfig();
-		final JsonObject obj = json.getAsJsonObject();
+	public BetterControlsConfig deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+		BetterControlsConfig cfg = new BetterControlsConfig();
+		JsonObject obj = json.getAsJsonObject();
 		
 		if (obj.has("Sprint.TapToStop") && obj.get("Sprint.TapToStop").getAsBoolean()) {
 			cfg.sprintMode = SprintMode.TAP_TO_TOGGLE;
@@ -102,18 +102,18 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		return cfg;
 	}
 	
-	private static float readHorizontalSpeedMultiplier(final JsonObject obj, final String key, final float defaultValue) {
+	private static float readHorizontalSpeedMultiplier(JsonObject obj, String key, float defaultValue) {
 		return Json.getFloat(obj, key, defaultValue, 0.25F, 8F);
 	}
 	
-	private static float readVerticalSpeedMultiplier(final JsonObject obj, final BetterControlsConfig cfg, final String newKey, final String legacyBoostKey, final float defaultValue) {
+	private static float readVerticalSpeedMultiplier(JsonObject obj, BetterControlsConfig cfg, String newKey, String legacyBoostKey, float defaultValue) {
 		if (obj.has(newKey)) {
 			return Json.getFloat(obj, newKey, defaultValue, 0.25F, 8F);
 		}
 		else if (obj.has(legacyBoostKey)) {
 			cfg.wasMigrated = true;
 			
-			final float value = 1F + Json.getFloat(obj, legacyBoostKey, 0F, 0F, 3F);
+			float value = 1F + Json.getFloat(obj, legacyBoostKey, 0F, 0F, 3F);
 			// 1.25x, 1.75x, 2.5x, and 3.5x are not supported
 			if (Mth.equal(value, 1.25F) || Mth.equal(value, 1.75F)) {
 				return 1.5F;
@@ -133,19 +133,19 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		}
 	}
 	
-	static void write(final Path path, final BetterControlsConfig config) {
-		try (final JsonWriter writer = gson.newJsonWriter(Files.newBufferedWriter(path, StandardCharsets.UTF_8))) {
+	static void write(Path path, BetterControlsConfig config) {
+		try (JsonWriter writer = gson.newJsonWriter(Files.newBufferedWriter(path, StandardCharsets.UTF_8))) {
 			gson.getAdapter(BetterControlsConfig.class).write(writer, config);
-		} catch (final IOException e) {
+		} catch (IOException e) {
 			logger.error("Error saving BetterControls configuration file!", e);
 		}
 	}
 	
-	static BetterControlsConfig read(final Path path) {
-		try (final JsonReader jsonReader = new JsonReader(Files.newBufferedReader(path, StandardCharsets.UTF_8))) {
+	static BetterControlsConfig read(Path path) {
+		try (JsonReader jsonReader = new JsonReader(Files.newBufferedReader(path, StandardCharsets.UTF_8))) {
 			return gson.getAdapter(BetterControlsConfig.class).read(jsonReader);
-		} catch (final FileNotFoundException | NoSuchFileException ignored) {
-		} catch (final IOException e) {
+		} catch (FileNotFoundException | NoSuchFileException ignored) {
+		} catch (IOException e) {
 			logger.error("Error reading BetterControls configuration file!", e);
 		}
 		

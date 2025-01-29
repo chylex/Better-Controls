@@ -13,8 +13,8 @@ public abstract class HookClientPlayerFOV {
 		method = "getFieldOfViewModifier",
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Abilities;getWalkingSpeed()F")
 	)
-	private float overrideWalkingSpeed(final float walkingSpeed) {
-		final AbstractClientPlayer me = (AbstractClientPlayer)(Object)this;
+	private float overrideWalkingSpeed(float walkingSpeed) {
+		AbstractClientPlayer me = (AbstractClientPlayer)(Object)this;
 		
 		if (me instanceof LocalPlayer localPlayer && PlayerTicker.get(localPlayer).shouldResetFOV(localPlayer)) {
 			return 0F;

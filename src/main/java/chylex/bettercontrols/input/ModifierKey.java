@@ -26,13 +26,13 @@ public enum ModifierKey {
 	
 	public final int id;
 	
-	ModifierKey(final int id) {
+	ModifierKey(int id) {
 		this.id = id;
 	}
 	
 	public abstract boolean isPressed();
 	
-	public static ModifierKey getById(final int id) {
+	public static ModifierKey getById(int id) {
 		return switch (id) {
 			case 0 -> CONTROL;
 			case 1 -> SHIFT;

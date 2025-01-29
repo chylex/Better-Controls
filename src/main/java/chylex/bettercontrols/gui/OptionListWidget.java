@@ -25,19 +25,19 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 	public static final int COL2_W = (ROW_WIDTH / 2) - ROW_HORIZONTAL_PADDING;
 	public static final int COL4_W = (ROW_WIDTH / 4) - ROW_HORIZONTAL_PADDING;
 	
-	public static int col2(final int column) {
+	public static int col2(int column) {
 		return (column * ROW_WIDTH) / 2;
 	}
 	
-	public static int col4(final int column) {
+	public static int col4(int column) {
 		return (column * ROW_WIDTH) / 4;
 	}
 	
-	private static Offset getElementOffset(final GuiEventListener element) {
-		if (element instanceof final OptionWidget widget) {
+	private static Offset getElementOffset(GuiEventListener element) {
+		if (element instanceof OptionWidget widget) {
 			return new Offset(widget.getX(), widget.getY());
 		}
-		else if (element instanceof final AbstractWidget widget) {
+		else if (element instanceof AbstractWidget widget) {
 			return new Offset(widget.getX(), widget.getY());
 		}
 		else {
@@ -54,7 +54,7 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 	
 	private record Offset(int x, int y) {}
 	
-	public OptionListWidget(final int width, final int height, final int top, final int innerHeight, final List<GuiEventListener> widgets) {
+	public OptionListWidget(int width, int height, int top, int innerHeight, List<GuiEventListener> widgets) {
 		super(Minecraft.getInstance(), width, height, top, innerHeight);
 		addEntry(new Entry(widgets));
 	}
@@ -75,7 +75,7 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 	}
 	
 	@Override
-	public boolean mouseScrolled(final double x, final double y, final double xAmount, final double yAmount) {
+	public boolean mouseScrolled(double x, double y, double xAmount, double yAmount) {
 		setScrollAmount(scrollAmount() - yAmount * SCROLL_MULTIPLIER);
 		return true;
 	}
@@ -85,7 +85,7 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 		private final List<NarratableEntry> narratables;
 		private final Map<GuiEventListener, Offset> offsets;
 		
-		public Entry(final List<GuiEventListener> elements) {
+		public Entry(List<GuiEventListener> elements) {
 			this.elements = new ArrayList<>(elements);
 			this.narratables = elements.stream().filter(e -> e instanceof NarratableEntry).map(e -> (NarratableEntry)e).collect(Collectors.toList());
 			this.offsets = elements.stream().collect(Collectors.toMap(Function.identity(), OptionListWidget::getElementOffset));
@@ -104,20 +104,20 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 		}
 		
 		@Override
-		public void render(final @NotNull GuiGraphics graphics, final int index, final int y, final int x, final int entryWidth, final int entryHeight, final int mouseX, final int mouseY, final boolean hovered, final float tickDelta) {
-			for (final GuiEventListener element : elements) {
-				final Offset offset = offsets.get(element);
+		public void render(@NotNull GuiGraphics graphics, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+			for (GuiEventListener element : elements) {
+				Offset offset = offsets.get(element);
 				
-				if (element instanceof final AbstractWidget widget) {
+				if (element instanceof AbstractWidget widget) {
 					widget.setX(x + offset.x);
 					widget.setY(y + offset.y);
 				}
-				else if (element instanceof final OptionWidget widget) {
+				else if (element instanceof OptionWidget widget) {
 					widget.setX(x + offset.x);
 					widget.setY(y + offset.y);
 				}
 				
-				if (element instanceof final Renderable renderable) {
+				if (element instanceof Renderable renderable) {
 					renderable.render(graphics, mouseX, mouseY, tickDelta);
 				}
 			}

@@ -21,7 +21,7 @@ public final class BetterControlsMod {
 		}
 	}
 	
-	private static BetterControlsScreen createOptionsScreen(final ModContainer modContainer, @Nullable final Screen parentScreen) {
+	private static BetterControlsScreen createOptionsScreen(ModContainer modContainer, @Nullable Screen parentScreen) {
 		return new BetterControlsScreen(parentScreen);
 	}
 }

@@ -22,7 +22,7 @@ public final class TextWidget implements OptionWidget {
 	private final int height;
 	private final int align;
 	
-	public TextWidget(final int x, final int y, final int width, final int height, final Component text, final int align) {
+	public TextWidget(int x, int y, int width, int height, Component text, int align) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -31,11 +31,11 @@ public final class TextWidget implements OptionWidget {
 		this.align = align;
 	}
 	
-	public TextWidget(final int x, final int y, final int width, final Component text, final int align) {
+	public TextWidget(int x, int y, int width, Component text, int align) {
 		this(x, y, width, 20, text, align);
 	}
 	
-	public TextWidget(final int x, final int y, final int width, final Component text) {
+	public TextWidget(int x, int y, int width, Component text) {
 		this(x, y, width, 20, text, LEFT);
 	}
 	
@@ -50,17 +50,17 @@ public final class TextWidget implements OptionWidget {
 	}
 	
 	@Override
-	public void setX(final int x) {
+	public void setX(int x) {
 		this.x = x;
 	}
 	
 	@Override
-	public void setY(final int y) {
+	public void setY(int y) {
 		this.y = y;
 	}
 	
 	@Override
-	public void setFocused(final boolean focused) {}
+	public void setFocused(boolean focused) {}
 	
 	@Override
 	public boolean isFocused() {
@@ -68,13 +68,13 @@ public final class TextWidget implements OptionWidget {
 	}
 	
 	@Override
-	public void render(final @NotNull GuiGraphics graphics, final int mouseX, final int mouseY, final float delta) {
-		final Font textRenderer = Minecraft.getInstance().font;
-		final List<FormattedCharSequence> lines = textRenderer.split(text, width);
+	public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+		Font textRenderer = Minecraft.getInstance().font;
+		List<FormattedCharSequence> lines = textRenderer.split(text, width);
 		final int lineHeight = textRenderer.lineHeight + 1;
 		
-		final int finalX = align == CENTER ? x + (width / 2) - (lines.stream().mapToInt(textRenderer::width).max().orElse(0) / 2) : x;
-		final int finalY = y + (height / 2) - (lineHeight * lines.size() / 2) + 1;
+		int finalX = align == CENTER ? x + (width / 2) - (lines.stream().mapToInt(textRenderer::width).max().orElse(0) / 2) : x;
+		int finalY = y + (height / 2) - (lineHeight * lines.size() / 2) + 1;
 		
 		for (int i = 0; i < lines.size(); i++) {
 			graphics.drawString(textRenderer, lines.get(i), finalX, finalY + (i * lineHeight), WHITE);

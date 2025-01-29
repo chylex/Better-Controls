@@ -22,7 +22,7 @@ public final class KeyBindingWidget extends Button {
 	private final Consumer<KeyBindingWidget> onEditingStarted;
 	private boolean isEditing;
 	
-	public KeyBindingWidget(final int x, final int y, final int width, final int height, final Component bindingName, final KeyMapping binding, final Consumer<KeyBindingWidget> onEditingStarted) {
+	public KeyBindingWidget(int x, int y, int width, int height, Component bindingName, KeyMapping binding, Consumer<KeyBindingWidget> onEditingStarted) {
 		super(x, y, width, height, Component.empty(), btn -> {}, DEFAULT_NARRATION);
 		this.binding = binding;
 		this.bindingName = bindingName;
@@ -30,11 +30,11 @@ public final class KeyBindingWidget extends Button {
 		updateKeyBindingText();
 	}
 	
-	public KeyBindingWidget(final int x, final int y, final int width, final Component bindingName, final KeyMapping binding, final Consumer<KeyBindingWidget> onEditingStarted) {
+	public KeyBindingWidget(int x, int y, int width, Component bindingName, KeyMapping binding, Consumer<KeyBindingWidget> onEditingStarted) {
 		this(x, y, width, 20, bindingName, binding, onEditingStarted);
 	}
 	
-	public void linkButtonToBoundState(final AbstractButton button) {
+	public void linkButtonToBoundState(AbstractButton button) {
 		linkedButtons.add(button);
 		button.active = !binding.isUnbound();
 	}
@@ -52,11 +52,11 @@ public final class KeyBindingWidget extends Button {
 		updateKeyBindingText();
 	}
 	
-	public void bindAndStopEditing(final InputConstants.Key key) {
+	public void bindAndStopEditing(InputConstants.Key key) {
 		binding.setKey(key);
 		stopEditing();
 		
-		for (final AbstractButton button : linkedButtons) {
+		for (AbstractButton button : linkedButtons) {
 			button.active = !binding.isUnbound();
 		}
 	}
@@ -70,7 +70,7 @@ public final class KeyBindingWidget extends Button {
 		boolean hasConflict = false;
 		
 		if (!binding.isUnbound()) {
-			for (final KeyMapping other : Minecraft.getInstance().options.keyMappings) {
+			for (KeyMapping other : Minecraft.getInstance().options.keyMappings) {
 				if (binding != other && binding.same(other)) {
 					hasConflict = true;
 					break;

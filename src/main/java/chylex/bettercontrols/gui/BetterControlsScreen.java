@@ -34,7 +34,7 @@ import static chylex.bettercontrols.gui.elements.TextWidget.CENTER;
 import static net.minecraft.network.chat.Component.literal;
 
 public class BetterControlsScreen extends OptionsSubScreen {
-	private static Component text(final String text) {
+	private static Component text(String text) {
 		return literal(text);
 	}
 	
@@ -53,8 +53,8 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	
 	// Options
 	
-	private int generateSprintingOptions(int y, final List<GuiEventListener> elements) {
-		final BetterControlsConfig cfg = BetterControlsCommon.getConfig();
+	private int generateSprintingOptions(int y, List<GuiEventListener> elements) {
+		BetterControlsConfig cfg = BetterControlsCommon.getConfig();
 		
 		generateKeyBindingWithModifierRow(y, elements, text("Toggle Sprint"), cfg.keyToggleSprint);
 		y += ROW_HEIGHT;
@@ -71,8 +71,8 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		return y;
 	}
 	
-	private int generateSneakingOptions(int y, final List<GuiEventListener> elements) {
-		final BetterControlsConfig cfg = BetterControlsCommon.getConfig();
+	private int generateSneakingOptions(int y, List<GuiEventListener> elements) {
+		BetterControlsConfig cfg = BetterControlsCommon.getConfig();
 		
 		generateKeyBindingWithModifierRow(y, elements, text("Toggle Sneak"), cfg.keyToggleSneak);
 		y += ROW_HEIGHT;
@@ -83,10 +83,10 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		return y;
 	}
 	
-	private int generateFlightOptions(int y, final List<GuiEventListener> elements) {
-		final BetterControlsConfig cfg = BetterControlsCommon.getConfig();
+	private int generateFlightOptions(int y, List<GuiEventListener> elements) {
+		BetterControlsConfig cfg = BetterControlsCommon.getConfig();
 		
-		final ImmutableList<Option<Float>> flightSpeedOptions = ImmutableList.of(
+		ImmutableList<Option<Float>> flightSpeedOptions = ImmutableList.of(
 			new Option<>(Float.valueOf(0.25F), text("0.25x")),
 			new Option<>(Float.valueOf(0.50F), text("0.5x")),
 			new Option<>(Float.valueOf(0.75F), text("0.75x")),
@@ -144,8 +144,8 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		return y;
 	}
 	
-	private int generateMiscellaneousOptions(int y, final List<GuiEventListener> elements) {
-		final BetterControlsConfig cfg = BetterControlsCommon.getConfig();
+	private int generateMiscellaneousOptions(int y, List<GuiEventListener> elements) {
+		BetterControlsConfig cfg = BetterControlsCommon.getConfig();
 		
 		generateKeyBindingWithModifierRow(y, elements, text("Toggle Walk Forwards"), cfg.keyToggleWalkForward);
 		y += ROW_HEIGHT;
@@ -171,9 +171,9 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		new Option<>(ModifierKey.ALT, text("Alt"))
 	);
 	
-	private void generateKeyBindingWithModifierRow(final int y, final List<GuiEventListener> elements, final Component text, final KeyBindingWithModifier binding) {
-		final var modifierButton = Option.button(col4(2), y, COL4_W, text.plainCopy().append(" Modifier"), MODIFIER_OPTIONS, binding.getModifier(), binding::setModifier);
-		final var bindingButton = new KeyBindingWidget(col4(3), y, COL4_W, text, binding, this::startEditingKeyBinding);
+	private void generateKeyBindingWithModifierRow(int y, List<GuiEventListener> elements, Component text, KeyBindingWithModifier binding) {
+		var modifierButton = Option.button(col4(2), y, COL4_W, text.plainCopy().append(" Modifier"), MODIFIER_OPTIONS, binding.getModifier(), binding::setModifier);
+		var bindingButton = new KeyBindingWidget(col4(3), y, COL4_W, text, binding, this::startEditingKeyBinding);
 		bindingButton.linkButtonToBoundState(modifierButton);
 		
 		generateLeftSideText(y, elements, text);
@@ -182,12 +182,12 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		allKeyBindings.add(bindingButton);
 	}
 	
-	private static <T> void generateCycleOptionRow(final int y, final List<GuiEventListener> elements, final Component text, final List<Option<T>> options, final T initialValue, final Consumer<T> onValueChanged) {
+	private static <T> void generateCycleOptionRow(int y, List<GuiEventListener> elements, Component text, List<Option<T>> options, T initialValue, Consumer<T> onValueChanged) {
 		generateLeftSideText(y, elements, text);
 		elements.add(Option.button(col2(1), y, COL2_W, text, options, initialValue, onValueChanged));
 	}
 	
-	private static void generateBooleanOptionRow(final int y, final List<GuiEventListener> elements, final Component text, final boolean initialValue, final BooleanConsumer onValueChanged) {
+	private static void generateBooleanOptionRow(int y, List<GuiEventListener> elements, Component text, boolean initialValue, BooleanConsumer onValueChanged) {
 		generateLeftSideText(y, elements, text);
 		elements.add(CycleButton.onOffBuilder()
 			.displayOnlyValue()
@@ -195,7 +195,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 			.create(col2(1), y, COL2_W, 20, text, (btn, newValue) -> onValueChanged.accept(newValue.booleanValue())));
 	}
 	
-	private static void generateLeftSideText(final int y, final List<GuiEventListener> elements, final Component text) {
+	private static void generateLeftSideText(int y, List<GuiEventListener> elements, Component text) {
 		elements.add(new TextWidget(col2(0), y, COL2_W - TEXT_PADDING_RIGHT, text));
 	}
 	
@@ -206,7 +206,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	private final List<KeyBindingWidget> allKeyBindings = new ArrayList<>();
 	
 	@SuppressWarnings("DataFlowIssue")
-	public BetterControlsScreen(@Nullable final Screen parentScreen) {
+	public BetterControlsScreen(@Nullable Screen parentScreen) {
 		super(parentScreen, Minecraft.getInstance().options, TITLE);
 	}
 	
@@ -214,7 +214,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	protected void addContents() {
 		allKeyBindings.clear();
 		
-		final List<GuiEventListener> elements = new ArrayList<>();
+		List<GuiEventListener> elements = new ArrayList<>();
 		int y = 0;
 		
 		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, text("Sprinting"), CENTER));
@@ -249,7 +249,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		BetterControlsCommon.getConfig().save();
 	}
 	
-	private void startEditingKeyBinding(final KeyBindingWidget widget) {
+	private void startEditingKeyBinding(KeyBindingWidget widget) {
 		if (editingKeyBinding != null) {
 			editingKeyBinding.stopEditing();
 		}
@@ -258,7 +258,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	}
 	
 	@Override
-	public boolean mouseClicked(final double mouseX, final double mouseY, final int button) {
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (editingKeyBinding != null) {
 			editingKeyBinding.bindAndStopEditing(InputConstants.Type.MOUSE.getOrCreate(button));
 			onKeyBindingEditingFinished();
@@ -270,7 +270,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	}
 	
 	@Override
-	public boolean keyPressed(final int keyCode, final int scanCode, final int modifiers) {
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (editingKeyBinding != null) {
 			if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
 				editingKeyBinding.bindAndStopEditing(InputConstants.UNKNOWN);
@@ -291,7 +291,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		editingKeyBinding = null;
 		KeyMapping.resetMapping();
 		
-		for (final KeyBindingWidget widget : allKeyBindings) {
+		for (KeyBindingWidget widget : allKeyBindings) {
 			widget.updateKeyBindingText();
 		}
 	}

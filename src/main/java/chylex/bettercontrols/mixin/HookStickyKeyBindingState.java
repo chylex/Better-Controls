@@ -17,12 +17,12 @@ public abstract class HookStickyKeyBindingState extends KeyMapping {
 	@Final
 	private BooleanSupplier needsToggle;
 	
-	public HookStickyKeyBindingState(final String translationKey, final int code, final String category) {
+	public HookStickyKeyBindingState(String translationKey, int code, String category) {
 		super(translationKey, code, category);
 	}
 	
 	@Inject(method = "setDown", at = @At("HEAD"), cancellable = true)
-	public void setPressed(final boolean pressed, final CallbackInfo info) {
+	public void setPressed(boolean pressed, CallbackInfo info) {
 		if (ToggleTrackerForStickyKey.isOverrideEnabled(this)) {
 			((AccessKeyBindingFields)this).setPressedField(pressed);
 			info.cancel();

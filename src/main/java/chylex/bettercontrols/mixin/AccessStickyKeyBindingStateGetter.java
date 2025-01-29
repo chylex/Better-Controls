@@ -13,5 +13,5 @@ public interface AccessStickyKeyBindingStateGetter {
 	
 	@Accessor
 	@Mutable
-	void setNeedsToggle(final BooleanSupplier toggleGetter);
+	void setNeedsToggle(BooleanSupplier toggleGetter);
 }

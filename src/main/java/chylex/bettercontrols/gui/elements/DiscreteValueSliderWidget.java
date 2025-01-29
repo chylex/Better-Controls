@@ -14,7 +14,7 @@ public final class DiscreteValueSliderWidget<T> extends AbstractSliderButton {
 	private final Consumer<T> onChanged;
 	private T selectedValue;
 	
-	public DiscreteValueSliderWidget(final int x, final int y, final int width, final int height, final Component narration, final ImmutableList<Option<T>> options, final T selectedValue, final Consumer<T> onChanged) {
+	public DiscreteValueSliderWidget(int x, int y, int width, int height, Component narration, ImmutableList<Option<T>> options, T selectedValue, Consumer<T> onChanged) {
 		super(x, y, width, height, Option.find(options, selectedValue).text(), options.indexOf(Option.find(options, selectedValue)) / (options.size() - 1.0));
 		this.narration = narration;
 		this.options = options;
@@ -22,7 +22,7 @@ public final class DiscreteValueSliderWidget<T> extends AbstractSliderButton {
 		this.onChanged = onChanged;
 	}
 	
-	public DiscreteValueSliderWidget(final int x, final int y, final int width, final Component narration, final ImmutableList<Option<T>> options, final T selectedValue, final Consumer<T> onChanged) {
+	public DiscreteValueSliderWidget(int x, int y, int width, Component narration, ImmutableList<Option<T>> options, T selectedValue, Consumer<T> onChanged) {
 		this(x, y, width, 20, narration, options, selectedValue, onChanged);
 	}
 	
@@ -37,7 +37,7 @@ public final class DiscreteValueSliderWidget<T> extends AbstractSliderButton {
 	
 	@Override
 	protected void applyValue() {
-		final T newSelectedValue = getSelectedOption().value();
+		T newSelectedValue = getSelectedOption().value();
 		
 		if (selectedValue != newSelectedValue) {
 			selectedValue = newSelectedValue;

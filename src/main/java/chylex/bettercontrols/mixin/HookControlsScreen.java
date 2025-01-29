@@ -19,22 +19,22 @@ import java.util.List;
 @Mixin(ControlsScreen.class)
 @SuppressWarnings("UnreachableCode")
 public abstract class HookControlsScreen extends OptionsSubScreen {
-	public HookControlsScreen(final Screen parentScreen, final Options options, final Component title) {
+	public HookControlsScreen(Screen parentScreen, Options options, Component title) {
 		super(parentScreen, options, title);
 	}
 	
 	@Inject(method = "addOptions", at = @At("RETURN"))
-	public void afterAddOptions(final CallbackInfo ci) {
+	public void afterAddOptions(CallbackInfo ci) {
 		if (list != null) {
 			@SuppressWarnings("ConstantConditions")
-			final ControlsScreen screen = (ControlsScreen)(Object)this;
-			final MutableComponent buttonTitle = BetterControlsScreen.TITLE.plainCopy().append("...");
+			ControlsScreen screen = (ControlsScreen)(Object)this;
+			MutableComponent buttonTitle = BetterControlsScreen.TITLE.plainCopy().append("...");
 			list.addSmall(List.of(Button.builder(buttonTitle, btn -> showOptionsScreen(screen)).build()));
 		}
 	}
 	
 	@Unique
-	private static void showOptionsScreen(final ControlsScreen screen) {
+	private static void showOptionsScreen(ControlsScreen screen) {
 		Minecraft.getInstance().setScreen(new BetterControlsScreen(screen));
 	}
 }

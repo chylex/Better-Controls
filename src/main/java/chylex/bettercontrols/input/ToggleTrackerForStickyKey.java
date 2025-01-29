@@ -9,13 +9,13 @@ import java.util.Set;
 public final class ToggleTrackerForStickyKey extends ToggleTracker {
 	private static final Set<KeyMapping> enabledOverrides = new HashSet<>();
 	
-	public static boolean isOverrideEnabled(final KeyMapping binding) {
+	public static boolean isOverrideEnabled(KeyMapping binding) {
 		return enabledOverrides.contains(binding);
 	}
 	
 	private final BooleanConsumer setToggleState;
 	
-	public ToggleTrackerForStickyKey(final KeyMapping bindingToggle, final KeyMapping bindingStickyReset, final BooleanConsumer setToggleState) {
+	public ToggleTrackerForStickyKey(KeyMapping bindingToggle, KeyMapping bindingStickyReset, BooleanConsumer setToggleState) {
 		super(bindingToggle, bindingStickyReset);
 		this.setToggleState = setToggleState;
 		this.setToggleState.accept(false);
@@ -24,7 +24,7 @@ public final class ToggleTrackerForStickyKey extends ToggleTracker {
 	
 	@Override
 	public boolean tick() {
-		final boolean isToggled = super.tick();
+		boolean isToggled = super.tick();
 		setToggleState.accept(isToggled);
 		return isToggled;
 	}

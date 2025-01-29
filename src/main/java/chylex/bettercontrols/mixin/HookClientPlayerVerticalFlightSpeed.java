@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Slice;
 @Mixin(LocalPlayer.class)
 @SuppressWarnings({ "SameReturnValue", "UnreachableCode" })
 public abstract class HookClientPlayerVerticalFlightSpeed extends LivingEntity {
-	protected HookClientPlayerVerticalFlightSpeed(final EntityType<? extends LivingEntity> type, final Level world) {
+	protected HookClientPlayerVerticalFlightSpeed(EntityType<? extends LivingEntity> type, Level world) {
 		super(type, world);
 	}
 	
@@ -25,9 +25,9 @@ public abstract class HookClientPlayerVerticalFlightSpeed extends LivingEntity {
 			to = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V")
 		)
 	)
-	private float modifyVerticalFlightSpeed(final float flyingSpeed) {
+	private float modifyVerticalFlightSpeed(float flyingSpeed) {
 		@SuppressWarnings("ConstantConditions")
-		final LocalPlayer me = (LocalPlayer)(Object)this;
+		LocalPlayer me = (LocalPlayer)(Object)this;
 		return flyingSpeed * FlightHelper.getVerticalSpeedMultiplier(me);
 	}
 }

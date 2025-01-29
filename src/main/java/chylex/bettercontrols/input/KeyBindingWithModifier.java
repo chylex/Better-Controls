@@ -10,11 +10,11 @@ public class KeyBindingWithModifier extends KeyMapping {
 	@Nullable
 	private ModifierKey modifier = null;
 	
-	public KeyBindingWithModifier(final String translationKey) {
+	public KeyBindingWithModifier(String translationKey) {
 		super(translationKey, Type.KEYSYM, -1, CATEGORY);
 	}
 	
-	public void setModifier(@Nullable final ModifierKey modifier) {
+	public void setModifier(@Nullable ModifierKey modifier) {
 		this.modifier = modifier;
 	}
 	

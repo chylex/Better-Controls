@@ -9,7 +9,7 @@ public final class BetterControlsCommon {
 		return config;
 	}
 	
-	static void setConfig(final BetterControlsConfig config) {
+	static void setConfig(BetterControlsConfig config) {
 		BetterControlsCommon.config = config;
 	}
 	

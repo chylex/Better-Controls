@@ -19,15 +19,15 @@ public final class FlightHelper {
 		return BetterControlsCommon.getConfig();
 	}
 	
-	static boolean isFlyingCreativeOrSpectator(final LocalPlayer player) {
+	static boolean isFlyingCreativeOrSpectator(LocalPlayer player) {
 		return player.getAbilities().flying && (player.isCreative() || player.isSpectator());
 	}
 	
-	static boolean shouldFlyOnGround(final LocalPlayer player) {
+	static boolean shouldFlyOnGround(LocalPlayer player) {
 		return cfg().flyOnGroundInCreative && player.isCreative() && player.getAbilities().flying;
 	}
 	
-	public static float getHorizontalSpeedMultiplier(final LocalPlayer player) {
+	public static float getHorizontalSpeedMultiplier(LocalPlayer player) {
 		if (player.isCreative()) {
 			return isSprinting() ? cfg().flightHorizontalSpeedMpCreativeSprinting : cfg().flightHorizontalSpeedMpCreativeDefault;
 		}
@@ -39,7 +39,7 @@ public final class FlightHelper {
 		}
 	}
 	
-	public static float getVerticalSpeedMultiplier(final LocalPlayer player) {
+	public static float getVerticalSpeedMultiplier(LocalPlayer player) {
 		if (player.isCreative()) {
 			return isSprinting() ? cfg().flightVerticalSpeedMpCreativeSprinting : cfg().flightVerticalSpeedMpCreativeDefault;
 		}

@@ -8,40 +8,40 @@ import com.mojang.blaze3d.platform.InputConstants;
 final class Json {
 	private Json() {}
 	
-	static void setFloat(final JsonObject obj, final String key, final float value) {
+	static void setFloat(JsonObject obj, String key, float value) {
 		obj.addProperty(key, Float.valueOf(value));
 	}
 	
-	static float getFloat(final JsonObject obj, final String key, final float defaultValue, final float minValue, final float maxValue) {
-		final float value = obj.has(key) ? obj.get(key).getAsFloat() : defaultValue;
+	static float getFloat(JsonObject obj, String key, float defaultValue, float minValue, float maxValue) {
+		float value = obj.has(key) ? obj.get(key).getAsFloat() : defaultValue;
 		return Math.max(minValue, Math.min(maxValue, value));
 	}
 	
-	static void setBool(final JsonObject obj, final String key, final boolean value) {
+	static void setBool(JsonObject obj, String key, boolean value) {
 		obj.addProperty(key, Boolean.valueOf(value));
 	}
 	
-	static boolean getBool(final JsonObject obj, final String key, final boolean defaultValue) {
+	static boolean getBool(JsonObject obj, String key, boolean defaultValue) {
 		return obj.has(key) ? obj.get(key).getAsBoolean() : defaultValue;
 	}
 	
 	@SuppressWarnings("SameParameterValue")
-	static <T extends Enum<T>> void setEnum(final JsonObject obj, final String key, final T value) {
+	static <T extends Enum<T>> void setEnum(JsonObject obj, String key, T value) {
 		obj.addProperty(key, value.name());
 	}
 	
 	@SuppressWarnings("SameParameterValue")
-	static <T extends Enum<T>> T getEnum(final JsonObject obj, final String key, final T defaultValue, final Class<T> enumClass) {
+	static <T extends Enum<T>> T getEnum(JsonObject obj, String key, T defaultValue, Class<T> enumClass) {
 		if (!obj.has(key)) {
 			return defaultValue;
 		}
 		
-		final T[] constants = enumClass.getEnumConstants();
+		T[] constants = enumClass.getEnumConstants();
 		
 		if (constants != null) {
-			final String value = obj.get(key).getAsString();
+			String value = obj.get(key).getAsString();
 			
-			for (final T constant : constants) {
+			for (T constant : constants) {
 				if (constant.name().equalsIgnoreCase(value)) {
 					return constant;
 				}
@@ -54,7 +54,7 @@ final class Json {
 	private static final String KEY_SUFFIX = ".Key";
 	private static final String MOD_SUFFIX = ".Mod";
 	
-	static void writeKeyBinding(final JsonObject obj, final String key, final KeyBindingWithModifier keyBinding) {
+	static void writeKeyBinding(JsonObject obj, String key, KeyBindingWithModifier keyBinding) {
 		obj.addProperty(key + KEY_SUFFIX, keyBinding.saveString());
 		
 		if (keyBinding.getModifier() != null) {
@@ -62,11 +62,11 @@ final class Json {
 		}
 	}
 	
-	static void readKeyBinding(final JsonObject obj, final String key, final KeyBindingWithModifier keyBinding) {
+	static void readKeyBinding(JsonObject obj, String key, KeyBindingWithModifier keyBinding) {
 		if (obj.has(key + KEY_SUFFIX)) {
 			try {
 				keyBinding.setKey(InputConstants.getKey(obj.get(key + KEY_SUFFIX).getAsString()));
-			} catch (final IllegalArgumentException e) {
+			} catch (IllegalArgumentException e) {
 				e.printStackTrace(); // let's not crash if the config file has garbage, okay?
 			}
 		}

@@ -11,14 +11,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 
 @Mixin(KeyboardInput.class)
-@SuppressWarnings("UnreachableCode")
+@SuppressWarnings({ "MethodMayBeStatic", "UnreachableCode" })
 public abstract class HookClientPlayerInputTick {
 	@Inject(
 		method = "tick",
 		at = @At(value = "FIELD", target = "Lnet/minecraft/client/player/KeyboardInput;keyPresses:Lnet/minecraft/world/entity/player/Input;", ordinal = 0, shift = AFTER)
 	)
-	private void afterInputTick(final CallbackInfo info) {
-		final LocalPlayer player = Minecraft.getInstance().player;
+	private void afterInputTick(CallbackInfo info) {
+		LocalPlayer player = Minecraft.getInstance().player;
 		
 		if (player != null) {
 			PlayerTicker.get(player).afterKeyboardInputAssigned(player);

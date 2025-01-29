@@ -5,8 +5,8 @@ import chylex.bettercontrols.input.SprintMode;
 import java.nio.file.Path;
 
 public final class BetterControlsConfig {
-	public static BetterControlsConfig load(final Path path) {
-		final BetterControlsConfig cfg = ConfigSerializer.read(path);
+	public static BetterControlsConfig load(Path path) {
+		BetterControlsConfig cfg = ConfigSerializer.read(path);
 		cfg.path = path;
 		
 		if (cfg.wasMigrated) {

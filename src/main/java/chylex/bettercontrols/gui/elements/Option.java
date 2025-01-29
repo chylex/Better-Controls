@@ -7,11 +7,11 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 public record Option<T>(T value, Component text) {
-	public static <T> Option<T> find(final List<Option<T>> options, final T value) {
+	public static <T> Option<T> find(List<Option<T>> options, T value) {
 		return options.stream().filter(it -> Objects.equals(it.value, value)).findFirst().orElseGet(() -> options.get(0));
 	}
 	
-	public static <T> CycleButton<Option<T>> button(final int x, final int y, final int width, final Component text, final List<Option<T>> options, final T initialValue, final Consumer<T> onValueChanged) {
+	public static <T> CycleButton<Option<T>> button(int x, int y, int width, Component text, List<Option<T>> options, T initialValue, Consumer<T> onValueChanged) {
 		return CycleButton.<Option<T>>builder(Option::text)
 			.displayOnlyValue()
 			.withValues(options)

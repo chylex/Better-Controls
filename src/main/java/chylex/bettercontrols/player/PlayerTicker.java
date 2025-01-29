@@ -31,7 +31,7 @@ public final class PlayerTicker {
 	
 	private static PlayerTicker ticker = new PlayerTicker(null);
 	
-	public static PlayerTicker get(final LocalPlayer player) {
+	public static PlayerTicker get(LocalPlayer player) {
 		if (ticker.ref.get() != player) {
 			ticker = new PlayerTicker(player);
 		}
@@ -45,7 +45,7 @@ public final class PlayerTicker {
 	
 	private final WeakReference<LocalPlayer> ref;
 	
-	private PlayerTicker(final LocalPlayer player) {
+	private PlayerTicker(LocalPlayer player) {
 		this.ref = new WeakReference<>(player);
 		setup();
 	}
@@ -69,17 +69,17 @@ public final class PlayerTicker {
 	private int temporaryFlyOnGroundTimer = 0;
 	
 	private void setup() {
-		final AccessStickyKeyBindingStateGetter sprint = (AccessStickyKeyBindingStateGetter)KEY_SPRINT;
+		AccessStickyKeyBindingStateGetter sprint = (AccessStickyKeyBindingStateGetter)KEY_SPRINT;
 		BooleanSupplier getter = sprint.getNeedsToggle();
 		
-		if (getter instanceof final SprintPressGetter g) {
+		if (getter instanceof SprintPressGetter g) {
 			getter = g.wrapped();
 		}
 		
 		sprint.setNeedsToggle(new SprintPressGetter(getter, () -> temporarySprintTimer > 0));
 	}
 	
-	public void atHead(final LocalPlayer player) {
+	public void atHead(LocalPlayer player) {
 		if (FlightHelper.shouldFlyOnGround(player)) {
 			player.setOnGround(false);
 		}
@@ -92,15 +92,15 @@ public final class PlayerTicker {
 			((AccessPlayerFields)player).setJumpTriggerTime(0);
 		}
 		
-		final SprintMode sprintMode = cfg().sprintMode;
-		final boolean wasSprintToggled = Boolean.TRUE.equals(OPTIONS.toggleSprint().get());
-		final boolean isSprintToggled = toggleSprint.tick();
+		SprintMode sprintMode = cfg().sprintMode;
+		boolean wasSprintToggled = Boolean.TRUE.equals(OPTIONS.toggleSprint().get());
+		boolean isSprintToggled = toggleSprint.tick();
 		
 		if (temporarySprintTimer > 0) {
 			stopSprintingAfterReleasingSprintKey = false;
 			waitingForSprintKeyRelease = false;
 			
-			final int nextTemporarySprintTimer = temporarySprintTimer - 1;
+			int nextTemporarySprintTimer = temporarySprintTimer - 1;
 			temporarySprintTimer = 0;
 			
 			if (!KEY_SPRINT.isDown() && KEY_FORWARD.isDown()) {
@@ -149,9 +149,9 @@ public final class PlayerTicker {
 		toggleSneak.tick();
 	}
 	
-	public void afterKeyboardInputAssigned(final LocalPlayer player) {
+	public void afterKeyboardInputAssigned(LocalPlayer player) {
 		if (MINECRAFT.screen == null && toggleWalkForward.tick()) {
-			final ClientInput input = player.input;
+			ClientInput input = player.input;
 			
 			input.keyPresses = new Input(
 				true,
@@ -165,7 +165,7 @@ public final class PlayerTicker {
 		}
 	}
 	
-	public void afterInputTick(final LocalPlayer player) {
+	public void afterInputTick(LocalPlayer player) {
 		if (MINECRAFT.screen == null && !player.getAbilities().flying && toggleJump.tick()) {
 			player.input.makeJump();
 		}
@@ -190,10 +190,10 @@ public final class PlayerTicker {
 		}
 	}
 	
-	public void afterSuperCall(final LocalPlayer player) {
+	public void afterSuperCall(LocalPlayer player) {
 		if (FlightHelper.shouldFlyOnGround(player)) {
-			final boolean isSneaking = player.isShiftKeyDown();
-			final boolean isOnGround = player.onGround();
+			boolean isSneaking = player.isShiftKeyDown();
+			boolean isOnGround = player.onGround();
 			
 			if (!isSneaking) {
 				wasSneakingBeforeTouchingGround = false;
@@ -230,7 +230,7 @@ public final class PlayerTicker {
 		}
 		
 		if (FlightHelper.isFlyingCreativeOrSpectator(player) && cfg().disableFlightInertia) {
-			final ClientInput input = player.input;
+			ClientInput input = player.input;
 			
 			if (input.forwardImpulse == 0F && input.leftImpulse == 0F) {
 				player.setDeltaMovement(player.getDeltaMovement().multiply(0.0, 1.0, 0.0));
@@ -243,7 +243,7 @@ public final class PlayerTicker {
 		
 		if (player.isCreative()) {
 			if (cfg().keyToggleFlight.consumeClick()) {
-				final boolean isFlying = !player.getAbilities().flying;
+				boolean isFlying = !player.getAbilities().flying;
 				
 				player.getAbilities().flying = isFlying;
 				player.onUpdateAbilities();
@@ -268,7 +268,7 @@ public final class PlayerTicker {
 		}
 		
 		if (!cfg().sneakingMovesCameraSmoothly) {
-			final Camera camera = MINECRAFT.gameRenderer.getMainCamera();
+			Camera camera = MINECRAFT.gameRenderer.getMainCamera();
 			
 			if (camera.getEntity() == player) {
 				((AccessCameraFields)camera).setEyeHeight(player.getEyeHeight());
@@ -287,7 +287,7 @@ public final class PlayerTicker {
 		}
 	}
 	
-	public boolean shouldResetFOV(final LocalPlayer player) {
+	public boolean shouldResetFOV(LocalPlayer player) {
 		return cfg().disableChangingFovWhileFlying && FlightHelper.isFlyingCreativeOrSpectator(player);
 	}
 }

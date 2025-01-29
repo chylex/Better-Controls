@@ -25,7 +25,7 @@ public abstract class HookClientPlayerTick extends AbstractClientPlayer {
 		PlayerTicker.get(player).atHead(player);
 	}
 	
-	@Inject(method = "aiStep()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/Input;tick(ZF)V", ordinal = 0, shift = AFTER))
+	@Inject(method = "aiStep()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/ClientInput;tick()V", ordinal = 0, shift = AFTER))
 	private void afterInputTick(final CallbackInfo info) {
 		@SuppressWarnings("ConstantConditions")
 		final LocalPlayer player = (LocalPlayer)(Object)this;

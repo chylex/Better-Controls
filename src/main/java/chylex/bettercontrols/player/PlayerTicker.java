@@ -14,8 +14,9 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
-import net.minecraft.client.player.Input;
+import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.entity.player.Input;
 import java.lang.ref.WeakReference;
 import java.util.function.BooleanSupplier;
 
@@ -148,19 +149,25 @@ public final class PlayerTicker {
 		toggleSneak.tick();
 	}
 	
-	public void afterInputAssignsPressingForward(final Input input) {
-		if (MINECRAFT.screen == null) {
-			//noinspection NonShortCircuitBooleanExpression
-			input.up |= toggleWalkForward.tick();
+	public void afterKeyboardInputAssigned(final LocalPlayer player) {
+		if (MINECRAFT.screen == null && toggleWalkForward.tick()) {
+			final ClientInput input = player.input;
+			
+			input.keyPresses = new Input(
+				true,
+				input.keyPresses.backward(),
+				input.keyPresses.left(),
+				input.keyPresses.right(),
+				input.keyPresses.jump(),
+				input.keyPresses.shift(),
+				input.keyPresses.sprint()
+			);
 		}
 	}
 	
 	public void afterInputTick(final LocalPlayer player) {
-		final Input input = player.input;
-		
-		if (MINECRAFT.screen == null && !player.getAbilities().flying) {
-			//noinspection NonShortCircuitBooleanExpression
-			input.jumping |= toggleJump.tick();
+		if (MINECRAFT.screen == null && !player.getAbilities().flying && toggleJump.tick()) {
+			player.input.makeJump();
 		}
 		
 		if (cfg().resumeSprintingAfterHittingObstacle) {
@@ -223,13 +230,13 @@ public final class PlayerTicker {
 		}
 		
 		if (FlightHelper.isFlyingCreativeOrSpectator(player) && cfg().disableFlightInertia) {
-			final Input input = player.input;
+			final ClientInput input = player.input;
 			
 			if (input.forwardImpulse == 0F && input.leftImpulse == 0F) {
 				player.setDeltaMovement(player.getDeltaMovement().multiply(0.0, 1.0, 0.0));
 			}
 			
-			if (!input.jumping && !input.shiftKeyDown) {
+			if (!input.keyPresses.jump() && !input.keyPresses.shift()) {
 				player.setDeltaMovement(player.getDeltaMovement().multiply(1.0, 0.0, 1.0));
 			}
 		}
@@ -276,7 +283,7 @@ public final class PlayerTicker {
 		}
 		
 		if (cfg().keyOpenMenu.isDown()) {
-			MINECRAFT.setScreen(new BetterControlsScreen(MINECRAFT, null));
+			MINECRAFT.setScreen(new BetterControlsScreen(null));
 		}
 	}
 	

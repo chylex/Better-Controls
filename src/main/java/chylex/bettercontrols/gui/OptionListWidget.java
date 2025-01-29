@@ -70,13 +70,13 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 	}
 	
 	@Override
-	protected int getScrollbarPosition() {
+	protected int scrollBarX() {
 		return (width + ROW_WIDTH) / 2 + 4;
 	}
 	
 	@Override
 	public boolean mouseScrolled(final double x, final double y, final double xAmount, final double yAmount) {
-		setScrollAmount(getScrollAmount() - yAmount * SCROLL_MULTIPLIER);
+		setScrollAmount(scrollAmount() - yAmount * SCROLL_MULTIPLIER);
 		return true;
 	}
 	

@@ -206,8 +206,8 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	private final List<KeyBindingWidget> allKeyBindings = new ArrayList<>();
 	
 	@SuppressWarnings("DataFlowIssue")
-	public BetterControlsScreen(final Minecraft mc, @Nullable final Screen parentScreen) {
-		super(parentScreen, mc.options, TITLE);
+	public BetterControlsScreen(@Nullable final Screen parentScreen) {
+		super(parentScreen, Minecraft.getInstance().options, TITLE);
 	}
 	
 	@Override

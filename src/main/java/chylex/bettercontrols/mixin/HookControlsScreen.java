@@ -25,10 +25,9 @@ public abstract class HookControlsScreen extends OptionsSubScreen {
 	
 	@Inject(method = "addOptions", at = @At("RETURN"))
 	public void afterAddOptions(final CallbackInfo ci) {
-		@SuppressWarnings("ConstantConditions")
-		final ControlsScreen screen = (ControlsScreen)(Object)this;
-		
 		if (list != null) {
+			@SuppressWarnings("ConstantConditions")
+			final ControlsScreen screen = (ControlsScreen)(Object)this;
 			final MutableComponent buttonTitle = BetterControlsScreen.TITLE.plainCopy().append("...");
 			list.addSmall(List.of(Button.builder(buttonTitle, btn -> showOptionsScreen(screen)).build()));
 		}
@@ -36,7 +35,6 @@ public abstract class HookControlsScreen extends OptionsSubScreen {
 	
 	@Unique
 	private static void showOptionsScreen(final ControlsScreen screen) {
-		final Minecraft mc = Minecraft.getInstance();
-		mc.setScreen(new BetterControlsScreen(mc, screen));
+		Minecraft.getInstance().setScreen(new BetterControlsScreen(screen));
 	}
 }

@@ -1,14 +1,13 @@
 package chylex.bettercontrols.mixin;
 
 import chylex.bettercontrols.player.FlightHelper;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 
 @Mixin(LocalPlayer.class)
@@ -18,7 +17,7 @@ public abstract class HookClientPlayerVerticalFlightSpeed extends LivingEntity {
 		super(type, world);
 	}
 	
-	@Redirect(
+	@ModifyExpressionValue(
 		method = "aiStep",
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Abilities;getFlyingSpeed()F"),
 		slice = @Slice(
@@ -26,9 +25,9 @@ public abstract class HookClientPlayerVerticalFlightSpeed extends LivingEntity {
 			to = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;setDeltaMovement(Lnet/minecraft/world/phys/Vec3;)V")
 		)
 	)
-	private float modifyVerticalFlightSpeed(final Abilities abilities) {
+	private float modifyVerticalFlightSpeed(final float flyingSpeed) {
 		@SuppressWarnings("ConstantConditions")
 		final LocalPlayer me = (LocalPlayer)(Object)this;
-		return abilities.getFlyingSpeed() * FlightHelper.getVerticalSpeedMultiplier(me);
+		return flyingSpeed * FlightHelper.getVerticalSpeedMultiplier(me);
 	}
 }

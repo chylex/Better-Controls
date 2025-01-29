@@ -1,6 +1,8 @@
 package chylex.bettercontrols.mixin;
 
 import chylex.bettercontrols.player.FlightHelper;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -8,10 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Player.class)
 @SuppressWarnings({ "SameReturnValue", "UnreachableCode" })
@@ -21,7 +20,7 @@ public abstract class HookPlayerHorizontalFlightSpeed extends LivingEntity {
 	}
 	
 	@SuppressWarnings("SimplifiableIfStatement")
-	@Redirect(
+	@ModifyExpressionValue(
 		method = "getFlyingSpeed",
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;isSprinting()Z"),
 		slice = @Slice(
@@ -29,23 +28,28 @@ public abstract class HookPlayerHorizontalFlightSpeed extends LivingEntity {
 			to = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Abilities;getFlyingSpeed()F")
 		)
 	)
-	private boolean disableVanillaSprintBoost(final Player player) {
-		if (player instanceof LocalPlayer) {
+	private boolean disableVanillaSprintBoost(final boolean isSprinting) {
+		@SuppressWarnings("ConstantConditions")
+		final Player me = (Player)(Object)this;
+		
+		if (me instanceof LocalPlayer) {
 			return false;
 		}
 		else {
-			return player.isSprinting();
+			return isSprinting;
 		}
 	}
 	
-	@Inject(method = "getFlyingSpeed", at = @At("RETURN"), cancellable = true)
-	private void modifyHorizontalFlyingSpeed(final CallbackInfoReturnable<Float> cir) {
+	@ModifyReturnValue(method = "getFlyingSpeed", at = @At("RETURN"))
+	private float modifyHorizontalFlyingSpeed(final float flyingSpeed) {
 		@SuppressWarnings("ConstantConditions")
 		final Player me = (Player)(Object)this;
 		
 		if (me instanceof final LocalPlayer localPlayer && localPlayer.getAbilities().flying) {
-			final float multiplier = FlightHelper.getHorizontalSpeedMultiplier(localPlayer);
-			cir.setReturnValue(Float.valueOf(cir.getReturnValueF() * multiplier));
+			return flyingSpeed * FlightHelper.getHorizontalSpeedMultiplier(localPlayer);
+		}
+		else {
+			return flyingSpeed;
 		}
 	}
 }

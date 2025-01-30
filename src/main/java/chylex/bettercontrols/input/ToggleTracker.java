@@ -6,15 +6,19 @@ public class ToggleTracker {
 	protected final KeyMapping bindingToggle;
 	protected final KeyMapping bindingReset;
 	
-	protected boolean isToggled;
-	
+	private boolean isToggled;
 	private boolean waitForRelease;
 	private boolean hasToggledWhileHoldingReset;
 	private boolean skipNextToggle;
 	
-	public ToggleTracker(KeyMapping bindingToggle, KeyMapping bindingReset) {
+	protected ToggleTracker(KeyMapping bindingToggle, KeyMapping bindingReset, boolean initialState) {
 		this.bindingToggle = bindingToggle;
 		this.bindingReset = bindingReset;
+		this.isToggled = initialState;
+	}
+	
+	public ToggleTracker(KeyMapping bindingToggle, KeyMapping bindingReset) {
+		this(bindingToggle, bindingReset, false);
 	}
 	
 	/*

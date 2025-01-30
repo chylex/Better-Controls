@@ -46,8 +46,8 @@ public final class PlayerTicker {
 	
 	// Logic
 	
-	private final ToggleTracker toggleSprint = new ToggleTrackerForStickyKey(getConfig().keyToggleSprint, KEY_SPRINT, OPTIONS.toggleSprint()::set);
-	private final ToggleTracker toggleSneak = new ToggleTrackerForStickyKey(getConfig().keyToggleSneak, KEY_SNEAK, OPTIONS.toggleCrouch()::set);
+	private final ToggleTracker toggleSprint = new ToggleTrackerForStickyKey(getConfig().keyToggleSprint, KEY_SPRINT, OPTIONS.toggleSprint());
+	private final ToggleTracker toggleSneak = new ToggleTrackerForStickyKey(getConfig().keyToggleSneak, KEY_SNEAK, OPTIONS.toggleCrouch());
 	private final ToggleTracker toggleWalkForward = new ToggleTracker(getConfig().keyToggleWalkForward, KEY_FORWARD);
 	private final ToggleTracker toggleJump = new ToggleTracker(getConfig().keyToggleJump, KEY_JUMP);
 	

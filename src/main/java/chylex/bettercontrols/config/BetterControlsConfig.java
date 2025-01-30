@@ -27,6 +27,9 @@ public final class BetterControlsConfig {
 	public final KeyBindingWithModifier keyToggleSneak = new KeyBindingWithModifier("key.bettercontrols.toggle_sneak");
 	public boolean sneakingMovesCameraSmoothly = true;
 	
+	public final KeyBindingWithModifier keyStartGlide = new KeyBindingWithModifier("key.bettercontrols.start_glide");
+	public boolean doubleTapJumpToGlide = true;
+	
 	public final KeyBindingWithModifier keyToggleFlight = new KeyBindingWithModifier("key.bettercontrols.toggle_flight");
 	public boolean doubleTapJumpToToggleFlight = true;
 	public boolean disableFlightInertia = false;

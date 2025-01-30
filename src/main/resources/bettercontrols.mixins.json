@@ -17,6 +17,7 @@
     "HookControlsListWidget",
     "HookControlsScreen",
     "HookLoadGameOptions",
+    "HookPlayerGliding",
     "HookPlayerHorizontalFlightSpeed",
     "HookStickyKeyBindingState",
     "HookToggleOptionButtons"

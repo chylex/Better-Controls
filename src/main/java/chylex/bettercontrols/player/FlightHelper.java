@@ -19,6 +19,10 @@ public final class FlightHelper {
 		return BetterControlsCommon.getConfig();
 	}
 	
+	public static boolean shouldStartGliding(boolean isHoldingJump) {
+		return cfg().keyStartGlide.isDown() || (cfg().doubleTapJumpToGlide && isHoldingJump);
+	}
+	
 	public static boolean isFlyingCreativeOrSpectator(LocalPlayer player) {
 		return player.getAbilities().flying && (player.isCreative() || player.isSpectator());
 	}

@@ -83,6 +83,18 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		return y;
 	}
 	
+	private int generateGlidingOptions(int y, List<GuiEventListener> elements) {
+		BetterControlsConfig cfg = BetterControlsCommon.getConfig();
+		
+		generateKeyBindingWithModifierRow(y, elements, text("Start a Glide"), cfg.keyStartGlide);
+		y += ROW_HEIGHT;
+		
+		generateBooleanOptionRow(y, elements, text("Double Tap 'Jump' To Start a Glide"), cfg.doubleTapJumpToGlide, value -> cfg.doubleTapJumpToGlide = value);
+		y += ROW_HEIGHT;
+		
+		return y;
+	}
+	
 	private int generateFlightOptions(int y, List<GuiEventListener> elements) {
 		BetterControlsConfig cfg = BetterControlsCommon.getConfig();
 		
@@ -113,7 +125,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		generateBooleanOptionRow(y, elements, text("Disable Field Of View Changing"), cfg.disableChangingFovWhileFlying, value -> cfg.disableChangingFovWhileFlying = value);
 		y += ROW_HEIGHT;
 		
-		generateBooleanOptionRow(y, elements, text("Fly On Ground (Creative Mode)"), cfg.flyOnGroundInCreative, value -> cfg.flyOnGroundInCreative = value);
+		generateBooleanOptionRow(y, elements, text("Fly On Ground (Creative)"), cfg.flyOnGroundInCreative, value -> cfg.flyOnGroundInCreative = value);
 		y += ROW_HEIGHT;
 		
 		y += ROW_HEIGHT / 3;
@@ -222,6 +234,9 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		
 		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, text("Sneaking"), CENTER));
 		y = generateSneakingOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;
+		
+		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, text("Gliding"), CENTER));
+		y = generateGlidingOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;
 		
 		elements.add(new TextWidget(0, y, ROW_WIDTH, ROW_HEIGHT, text("Flying"), CENTER));
 		y = generateFlightOptions(y + ROW_HEIGHT, elements) + TITLE_MARGIN_TOP;

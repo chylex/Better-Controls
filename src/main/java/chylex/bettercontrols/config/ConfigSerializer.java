@@ -41,6 +41,9 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		Json.writeKeyBinding(obj, "Sneak.KeyToggle", cfg.keyToggleSneak);
 		Json.setBool(obj, "Sneak.SmoothCamera", cfg.sneakingMovesCameraSmoothly);
 		
+		Json.writeKeyBinding(obj, "Glide.KeyStart", cfg.keyStartGlide);
+		Json.setBool(obj, "Glide.DoubleTapJump", cfg.doubleTapJumpToGlide);
+		
 		Json.writeKeyBinding(obj, "Flight.KeyToggle.Creative", cfg.keyToggleFlight);
 		Json.setBool(obj, "Flight.DoubleTapJump", cfg.doubleTapJumpToToggleFlight);
 		Json.setBool(obj, "Flight.DisableInertia", cfg.disableFlightInertia);
@@ -79,6 +82,9 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		
 		Json.readKeyBinding(obj, "Sneak.KeyToggle", cfg.keyToggleSneak);
 		cfg.sneakingMovesCameraSmoothly = Json.getBool(obj, "Sneak.SmoothCamera", cfg.sneakingMovesCameraSmoothly);
+		
+		Json.readKeyBinding(obj, "Glide.KeyStart", cfg.keyStartGlide);
+		cfg.doubleTapJumpToGlide = Json.getBool(obj, "Glide.DoubleTapJump", cfg.doubleTapJumpToGlide);
 		
 		Json.readKeyBinding(obj, "Flight.KeyToggle.Creative", cfg.keyToggleFlight);
 		cfg.doubleTapJumpToToggleFlight = Json.getBool(obj, "Flight.DoubleTapJump", cfg.doubleTapJumpToToggleFlight);

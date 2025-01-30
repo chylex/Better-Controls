@@ -32,7 +32,7 @@ public abstract class HookPlayerHorizontalFlightSpeed extends LivingEntity {
 		@SuppressWarnings("ConstantConditions")
 		Player me = (Player)(Object)this;
 		
-		if (me instanceof LocalPlayer) {
+		if (me instanceof LocalPlayer localPlayer && FlightHelper.isFlyingCreativeOrSpectator(localPlayer)) {
 			return false;
 		}
 		else {

@@ -19,7 +19,7 @@ public final class FlightHelper {
 		return BetterControlsCommon.getConfig();
 	}
 	
-	static boolean isFlyingCreativeOrSpectator(LocalPlayer player) {
+	public static boolean isFlyingCreativeOrSpectator(LocalPlayer player) {
 		return player.getAbilities().flying && (player.isCreative() || player.isSpectator());
 	}
 	

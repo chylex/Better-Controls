@@ -6,7 +6,8 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import java.util.Map;
 
 @Mixin(KeyMapping.class)
-public interface AccessKeyBindingFields {
+@SuppressWarnings("StaticMethodOnlyUsedInOneClass")
+public interface AccessKeyMappingFields {
 	@Accessor("CATEGORY_SORT_ORDER")
 	static Map<String, Integer> getCategoryOrderMap() {
 		throw new AssertionError();

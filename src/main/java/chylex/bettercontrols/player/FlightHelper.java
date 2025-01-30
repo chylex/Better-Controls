@@ -1,10 +1,9 @@
 package chylex.bettercontrols.player;
 
-import chylex.bettercontrols.BetterControlsCommon;
-import chylex.bettercontrols.config.BetterControlsConfig;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import static chylex.bettercontrols.BetterControlsCommon.getConfig;
 
 public final class FlightHelper {
 	private FlightHelper() {}
@@ -15,12 +14,8 @@ public final class FlightHelper {
 		return KEY_SPRINT.isDown();
 	}
 	
-	private static BetterControlsConfig cfg() {
-		return BetterControlsCommon.getConfig();
-	}
-	
 	public static boolean shouldStartGliding(boolean isHoldingJump) {
-		return cfg().keyStartGlide.isDown() || (cfg().doubleTapJumpToGlide && isHoldingJump);
+		return getConfig().keyStartGlide.isDown() || (getConfig().doubleTapJumpToGlide && isHoldingJump);
 	}
 	
 	public static boolean isFlyingCreativeOrSpectator(LocalPlayer player) {
@@ -28,15 +23,15 @@ public final class FlightHelper {
 	}
 	
 	static boolean shouldFlyOnGround(LocalPlayer player) {
-		return cfg().flyOnGroundInCreative && player.isCreative() && player.getAbilities().flying;
+		return getConfig().flyOnGroundInCreative && player.isCreative() && player.getAbilities().flying;
 	}
 	
 	public static float getHorizontalSpeedMultiplier(LocalPlayer player) {
 		if (player.isCreative()) {
-			return isSprinting() ? cfg().flightHorizontalSpeedMpCreativeSprinting : cfg().flightHorizontalSpeedMpCreativeDefault;
+			return isSprinting() ? getConfig().flightHorizontalSpeedMpCreativeSprinting : getConfig().flightHorizontalSpeedMpCreativeDefault;
 		}
 		else if (player.isSpectator()) {
-			return isSprinting() ? cfg().flightHorizontalSpeedMpSpectatorSprinting : cfg().flightHorizontalSpeedMpSpectatorDefault;
+			return isSprinting() ? getConfig().flightHorizontalSpeedMpSpectatorSprinting : getConfig().flightHorizontalSpeedMpSpectatorDefault;
 		}
 		else {
 			return 1F;
@@ -45,10 +40,10 @@ public final class FlightHelper {
 	
 	public static float getVerticalSpeedMultiplier(LocalPlayer player) {
 		if (player.isCreative()) {
-			return isSprinting() ? cfg().flightVerticalSpeedMpCreativeSprinting : cfg().flightVerticalSpeedMpCreativeDefault;
+			return isSprinting() ? getConfig().flightVerticalSpeedMpCreativeSprinting : getConfig().flightVerticalSpeedMpCreativeDefault;
 		}
 		else if (player.isSpectator()) {
-			return isSprinting() ? cfg().flightVerticalSpeedMpSpectatorSprinting : cfg().flightVerticalSpeedMpSpectatorDefault;
+			return isSprinting() ? getConfig().flightVerticalSpeedMpSpectatorSprinting : getConfig().flightVerticalSpeedMpSpectatorDefault;
 		}
 		else {
 			return 1F;

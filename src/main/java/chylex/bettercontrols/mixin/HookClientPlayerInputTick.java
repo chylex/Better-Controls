@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static org.spongepowered.asm.mixin.injection.At.Shift.AFTER;
 
 @Mixin(KeyboardInput.class)
-@SuppressWarnings({ "MethodMayBeStatic", "UnreachableCode" })
+@SuppressWarnings("MethodMayBeStatic")
 public abstract class HookClientPlayerInputTick {
 	@Inject(
 		method = "tick",

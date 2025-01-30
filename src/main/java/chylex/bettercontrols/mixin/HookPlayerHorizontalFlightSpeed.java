@@ -1,5 +1,6 @@
 package chylex.bettercontrols.mixin;
 
+import chylex.bettercontrols.Mixins;
 import chylex.bettercontrols.player.FlightHelper;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
@@ -13,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Slice;
 
 @Mixin(Player.class)
-@SuppressWarnings({ "SameReturnValue", "UnreachableCode" })
 public abstract class HookPlayerHorizontalFlightSpeed extends LivingEntity {
 	protected HookPlayerHorizontalFlightSpeed(EntityType<? extends LivingEntity> type, Level world) {
 		super(type, world);
@@ -29,8 +29,7 @@ public abstract class HookPlayerHorizontalFlightSpeed extends LivingEntity {
 		)
 	)
 	private boolean disableVanillaSprintBoost(boolean isSprinting) {
-		@SuppressWarnings("ConstantConditions")
-		Player me = (Player)(Object)this;
+		Player me = Mixins.me(this);
 		
 		if (me instanceof LocalPlayer localPlayer && FlightHelper.isFlyingCreativeOrSpectator(localPlayer)) {
 			return false;
@@ -42,8 +41,7 @@ public abstract class HookPlayerHorizontalFlightSpeed extends LivingEntity {
 	
 	@ModifyReturnValue(method = "getFlyingSpeed", at = @At("RETURN"))
 	private float modifyHorizontalFlyingSpeed(float flyingSpeed) {
-		@SuppressWarnings("ConstantConditions")
-		Player me = (Player)(Object)this;
+		Player me = Mixins.me(this);
 		
 		if (me instanceof LocalPlayer localPlayer && localPlayer.getAbilities().flying) {
 			return flyingSpeed * FlightHelper.getHorizontalSpeedMultiplier(localPlayer);

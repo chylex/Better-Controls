@@ -1,5 +1,6 @@
 package chylex.bettercontrols.mixin;
 
+import chylex.bettercontrols.Mixins;
 import chylex.bettercontrols.player.PlayerTicker;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -14,9 +15,9 @@ public abstract class HookClientPlayerFOV {
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Abilities;getWalkingSpeed()F")
 	)
 	private float overrideWalkingSpeed(float walkingSpeed) {
-		AbstractClientPlayer me = (AbstractClientPlayer)(Object)this;
+		AbstractClientPlayer me = Mixins.me(this);
 		
-		if (me instanceof LocalPlayer localPlayer && PlayerTicker.get(localPlayer).shouldResetFOV(localPlayer)) {
+		if (me instanceof LocalPlayer localPlayer && PlayerTicker.shouldResetFOV(localPlayer)) {
 			return 0F;
 		}
 		else {

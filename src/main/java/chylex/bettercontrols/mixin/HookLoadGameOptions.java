@@ -38,6 +38,6 @@ public abstract class HookLoadGameOptions {
 		
 		hasLoaded = true;
 		keyMappings = ArrayUtils.addAll(keyMappings, config.getAllKeyBindings());
-		AccessKeyBindingFields.getCategoryOrderMap().put(KeyBindingWithModifier.CATEGORY, Integer.valueOf(Integer.MAX_VALUE));
+		AccessKeyMappingFields.getCategoryOrderMap().put(KeyBindingWithModifier.CATEGORY, Integer.valueOf(Integer.MAX_VALUE));
 	}
 }

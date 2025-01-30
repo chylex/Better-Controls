@@ -1,5 +1,6 @@
 package chylex.bettercontrols.mixin;
 
+import chylex.bettercontrols.Mixins;
 import chylex.bettercontrols.player.FlightHelper;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.player.LocalPlayer;
@@ -11,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Slice;
 
 @Mixin(LocalPlayer.class)
-@SuppressWarnings({ "SameReturnValue", "UnreachableCode" })
 public abstract class HookClientPlayerVerticalFlightSpeed extends LivingEntity {
 	protected HookClientPlayerVerticalFlightSpeed(EntityType<? extends LivingEntity> type, Level world) {
 		super(type, world);
@@ -26,8 +26,7 @@ public abstract class HookClientPlayerVerticalFlightSpeed extends LivingEntity {
 		)
 	)
 	private float modifyVerticalFlightSpeed(float flyingSpeed) {
-		@SuppressWarnings("ConstantConditions")
-		LocalPlayer me = (LocalPlayer)(Object)this;
+		LocalPlayer me = Mixins.me(this);
 		return flyingSpeed * FlightHelper.getVerticalSpeedMultiplier(me);
 	}
 }

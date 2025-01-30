@@ -1,5 +1,6 @@
 package chylex.bettercontrols.mixin;
 
+import chylex.bettercontrols.Mixins;
 import chylex.bettercontrols.gui.BetterControlsScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -17,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(ControlsScreen.class)
-@SuppressWarnings("UnreachableCode")
 public abstract class HookControlsScreen extends OptionsSubScreen {
 	public HookControlsScreen(Screen parentScreen, Options options, Component title) {
 		super(parentScreen, options, title);
@@ -26,8 +26,7 @@ public abstract class HookControlsScreen extends OptionsSubScreen {
 	@Inject(method = "addOptions", at = @At("RETURN"))
 	public void afterAddOptions(CallbackInfo ci) {
 		if (list != null) {
-			@SuppressWarnings("ConstantConditions")
-			ControlsScreen screen = (ControlsScreen)(Object)this;
+			ControlsScreen screen = Mixins.me(this);
 			MutableComponent buttonTitle = BetterControlsScreen.TITLE.plainCopy().append("...");
 			list.addSmall(List.of(Button.builder(buttonTitle, btn -> showOptionsScreen(screen)).build()));
 		}

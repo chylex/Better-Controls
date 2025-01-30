@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import java.util.function.BooleanSupplier;
 
 @Mixin(ToggleKeyMapping.class)
-public interface AccessStickyKeyBindingStateGetter {
+public interface AccessToggleKeyMappingFields {
 	@Accessor
 	BooleanSupplier getNeedsToggle();
 	

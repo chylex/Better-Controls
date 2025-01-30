@@ -1,5 +1,6 @@
 package chylex.bettercontrols.mixin;
 
+import chylex.bettercontrols.Mixins;
 import chylex.bettercontrols.input.ToggleTrackerForStickyKey;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.ToggleKeyMapping;
@@ -24,7 +25,7 @@ public abstract class HookStickyKeyBindingState extends KeyMapping {
 	@Inject(method = "setDown", at = @At("HEAD"), cancellable = true)
 	public void setPressed(boolean pressed, CallbackInfo info) {
 		if (ToggleTrackerForStickyKey.isOverrideEnabled(this)) {
-			((AccessKeyBindingFields)this).setPressedField(pressed);
+			Mixins.keyMappingFields(this).setPressedField(pressed);
 			info.cancel();
 		}
 	}

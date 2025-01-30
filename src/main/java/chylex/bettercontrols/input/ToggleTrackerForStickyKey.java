@@ -1,6 +1,6 @@
 package chylex.bettercontrols.input;
 
-import chylex.bettercontrols.mixin.AccessKeyBindingFields;
+import chylex.bettercontrols.Mixins;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import net.minecraft.client.KeyMapping;
 import java.util.HashSet;
@@ -31,6 +31,6 @@ public final class ToggleTrackerForStickyKey extends ToggleTracker {
 	
 	@Override
 	protected boolean isResetKeyPressed() {
-		return ((AccessKeyBindingFields)bindingReset).isPressedField();
+		return Mixins.keyMappingFields(bindingReset).isPressedField();
 	}
 }

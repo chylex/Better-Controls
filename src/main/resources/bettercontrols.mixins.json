@@ -7,9 +7,9 @@
   "client": [
     "AccessCameraFields",
     "AccessClientPlayerFields",
-    "AccessKeyBindingFields",
+    "AccessKeyMappingFields",
     "AccessPlayerFields",
-    "AccessStickyKeyBindingStateGetter",
+    "AccessToggleKeyMappingFields",
     "HookClientPlayerFOV",
     "HookClientPlayerInputTick",
     "HookClientPlayerTick",

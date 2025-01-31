@@ -11,28 +11,33 @@ Another major difference is the amount and granularity of options. Better Contro
 
 ## Features
 
-The mod adds **Toggle Keybinds** for sprinting, sneaking, flying (creative mode), walking, and jumping. You can use modifier keys (`Control` / `Shift` / `Alt`) for each, including for example setting `Control` to Sneak, and `Control + Y` to Toggle Sneak. If you press the original key, the toggle will be canceled (in the previous example, you can Toggle Sneak by pressing `Control + Y`, and stop sneaking by simply tapping Sneak). Note that the vanilla options for toggling sprinting/sneaking are disabled to avoid conflicts with the custom keybinds.
+The mod adds **Toggle Keybinds** for sprinting, sneaking, flying (creative mode), walking, and jumping. You can use modifier keys (`Control` / `Shift` / `Alt`) for each, including for example setting `Control` to Sneak, and `Control + Y` to Toggle Sneak. If you press the original key, the toggle will be canceled (in the previous example, you can Toggle Sneak by pressing `Control + Y`, and stop sneaking by simply tapping `Control`). Note that the vanilla options for toggling sprinting/sneaking are disabled to avoid conflicts with the custom keybinds.
 
 You can also bind a key that resets all **Toggle Keybinds** at once. That makes it easy to for ex. turn on walking, jumping, and sprinting, and then turn all of them off again by pressing one key instead of three.
 
 #### Sprinting
 
 * **Sprint Key Mode** changes how the Sprint key behaves. You can choose between *Tap To Start Sprinting*, *Tap To Start / Stop Sprinting*, and *Hold To Sprint*.
-* **Double Tap 'Walk Forwards' To Sprint** can be turned off to prevent accidental sprinting.
-* **Resume Sprinting After Hitting Obstacle** automatically presses the Sprint key once you are no longer touching any blocks (helpful when climbing hills, especially if the previous option is enabled).
+* **Double Tap 'Walk Forwards' To Sprint** can be turned off.
+* **Resume Sprinting After Hitting Obstacle** re-activates sprinting once you are no longer touching any blocks.
 
 #### Sneaking
 
-* **Move Camera Smoothly** lets you disable the smooth movement when sneaking or unsneaking.
+* **Move Camera Smoothly** can be turned off to disable the smooth movement when sneaking or unsneaking.
+
+#### Gliding
+
+* **Start a Glide** with a dedicated key.
+* **Double Tap 'Jump' To Glide** can be turned off.
 
 #### Flying
 
-* **Double Tap 'Jump' To Fly** can be turned off to prevent accidental flight toggling.
+* **Double Tap 'Jump' To Fly** can be turned off.
 * **Disable Flight Inertia** stops you instantly when you stop holding movement keys.
 * **Disable Field Of View Changing** prevents sprinting, potions, and other factors from changing the FOV while flying in creative and spectator mode.
-* **Fly On Ground** lets you fly while touching the ground in creative mode (and also lets you stop flying by tapping Sneak while touching the ground).
-* **Flight Speed Multiplier** (0.25x - 8x) changes how fast you fly in creative and spectator mode.
-* **Vertical Speed Boost** (up to +300%) adds additional vertical speed boost while flying in creative and spectator mode.
+* **Fly On Ground** lets you fly while touching the ground in creative mode. Stop flying by tapping Sneak while touching the ground.
+* **Flight Speed Multiplier** (0.25x - 8x) changes flight speed in creative and spectator mode.
+* **Vertical Speed Boost** (up to +300%) adds additional vertical flight speed boost in creative and spectator mode.
 
 Both speed boosts can be configured separately for sprinting, which will be active when the Sprint key is held. Unlike in vanilla, the sprinting flight boost works in all directions.
 

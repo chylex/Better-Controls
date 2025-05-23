@@ -225,12 +225,13 @@ public final class PlayerTicker {
 		
 		if (FlightHelper.isFlyingCreativeOrSpectator(player) && getConfig().disableFlightInertia) {
 			ClientInput input = player.input;
+			Input keyPresses = input.keyPresses;
 			
-			if (input.forwardImpulse == 0F && input.leftImpulse == 0F) {
+			if (!keyPresses.forward() && !keyPresses.backward() && !keyPresses.left() && !keyPresses.right()) {
 				player.setDeltaMovement(player.getDeltaMovement().multiply(0.0, 1.0, 0.0));
 			}
 			
-			if (!input.keyPresses.jump() && !input.keyPresses.shift()) {
+			if (!keyPresses.jump() && !keyPresses.shift()) {
 				player.setDeltaMovement(player.getDeltaMovement().multiply(1.0, 0.0, 1.0));
 			}
 		}

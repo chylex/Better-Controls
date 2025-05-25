@@ -40,8 +40,18 @@ public final class TextWidget implements OptionWidget {
 	}
 	
 	@Override
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	@Override
 	public int getX() {
 		return x;
+	}
+	
+	@Override
+	public void setY(int y) {
+		this.y = y;
 	}
 	
 	@Override
@@ -50,13 +60,8 @@ public final class TextWidget implements OptionWidget {
 	}
 	
 	@Override
-	public void setX(int x) {
-		this.x = x;
-	}
-	
-	@Override
-	public void setY(int y) {
-		this.y = y;
+	public int getHeight() {
+		return height;
 	}
 	
 	@Override

@@ -9,12 +9,11 @@ import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import org.jetbrains.annotations.NotNull;
-import java.util.ArrayList;
-import java.util.Collections;
+import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toMap;
 
 public final class OptionListWidget extends ContainerObjectSelectionList<Entry> {
 	public static final int ROW_WIDTH = 408;
@@ -35,28 +34,32 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 	
 	private static Offset getElementOffset(GuiEventListener element) {
 		if (element instanceof OptionWidget widget) {
-			return new Offset(widget.getX(), widget.getY());
+			return new Offset(widget.getX(), widget.getY(), widget.getHeight());
 		}
 		else if (element instanceof AbstractWidget widget) {
-			return new Offset(widget.getX(), widget.getY());
+			return new Offset(widget.getX(), widget.getY(), widget.getHeight());
 		}
 		else {
-			return new Offset(0, 0);
+			return new Offset(0, 0, 0);
 		}
 	}
 	
 	public interface OptionWidget extends GuiEventListener, Renderable {
-		int getX();
-		int getY();
 		void setX(int x);
+		int getX();
+		
 		void setY(int y);
+		int getY();
+		
+		int getHeight();
 	}
 	
-	private record Offset(int x, int y) {}
+	private record Offset(int x, int y, int height) {}
 	
+	@SuppressWarnings("ThisEscapedInObjectConstruction")
 	public OptionListWidget(int width, int height, int top, int innerHeight, List<GuiEventListener> widgets) {
 		super(Minecraft.getInstance(), width, height, top, innerHeight);
-		addEntry(new Entry(widgets));
+		addEntry(new Entry(this, widgets));
 	}
 	
 	@Override
@@ -80,27 +83,46 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 		return true;
 	}
 	
+	@Override
+	protected void ensureVisible(@NotNull Entry entry) {
+		// Scrolling to focused item is implemented in Entry.
+	}
+	
 	protected static final class Entry extends ContainerObjectSelectionList.Entry<Entry> {
+		private final OptionListWidget parentWidget;
 		private final List<GuiEventListener> elements;
 		private final List<NarratableEntry> narratables;
 		private final Map<GuiEventListener, Offset> offsets;
 		
-		public Entry(List<GuiEventListener> elements) {
-			this.elements = new ArrayList<>(elements);
-			this.narratables = elements.stream().filter(e -> e instanceof NarratableEntry).map(e -> (NarratableEntry)e).collect(Collectors.toList());
-			this.offsets = elements.stream().collect(Collectors.toMap(Function.identity(), OptionListWidget::getElementOffset));
+		public Entry(OptionListWidget parentWidget, List<GuiEventListener> elements) {
+			this.parentWidget = parentWidget;
+			this.elements = List.copyOf(elements);
+			this.narratables = elements.stream().filter(e -> e instanceof NarratableEntry).map(e -> (NarratableEntry)e).toList();
+			this.offsets = elements.stream().collect(toMap(Function.identity(), OptionListWidget::getElementOffset));
+		}
+		
+		@Override
+		public void setFocused(@Nullable GuiEventListener element) {
+			super.setFocused(element);
+			
+			if (Minecraft.getInstance().getLastInputType().isKeyboard()) {
+				Offset offset = offsets.get(element);
+				if (offset != null) {
+					parentWidget.setScrollAmount(offset.y + (offset.height * 0.5F) - (parentWidget.getHeight() * 0.5F) + 4);
+				}
+			}
 		}
 		
 		@NotNull
 		@Override
 		public List<? extends GuiEventListener> children() {
-			return Collections.unmodifiableList(elements);
+			return elements;
 		}
 		
 		@NotNull
 		@Override
 		public List<? extends NarratableEntry> narratables() {
-			return Collections.unmodifiableList(narratables);
+			return narratables;
 		}
 		
 		@Override

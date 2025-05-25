@@ -32,7 +32,7 @@ public final class BetterControlsConfig {
 	
 	public final KeyBindingWithModifier keyToggleFlight = new KeyBindingWithModifier("key.bettercontrols.toggle_flight");
 	public boolean doubleTapJumpToToggleFlight = true;
-	public boolean disableFlightInertia = false;
+	public float flightInertiaMultiplier = 1F;
 	public boolean disableChangingFovWhileFlying = false;
 	public boolean flyOnGroundInCreative = false;
 	public float flightHorizontalSpeedMpCreativeDefault = 1F;

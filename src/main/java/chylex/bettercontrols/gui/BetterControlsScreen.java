@@ -98,6 +98,14 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	private int generateFlightOptions(int y, List<GuiEventListener> elements) {
 		BetterControlsConfig cfg = BetterControlsCommon.getConfig();
 		
+		ImmutableList<Option<Float>> flightInertiaOptions = ImmutableList.of(
+			new Option<>(Float.valueOf(0.00F), text("0x")),
+			new Option<>(Float.valueOf(0.25F), text("0.25x")),
+			new Option<>(Float.valueOf(0.50F), text("0.5x")),
+			new Option<>(Float.valueOf(0.75F), text("0.75x")),
+			new Option<>(Float.valueOf(1.00F), text("1x"))
+		);
+		
 		ImmutableList<Option<Float>> flightSpeedOptions = ImmutableList.of(
 			new Option<>(Float.valueOf(0.25F), text("0.25x")),
 			new Option<>(Float.valueOf(0.50F), text("0.5x")),
@@ -119,7 +127,8 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		generateBooleanOptionRow(y, elements, text("Double Tap 'Jump' To Fly (Creative)"), cfg.doubleTapJumpToToggleFlight, value -> cfg.doubleTapJumpToToggleFlight = value);
 		y += ROW_HEIGHT;
 		
-		generateBooleanOptionRow(y, elements, text("Disable Flight Inertia"), cfg.disableFlightInertia, value -> cfg.disableFlightInertia = value);
+		generateLeftSideText(y, elements, text("Flight Inertia Multiplier"));
+		elements.add(new DiscreteValueSliderWidget<>(col2(1), y, COL2_W, text("Flight Inertia Multiplier"), flightInertiaOptions, cfg.flightInertiaMultiplier, value -> cfg.flightInertiaMultiplier = value));
 		y += ROW_HEIGHT;
 		
 		generateBooleanOptionRow(y, elements, text("Disable Field Of View Changing"), cfg.disableChangingFovWhileFlying, value -> cfg.disableChangingFovWhileFlying = value);

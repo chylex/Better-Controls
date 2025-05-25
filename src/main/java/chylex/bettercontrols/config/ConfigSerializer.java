@@ -46,7 +46,7 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		
 		Json.writeKeyBinding(obj, "Flight.KeyToggle.Creative", cfg.keyToggleFlight);
 		Json.setBool(obj, "Flight.DoubleTapJump", cfg.doubleTapJumpToToggleFlight);
-		Json.setBool(obj, "Flight.DisableInertia", cfg.disableFlightInertia);
+		Json.setFloat(obj, "Flight.InertiaMultiplier", cfg.flightInertiaMultiplier);
 		Json.setBool(obj, "Flight.DisableChangingFOV", cfg.disableChangingFovWhileFlying);
 		Json.setBool(obj, "Flight.FlyOnGround.Creative", cfg.flyOnGroundInCreative);
 		Json.setFloat(obj, "Flight.SpeedMp.Creative.Default", cfg.flightHorizontalSpeedMpCreativeDefault);
@@ -75,6 +75,10 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 			cfg.sprintMode = SprintMode.TAP_TO_TOGGLE;
 		}
 		
+		if (obj.has("Flight.DisableInertia") && obj.get("Flight.DisableInertia").getAsBoolean()) {
+			cfg.flightInertiaMultiplier = 0F;
+		}
+		
 		Json.readKeyBinding(obj, "Sprint.KeyToggle", cfg.keyToggleSprint);
 		cfg.sprintMode = Json.getEnum(obj, "Sprint.Mode", cfg.sprintMode, SprintMode.class);
 		cfg.doubleTapForwardToSprint = Json.getBool(obj, "Sprint.DoubleTapForward", cfg.doubleTapForwardToSprint);
@@ -88,7 +92,7 @@ final class ConfigSerializer implements JsonSerializer<BetterControlsConfig>, Js
 		
 		Json.readKeyBinding(obj, "Flight.KeyToggle.Creative", cfg.keyToggleFlight);
 		cfg.doubleTapJumpToToggleFlight = Json.getBool(obj, "Flight.DoubleTapJump", cfg.doubleTapJumpToToggleFlight);
-		cfg.disableFlightInertia = Json.getBool(obj, "Flight.DisableInertia", cfg.disableFlightInertia);
+		cfg.flightInertiaMultiplier = Json.getFloat(obj, "Flight.InertiaMultiplier", cfg.flightInertiaMultiplier, 0F, 1F);
 		cfg.disableChangingFovWhileFlying = Json.getBool(obj, "Flight.DisableChangingFOV", cfg.disableChangingFovWhileFlying);
 		cfg.flyOnGroundInCreative = Json.getBool(obj, "Flight.FlyOnGround.Creative", cfg.flyOnGroundInCreative);
 		cfg.flightHorizontalSpeedMpCreativeDefault = readHorizontalSpeedMultiplier(obj, "Flight.SpeedMp.Creative.Default", cfg.flightHorizontalSpeedMpCreativeDefault);

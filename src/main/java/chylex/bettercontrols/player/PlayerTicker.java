@@ -223,16 +223,21 @@ public final class PlayerTicker {
 			holdingSneakWhileTouchingGround = false;
 		}
 		
-		if (FlightHelper.isFlyingCreativeOrSpectator(player) && getConfig().disableFlightInertia) {
-			ClientInput input = player.input;
-			Input keyPresses = input.keyPresses;
+		if (FlightHelper.isFlyingCreativeOrSpectator(player)) {
+			float inertiaMultiplier = getConfig().flightInertiaMultiplier;
 			
-			if (!keyPresses.forward() && !keyPresses.backward() && !keyPresses.left() && !keyPresses.right()) {
-				player.setDeltaMovement(player.getDeltaMovement().multiply(0.0, 1.0, 0.0));
-			}
-			
-			if (!keyPresses.jump() && !keyPresses.shift()) {
-				player.setDeltaMovement(player.getDeltaMovement().multiply(1.0, 0.0, 1.0));
+			if (inertiaMultiplier < 1F) {
+				ClientInput input = player.input;
+				Input keyPresses = input.keyPresses;
+				double inertiaMultiplierSqrt = Math.sqrt(inertiaMultiplier);
+				
+				if (!keyPresses.forward() && !keyPresses.backward() && !keyPresses.left() && !keyPresses.right()) {
+					player.setDeltaMovement(player.getDeltaMovement().multiply(inertiaMultiplierSqrt, 1.0, inertiaMultiplierSqrt));
+				}
+				
+				if (!keyPresses.jump() && !keyPresses.shift()) {
+					player.setDeltaMovement(player.getDeltaMovement().multiply(1.0, inertiaMultiplierSqrt, 1.0));
+				}
 			}
 		}
 		

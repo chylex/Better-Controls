@@ -33,7 +33,7 @@ You can also bind a key that resets all **Toggle Keybinds** at once. That makes 
 #### Flying
 
 * **Double Tap 'Jump' To Fly** can be turned off.
-* **Disable Flight Inertia** stops you instantly when you stop holding movement keys.
+* **Flight Inertia Multiplier** changes how quickly you stop moving in the air when you stop holding movement keys.
 * **Disable Field Of View Changing** prevents sprinting, potions, and other factors from changing the FOV while flying in creative and spectator mode.
 * **Fly On Ground** lets you fly while touching the ground in creative mode. Stop flying by tapping Sneak while touching the ground.
 * **Flight Speed Multiplier** (0.25x - 8x) changes flight speed in creative and spectator mode.

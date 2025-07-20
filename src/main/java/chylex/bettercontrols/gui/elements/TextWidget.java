@@ -13,7 +13,7 @@ public final class TextWidget implements OptionWidget {
 	public static final int LEFT = 0;
 	public static final int CENTER = 1;
 	
-	public static final int WHITE = 0xFF_FF_FF;
+	public static final int WHITE = 0xFF_FF_FF_FF;
 	
 	private final Component text;
 	private int x;

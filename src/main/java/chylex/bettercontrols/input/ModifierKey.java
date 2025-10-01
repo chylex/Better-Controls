@@ -1,26 +1,26 @@
 package chylex.bettercontrols.input;
 
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.Minecraft;
 
 public enum ModifierKey {
 	CONTROL(0) {
 		@Override
 		public boolean isPressed() {
-			return Screen.hasControlDown();
+			return Minecraft.getInstance().hasControlDown();
 		}
 	},
 	
 	SHIFT(1) {
 		@Override
 		public boolean isPressed() {
-			return Screen.hasShiftDown();
+			return Minecraft.getInstance().hasShiftDown();
 		}
 	},
 	
 	ALT(2) {
 		@Override
 		public boolean isPressed() {
-			return Screen.hasAltDown();
+			return Minecraft.getInstance().hasAltDown();
 		}
 	};
 	

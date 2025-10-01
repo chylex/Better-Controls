@@ -2,12 +2,11 @@ package chylex.bettercontrols.gui.elements;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.gui.components.AbstractSliderButton;
-import net.minecraft.client.gui.navigation.CommonInputs;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
-import org.lwjgl.glfw.GLFW;
 import java.util.function.Consumer;
 
 public final class DiscreteValueSliderWidget<T> extends AbstractSliderButton {
@@ -42,13 +41,13 @@ public final class DiscreteValueSliderWidget<T> extends AbstractSliderButton {
 	}
 	
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (CommonInputs.selected(keyCode)) {
-			return super.keyPressed(keyCode, scanCode, modifiers);
+	public boolean keyPressed(KeyEvent keyEvent) {
+		if (keyEvent.isSelection()) {
+			return super.keyPressed(keyEvent);
 		}
 		
-		if (keyCode == GLFW.GLFW_KEY_LEFT || keyCode == GLFW.GLFW_KEY_RIGHT) {
-			int newOptionIndex = keyCode == GLFW.GLFW_KEY_LEFT
+		if (keyEvent.isLeft() || keyEvent.isRight()) {
+			int newOptionIndex = keyEvent.isLeft()
 				? getSelectedOptionIndex() - 1
 				: getSelectedOptionIndex() + 1;
 			

@@ -84,7 +84,7 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 	}
 	
 	@Override
-	protected void ensureVisible(@NotNull Entry entry) {
+	protected void scrollToEntry(@NotNull Entry entry) {
 		// Scrolling to focused item is implemented in Entry.
 	}
 	
@@ -126,17 +126,17 @@ public final class OptionListWidget extends ContainerObjectSelectionList<Entry> 
 		}
 		
 		@Override
-		public void render(@NotNull GuiGraphics graphics, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+		public void renderContent(@NotNull GuiGraphics graphics, int mouseX, int mouseY, boolean hovered, float tickDelta) {
 			for (GuiEventListener element : elements) {
 				Offset offset = offsets.get(element);
 				
 				if (element instanceof AbstractWidget widget) {
-					widget.setX(x + offset.x);
-					widget.setY(y + offset.y);
+					widget.setX(getX() + offset.x);
+					widget.setY(getY() + offset.y);
 				}
 				else if (element instanceof OptionWidget widget) {
-					widget.setX(x + offset.x);
-					widget.setY(y + offset.y);
+					widget.setX(getX() + offset.x);
+					widget.setY(getY() + offset.y);
 				}
 				
 				if (element instanceof Renderable renderable) {

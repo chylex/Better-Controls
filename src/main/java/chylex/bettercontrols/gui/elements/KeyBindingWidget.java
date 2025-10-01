@@ -6,6 +6,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +47,7 @@ public final class KeyBindingWidget extends Button {
 	}
 	
 	@Override
-	public void onPress() {
+	public void onPress(@NotNull InputWithModifiers input) {
 		isEditing = true;
 		onEditingStarted.accept(this);
 		updateKeyBindingText();

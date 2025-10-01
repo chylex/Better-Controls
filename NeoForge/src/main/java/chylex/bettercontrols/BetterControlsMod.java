@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 @Mod("bettercontrols")
 public final class BetterControlsMod {
 	public BetterControlsMod() {
-		if (FMLEnvironment.dist == Dist.CLIENT) {
+		if (FMLEnvironment.getDist() == Dist.CLIENT) {
 			BetterControlsCommon.setConfig(BetterControlsConfig.load(FMLPaths.CONFIGDIR.get().resolve("BetterControls.json")));
 			ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> BetterControlsMod::createOptionsScreen);
 		}

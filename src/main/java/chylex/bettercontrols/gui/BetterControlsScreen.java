@@ -18,7 +18,10 @@ import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.options.OptionsSubScreen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import java.util.ArrayList;
@@ -282,32 +285,32 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	}
 	
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+	public boolean mouseClicked(@NotNull MouseButtonEvent event, boolean isDoubleClick) {
 		if (editingKeyBinding != null) {
-			editingKeyBinding.bindAndStopEditing(InputConstants.Type.MOUSE.getOrCreate(button));
+			editingKeyBinding.bindAndStopEditing(InputConstants.Type.MOUSE.getOrCreate(event.button()));
 			onKeyBindingEditingFinished();
 			return true;
 		}
 		else {
-			return super.mouseClicked(mouseX, mouseY, button);
+			return super.mouseClicked(event, isDoubleClick);
 		}
 	}
 	
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+	public boolean keyPressed(@NotNull KeyEvent event) {
 		if (editingKeyBinding != null) {
-			if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+			if (event.key() == GLFW.GLFW_KEY_ESCAPE) {
 				editingKeyBinding.bindAndStopEditing(InputConstants.UNKNOWN);
 			}
 			else {
-				editingKeyBinding.bindAndStopEditing(InputConstants.getKey(keyCode, scanCode));
+				editingKeyBinding.bindAndStopEditing(InputConstants.getKey(event));
 			}
 			
 			onKeyBindingEditingFinished();
 			return true;
 		}
 		else {
-			return super.keyPressed(keyCode, scanCode, modifiers);
+			return super.keyPressed(event);
 		}
 	}
 	

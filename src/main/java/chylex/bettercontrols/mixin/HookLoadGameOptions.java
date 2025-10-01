@@ -2,7 +2,6 @@ package chylex.bettercontrols.mixin;
 
 import chylex.bettercontrols.BetterControlsCommon;
 import chylex.bettercontrols.config.BetterControlsConfig;
-import chylex.bettercontrols.input.KeyBindingWithModifier;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Options;
 import org.apache.commons.lang3.ArrayUtils;
@@ -38,6 +37,5 @@ public abstract class HookLoadGameOptions {
 		
 		hasLoaded = true;
 		keyMappings = ArrayUtils.addAll(keyMappings, config.getAllKeyBindings());
-		AccessKeyMappingFields.getCategoryOrderMap().put(KeyBindingWithModifier.CATEGORY, Integer.valueOf(Integer.MAX_VALUE));
 	}
 }

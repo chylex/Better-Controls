@@ -18,7 +18,7 @@ public abstract class HookStickyKeyBindingState extends KeyMapping {
 	@Final
 	private BooleanSupplier needsToggle;
 	
-	public HookStickyKeyBindingState(String translationKey, int code, String category) {
+	public HookStickyKeyBindingState(String translationKey, int code, KeyMapping.Category category) {
 		super(translationKey, code, category);
 	}
 	

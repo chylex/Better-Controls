@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public final class KeyBindingWidget extends Button {
+public final class KeyBindingWidget extends Button.Plain {
 	private final KeyMapping binding;
 	private final Component bindingName;
 	

@@ -87,7 +87,7 @@ public final class PlayerTicker {
 		}
 		
 		SprintMode sprintMode = getConfig().sprintMode;
-		boolean wasSprintToggled = Boolean.TRUE.equals(OPTIONS.toggleSprint().get());
+		boolean wasSprintToggled = OPTIONS.toggleSprint().get().booleanValue();
 		boolean isSprintToggled = toggleSprint.tick();
 		
 		if (temporarySprintTimer > 0) {
@@ -270,7 +270,7 @@ public final class PlayerTicker {
 		if (!getConfig().sneakingMovesCameraSmoothly) {
 			Camera camera = MINECRAFT.gameRenderer.getMainCamera();
 			
-			if (camera.getEntity() == player) {
+			if (camera.entity() == player) {
 				Mixins.cameraFields(camera).setEyeHeight(player.getEyeHeight());
 			}
 		}

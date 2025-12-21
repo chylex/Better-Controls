@@ -2,11 +2,12 @@ package chylex.bettercontrols.input;
 
 import com.mojang.blaze3d.platform.InputConstants.Type;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 public class KeyBindingWithModifier extends KeyMapping {
-	public static final Category CATEGORY = new Category(ResourceLocation.fromNamespaceAndPath("bettercontrols", "all"));
+	@SuppressWarnings("SpellCheckingInspection")
+	public static final Category CATEGORY = new Category(Identifier.fromNamespaceAndPath("bettercontrols", "all"));
 	
 	@Nullable
 	private ModifierKey modifier;

@@ -98,6 +98,7 @@ public class BetterControlsScreen extends OptionsSubScreen {
 		return y;
 	}
 	
+	@SuppressWarnings({ "AutoBoxing", "AutoUnboxing" })
 	private int generateFlightOptions(int y, List<GuiEventListener> elements) {
 		BetterControlsConfig cfg = BetterControlsCommon.getConfig();
 		
@@ -213,9 +214,8 @@ public class BetterControlsScreen extends OptionsSubScreen {
 	
 	private static void generateBooleanOptionRow(int y, List<GuiEventListener> elements, Component text, boolean initialValue, BooleanConsumer onValueChanged) {
 		generateLeftSideText(y, elements, text);
-		elements.add(CycleButton.onOffBuilder()
+		elements.add(CycleButton.onOffBuilder(initialValue)
 			.displayOnlyValue()
-			.withInitialValue(Boolean.valueOf(initialValue))
 			.create(col2(1), y, COL2_W, 20, text, (btn, newValue) -> onValueChanged.accept(newValue.booleanValue())));
 	}
 	

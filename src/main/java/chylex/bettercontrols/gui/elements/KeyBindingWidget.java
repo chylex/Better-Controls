@@ -6,6 +6,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -43,7 +44,9 @@ public final class KeyBindingWidget extends Button.Plain {
 	@NotNull
 	@Override
 	protected MutableComponent createNarrationMessage() {
-		return binding.isUnbound() ? Component.translatable("narrator.controls.unbound", bindingName) : Component.translatable("narrator.controls.bound", bindingName, super.createNarrationMessage());
+		return binding.isUnbound()
+			? Component.translatable("narrator.controls.unbound", bindingName)
+			: Component.translatable("narrator.controls.bound", bindingName, super.createNarrationMessage());
 	}
 	
 	@Override
@@ -69,24 +72,59 @@ public final class KeyBindingWidget extends Button.Plain {
 	
 	public void updateKeyBindingText() {
 		boolean hasConflict = false;
+		MutableComponent conflictText = Component.empty();
 		
 		if (!binding.isUnbound()) {
 			for (KeyMapping other : Minecraft.getInstance().options.keyMappings) {
 				if (binding != other && binding.same(other)) {
+					if (hasConflict) {
+						conflictText.append(", ");
+					}
+					
 					hasConflict = true;
-					break;
+					conflictText.append(Component.translatable(other.getName()));
 				}
 			}
 		}
 		
-		if (isEditing) {
-			setMessage(Component.literal("> ").append(binding.getTranslatedKeyMessage().copy().withStyle(ChatFormatting.YELLOW)).append(" <").withStyle(ChatFormatting.YELLOW));
-		}
-		else if (hasConflict) {
-			setMessage(binding.getTranslatedKeyMessage().copy().withStyle(ChatFormatting.RED));
+		if (hasConflict) {
+			setMessage(getMessageWithConflict(binding));
+			setTooltip(Tooltip.create(Component.translatable("controls.keybinds.duplicateKeybinds", conflictText)));
 		}
 		else {
-			setMessage(binding.isUnbound() ? Component.literal("(No Binding)") : binding.getTranslatedKeyMessage());
+			setMessage(getMessageWithoutConflict(binding));
+			setTooltip(null);
 		}
+		
+		if (isEditing) {
+			setMessage(getEditingMessage(getMessage()));
+		}
+	}
+	
+	private static MutableComponent getMessageWithConflict(KeyMapping binding) {
+		return Component
+			.literal("[ ")
+			.append(binding.getTranslatedKeyMessage().copy().withStyle(ChatFormatting.WHITE))
+			.append(" ]")
+			.withStyle(ChatFormatting.YELLOW);
+	}
+	
+	private static Component getMessageWithoutConflict(KeyMapping binding) {
+		if (binding.isUnbound()) {
+			return Component
+				.literal("(")
+				.append(Component.translatable("key.keyboard.unknown"))
+				.append(")");
+		}
+		
+		return binding.getTranslatedKeyMessage();
+	}
+	
+	private static MutableComponent getEditingMessage(Component originalMessage) {
+		return Component
+			.literal("> ")
+			.append(originalMessage.copy().withStyle(ChatFormatting.WHITE, ChatFormatting.UNDERLINE))
+			.append(" <")
+			.withStyle(ChatFormatting.YELLOW);
 	}
 }

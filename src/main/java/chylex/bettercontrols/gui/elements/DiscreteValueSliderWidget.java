@@ -5,7 +5,6 @@ import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
 
@@ -32,7 +31,7 @@ public final class DiscreteValueSliderWidget<T> extends AbstractSliderButton {
 	}
 	
 	private int getSelectedOptionIndex() {
-		return Mth.floor(Mth.clampedLerp(0.0, options.size() - 1.0, value));
+		return getOptionIndex(value, options.size());
 	}
 	
 	@Override
@@ -77,6 +76,18 @@ public final class DiscreteValueSliderWidget<T> extends AbstractSliderButton {
 	@Override
 	protected MutableComponent createNarrationMessage() {
 		return Component.translatable("gui.narrate.slider", narration.plainCopy().append(" ").append(getMessage()));
+	}
+	
+	public static int getOptionIndex(double value, int optionCount) {
+		if (value < 0.0) {
+			return 0;
+		}
+		else if (value > 1.0) {
+			return optionCount - 1;
+		}
+		else {
+			return (int) (value * (optionCount - 1));
+		}
 	}
 	
 	private static <T> double getOptionValue(ImmutableList<Option<T>> options, int optionIndex) {
